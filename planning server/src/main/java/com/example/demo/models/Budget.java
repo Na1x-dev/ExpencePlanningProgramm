@@ -13,7 +13,7 @@ public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "budget_id")
-    private Integer budgetId;
+    private Long budgetId;
 
     @ManyToOne
     @JoinColumn(name = "management_id",referencedColumnName = "management_id")

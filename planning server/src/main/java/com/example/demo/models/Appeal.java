@@ -22,7 +22,7 @@ public class Appeal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "appeal_id")
-    private Integer appealId;
+    private Long appealId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "registration_date")

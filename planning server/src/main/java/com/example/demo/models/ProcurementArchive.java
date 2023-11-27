@@ -19,7 +19,7 @@ public class ProcurementArchive {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "procurement_id")
-    private Integer procurementId;
+    private Long procurementId;
 
     @Column(name = "procurement_date")
 

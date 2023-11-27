@@ -20,7 +20,7 @@ public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "application_id")
-    private Integer applicationId;
+    private Long applicationId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "application_date")
