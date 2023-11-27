@@ -1,7 +1,7 @@
 package com.example.demo.services.shift;
 
 import com.example.demo.models.Shift;
-import com.example.demo.repositories.shift.ShiftJpaRepository;
+import com.example.demo.repositories.procurementArchive.ShiftJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,10 @@
-insert into shifts (shift_id, user_id, open_date, close_date) values (1, 1, '2011-04-15 00:03:20', '2011-04-15 00:13:20');
 
-insert into countries (country_id, title) values (1, 'Беларусь');
-insert into statuses (status_id, title) values (1, 'ok');
+insert into roles (roleName) values ('заказчик');
+insert into roles (roleName) values ('исполнитель');
+insert into roles (roleName) values ('администратор');
+
+
+insert into statuses (status_name) values ('создано');
+insert into statuses (status_name) values ('зарегистрировано');
+insert into statuses (status_name) values ('отклонено');
+insert into statuses (status_name) values ('закрыто');

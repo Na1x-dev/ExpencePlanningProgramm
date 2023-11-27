@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StatusJpaRepository extends JpaRepository<Status, Long> {
 
-    Status getByTitle(String title);
+    Status getByStatusName(String statusName);
 }

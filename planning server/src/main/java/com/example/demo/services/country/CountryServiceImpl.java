@@ -1,7 +1,7 @@
 package com.example.demo.services.country;
 
 import com.example.demo.models.Country;
-import com.example.demo.repositories.country.CountryJpaRepository;
+import com.example.demo.repositories.appeal.CountryJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -17,20 +17,20 @@ public class Category {
     @Id
     @Column(name = "category_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long categoryId;
+    Integer categoryId;
 
-    @Column(name = "title")
-    @NonNull
-    String title;
+    @Column(name = "category_name")
+    private String categoryName;
 
     public Category() {
+        categoryName = "";
     }
 
     @Override
     public String toString() {
         return "Category{" +
                 "categoryId=" + categoryId +
-                ", title='" + title + '\'' +
+                ", categoryName='" + categoryName + '\'' +
                 '}';
     }
 }

@@ -1,6 +1,5 @@
 package com.example.demo.services.supplier;
 
-import com.example.demo.models.Supplier;
 import com.example.demo.repositories.supplier.SupplierJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

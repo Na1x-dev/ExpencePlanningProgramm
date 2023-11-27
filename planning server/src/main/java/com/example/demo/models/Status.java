@@ -9,24 +9,29 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+
 @Data
-@Table(name = "statuses")
 @JsonIgnoreProperties("hibernateLazyInitializer")
+@Entity
+@Table(name = "statuses")
 public class Status {
     @Id
-    @Column(name = "status_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long statusId;
+    @Column(name = "status_id")
+    private Integer statusId;
 
-    @Column(name = "title")
-    @NonNull
-    String title;
+    @Column(name = "status_name")
+    private String statusName;
 
     public Status() {
+        statusName = "";
     }
 
-    public Status(String title) {
-    this.title = title;
+    @Override
+    public String toString() {
+        return "Status{" +
+                "statusId=" + statusId +
+                ", statusName='" + statusName + '\'' +
+                '}';
     }
 }

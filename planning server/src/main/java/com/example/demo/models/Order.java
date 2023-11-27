@@ -1,54 +1,70 @@
 package com.example.demo.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
-@Entity
-@Getter
-@Setter
-@Table(name = "orders")
+
 @JsonIgnoreProperties("hibernateLazyInitializer")
+@Data
+@Entity
+@Table(name = "orders")
 public class Order {
     @Id
-    @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long orderId;
+    @Column(name = "order_id")
+    private Integer orderId;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "order_date")
-    @NonNull
-    Date orderDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date orderDate;
 
     @ManyToOne
-    @JoinColumn(name = "delivery_id", referencedColumnName = "delivery_id")
-    Delivery delivery;
+    @JoinColumn(name = "status_id", referencedColumnName = "status_id")
+    private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "product_id")
-    @NonNull
-    Product product;
+    @JoinColumn(name = "create_user_id", referencedColumnName = "user_id")
+    private User createUser;
 
-    @Column(name = "order_count")
-    @NonNull
-    Integer orderCount;
+    @ManyToOne
+    @JoinColumn(name = "application_id", referencedColumnName = "application_id")
+    private Application application;
 
-    public Order() {
+    @Column(name = "procurement_organization")
+    private String procurementOrganization;
+
+    @Column(name = "unp")
+    private Integer unp;
+
+    @Column(name = "contact_person")
+    private String contactPerson;
+
+    @Column(name = "contact_number")
+    private String contactNumber;
+
+    @Column(name = "vat")
+    private Integer vat;
+
+    @Column(name = "price_with_vat")
+    private Double priceWithVat;
+
+    public Order(){
         orderDate = new Date();
-    }
-
-    public String getDateInNormalFormat() {
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        return format.format(orderDate);
-    }
-
-    public Double getFinalPrice() {
-        return orderCount * product.getPrice();
+        status = new Status();
+        createUser = new User();
+        application = new Application();
+        procurementOrganization = "";
+        unp = 111111111;
+        contactPerson = "";
+        contactNumber = "+375290000000";
+        vat = 0;
+//        priceWithVat = vat* application.getFinalPrice() + application.getFinalPrice();
+    priceWithVat = 0.0;
     }
 
     @Override
@@ -56,36 +72,15 @@ public class Order {
         return "Order{" +
                 "orderId=" + orderId +
                 ", orderDate=" + orderDate +
-                ", delivery=" + delivery +
-                ", product=" + product +
-                ", orderCount=" + orderCount +
+                ", status=" + status +
+                ", createUser=" + createUser +
+                ", application=" + application +
+                ", procurementOrganization='" + procurementOrganization + '\'' +
+                ", unp=" + unp +
+                ", contactPerson='" + contactPerson + '\'' +
+                ", contactNumber='" + contactNumber + '\'' +
+                ", vat=" + vat +
+                ", priceWithVat=" + priceWithVat +
                 '}';
     }
-
-    //    public String getIdAndName() {
-//        if (!surname.equals("") || !name.equals("") || !patronymic.equals(""))
-//            return unionMemberId + ". " + surname + " " + name.charAt(0) + "." + patronymic.charAt(0) + ".";
-//        return "";
-//    }
-//
-//    public String getDateInNormalFormat() {
-//        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-//        return format.format(birthdate);
-//    }
-//
-//    public String formatDateForChange() {
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//        return format.format(birthdate);
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "UnionMember{" +
-//                "unionMemberId=" + unionMemberId +
-//                ", surname='" + surname + '\'' +
-//                ", name='" + name + '\'' +
-//                ", patronymic='" + patronymic + '\'' +
-//                ", phone='" + products.get(0).phoneNumber + '\'' +
-//                '}';
-//    }
 }

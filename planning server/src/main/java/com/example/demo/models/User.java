@@ -16,89 +16,111 @@ import java.util.Set;
         property = "id")
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
+//@Getter
+//@Setter
+//@Data
 @ToString
-@NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class User {
+
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long userId;
+    @Column(name = "user_id")
+    private Integer userId;
 
-    @Column(name = "username")
-    @NonNull String username;
+    @Column(name = "last_name")
+    private String lastName;
 
-    @Column(name = "password")
-    @NonNull String password;
-
-    @Column(name = "surname")
-    @NonNull String surname;
-
-    @Column(name = "name")
-    @NonNull String name;
+    @Column(name = "first_name")
+    private String firstName;
 
     @Column(name = "patronymic")
-    @NonNull String patronymic;
+    private String patronymic;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "position_id", nullable = false, referencedColumnName = "position_id")
-    @NonNull
-    Position position;
+    @Column(name = "user_name", unique = true)
+    private String userName;
 
-    @ManyToMany
-    @NonNull
-    @ToString.Exclude
-    Set<Role> roles;
+    @Column(name = "password")
+    private String password;
 
-    @Transient
-    @NonNull String passwordConfirm;
+    @ManyToOne
+    @JoinColumn(name = "position_id", referencedColumnName = "position_id")
+    private Position position;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User user = (User) o;
-        return userId != null && Objects.equals(userId, user.userId);
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id", referencedColumnName = "department_id")
+    private Department department;
+
+//    @Transient
+//    @NonNull String passwordConfirm;
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+//        User user = (User) o;
+//        return userId != null && Objects.equals(userId, user.userId);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return getClass().hashCode();
+//    }
+
+    public User() {
     }
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
-
-    public User(String username, String password, Role role, String passwordConfirm) {
-        this.username = username;
-        this.password = password;
-        this.passwordConfirm = passwordConfirm;
-        roles = new HashSet<>();
-        roles.add(role);
-        name = "";
-        surname = "";
+    public User(String userName, String password, Role role) {
+        lastName = "";
+        firstName = "";
         patronymic = "";
-        new Position();
+        this.userName = userName;
+        this.password = password;
+        this.role = role;
+        position = new Position();
+        department = new Department();
     }
 
 
-    public boolean isAdmin() {
-        for (Role role : roles) {
-            if (role.name.equals("ROLE_ADMIN")) {
-                return true;
-            }
-        }
-        return false;
+//    public boolean isAdmin() {
+//        for (Role role : roles) {
+//            if (role.name.equals("ROLE_ADMIN")) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    public void addRole(Role role){
+//        if(roles==null){
+//            roles = new HashSet<>();
+//        }
+//        roles.add(role);
+//    }
+//
+//    public String getFIO(){
+//        return surname + " " + name.charAt(0) + "." + patronymic.charAt(0) + ".";
+//    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", position=" + position +
+                ", role=" + role +
+                ", department=" + department +
+                '}';
     }
 
-    public void addRole(Role role){
-        if(roles==null){
-            roles = new HashSet<>();
-        }
-        roles.add(role);
-    }
-
-    public String getFIO(){
-        return surname + " " + name.charAt(0) + "." + patronymic.charAt(0) + ".";
-    }
 
 }

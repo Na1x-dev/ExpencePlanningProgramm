@@ -16,19 +16,22 @@ import java.util.Set;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    @NonNull Long roleId;
+    @Column(name = "role_id")
+    private Integer roleId;
 
-    @NonNull String name;
-
-    @ManyToMany(mappedBy = "roles")
-    @NonNull Set<User> users;
+    @Column(name = "role_name")
+    private String roleName;
 
     public Role() {
-        name = "";
+        roleName = "";
     }
 
-    public Role(String roleName){
-        name = roleName;
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
+                '}';
     }
+
 }

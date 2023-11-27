@@ -1,179 +1,103 @@
+create table if not EXISTS managements (
+  management_id serial primary key,
+  management_name text
+);
 
+create table if not EXISTS budget (
+  budget_id serial primary key,
+    management_id INTEGER REFERENCES managements(management_id),
+    budget_category1 float,
+    budget_category2 float,
+    budget_category3 float,
+    final_budget float
+);
 
-  create table if not exists users_roles
-  (
-      users_id bigint not null references users,
-      roles_id bigint not null references roles,
-      primary key (users_id, roles_id)
-  );
+create table if not EXISTS departments (
+  department_id serial primary key,
+    department_name text,
+    management_id INTEGER REFERENCES managements (management_id)
+);
 
-  create table if not exists positions(
-    position_id bigint AUTO_INCREMENT primary key,
-    title varchar(250) not null
-  );
+create table if not EXISTS positions (
+  position_id serial primary key,
+    position_name text
+);
 
-  create table if not exists statuses(
-    status_id bigint AUTO_INCREMENT primary key,
-    title varchar(250) not null
-  );
+create table if not EXISTS roles (
+  role_id serial primary key,
+    role_name text
+);
 
-  create table if not exists countries(
-    country_id bigint AUTO_INCREMENT primary key,
-    title varchar(250) not null
-  );
+create table if not EXISTS users (
+  user_id serial primary key,
+    last_name text,
+    first_name text,
+    patronymic text,
+    user_name text UNIQUE,
+    password text,
+    position_id INTEGER REFERENCES positions(position_id),
+    role_id INTEGER REFERENCES roles(role_id),
+    department_id INTEGER REFERENCES departments(department_id)
+);
 
-  create table if not exists categories(
-    category_id bigint AUTO_INCREMENT primary key,
-    title varchar(250) not null
-  );
+create table if not EXISTS statuses (
+  status_id serial primary key,
+  status_name text
+);
 
-    create table if not exists roles
-    (
-        id bigint AUTO_INCREMENT primary key,
-        name varchar(255)
-    );
+create table if not EXISTS categories (
+  category_id serial primary key,
+  category_name text
+);
 
-    create table if not exists users(
-        id bigint AUTO_INCREMENT primary key,
-        password varchar(255),
-        username varchar(255),
-        position_id bigint not null,
-        surname varchar(250) Not Null,
-        name varchar(250) Not Null,
-        patronymic varchar(250),
-        constraint users_positions
-        FOREIGN KEY (position_id) REFERENCES positions (position_id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-    );
+create table if not EXISTS appeals (
+  appeal_id serial primary key,
+  registration_date TIMESTAMP,
+    status_id INTEGER REFERENCES statuses(status_id),
+    user_id integer REFERENCES users(user_id),
+      appeal_text text,
+    closing_date TIMESTAMP,
+    closing_user_id INTEGER REFERENCES users(user_id),
+    COMMENT text
+);
+create table if not EXISTS applications (
+  application_id serial primary key,
+  application_date TIMESTAMP,
+    status_id INTEGER REFERENCES statuses(status_id),
+    create_user_id integer REFERENCES users(user_id),
+    customer_user_id integer REFERENCES users(user_id),
+     appeal_id INTEGER REFERENCES appeals(appeal_id),
+    category_id INTEGER REFERENCES categories(category_id),
+    product_name text,
+    product_characteristic text,
+    price_for_one float,
+    amount INTEGER,
+    application_comment text,
+    final_price float,
+    closing_date TIMESTAMP,
+    closing_user_id INTEGER REFERENCES users(user_id),
+    COMMENT text
+);
 
-  create table if not exists shifts(
-    shift_id bigint AUTO_INCREMENT primary key,
-    user_id bigint not null,
-    open_date datetime  not null,
-    close_date datetime not null,
-    constraint shifts_users
-    FOREIGN KEY (user_id) REFERENCES users (id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-  );
+create table if not EXISTS orders (
+  order_id serial primary key,
+  order_date TIMESTAMP,
+    status_id INTEGER REFERENCES statuses(status_id),
+    create_user_id integer REFERENCES users(user_id),
+    application_id INTEGER REFERENCES applications(application_id),
+      procurement_organization text,
+    unp integer,
+      contact_person text,
+    contact_number text,
+      vat integer,
+      price_with_vat float
+);
 
-  Create table if not exists applications(
-    application_id bigint AUTO_INCREMENT primary key,
-    user_id_open bigint not null,
-    description text Not Null,
-    open_date date Not Null,
-    close_date date,
-    user_id_close bigint,
-    status_id bigint,
-    comment text,
-    constraint applications_users_open
-    FOREIGN KEY (user_id_open) REFERENCES users(id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-    constraint applications_statuses
-    FOREIGN KEY (status_id) REFERENCES statuses(status_id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-    constraint applications_users_close
-    FOREIGN KEY (user_id_close) REFERENCES users(id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-  );
-
-  create table if not exists suppliers(
-    supplier_id bigint AUTO_INCREMENT primary key,
-    country_id bigint not null,
-    unp int Not Null,
-    title varchar(250) Not Null,
-    phone varchar (20) Not Null,
-    constraint suppliers_countries
-    FOREIGN KEY (country_id) REFERENCES countries (country_id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-  );
-
-  create table if not exists supplies(
-    supply_id bigint AUTO_INCREMENT primary key,
-    supplier_id bigint not null,
-    supply_date date not null,
-    constraint supplies_suppliers
-    FOREIGN KEY (supplier_id) REFERENCES suppliers (supplier_id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-  );
-
-  create table if not exists products(
-    product_id bigint AUTO_INCREMENT primary key,
-
-    title varchar(250) Not Null,
-    category_id bigint not null,
-    product_count int not null,
-    price double Not Null,
-    batch_number int not null,
-    best_before_date date not null,
-    weight double not null,
-    constraint products_categories
-    FOREIGN KEY (category_id) REFERENCES categories (category_id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-  );
-
-  CREATE TABLE IF NOT EXISTS supplies_products(
-    id bigint AUTO_INCREMENT primary key,
-    supply_id bigint NOT NULL,
-    product_id bigint NOT NULL,
-    CONSTRAINT supplies_products0
-      FOREIGN KEY (supply_id)
-      REFERENCES supplies (supply_id)
-      ON DELETE CASCADE
-      ON UPDATE CASCADE,
-    CONSTRAINT supplies_products1
-      FOREIGN KEY (product_id)
-      REFERENCES products (product_id)
-      ON DELETE CASCADE
-      ON UPDATE CASCADE);
-
-  Create table if not exists couriers(
-    courier_id bigint AUTO_INCREMENT primary key,
-    surname varchar(250) Not Null,
-    name varchar(250) Not Null,
-    patronymic varchar(250) not null,
-    passport_number varchar(250) Not Null,
-    phone varchar (20) Not Null,
-    organization_title varchar(200) Not Null,
-    organization_phone varchar (20) Not Null
-  );
-
-
-  Create table if not exists deliveries(
-    delivery_id bigint AUTO_INCREMENT primary key,
-    courier_id bigint not null,
-    city varchar(50) Not Null,
-    street varchar(50) Not Null,
-    house int Not Null,
-    client_name varchar(70) Not Null,
-    client_phone varchar (20) Not Null,
-    delivery_date date Not Null,
-    constraint deliveries_couriers
-    FOREIGN KEY (courier_id) REFERENCES couriers (courier_id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-  );
-
-
-  Create table if not exists orders(
-    order_id bigint AUTO_INCREMENT primary key,
-    order_date date Not Null,
-    product_id bigint not null,
-    delivery_id bigint,
-    order_count int not null,
-    constraint orders_deliveries
-        FOREIGN KEY (delivery_id) REFERENCES deliveries (delivery_id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    constraint orders_products
-    FOREIGN KEY (product_id) REFERENCES products (product_id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-  );
+create table if not EXISTS procurement_archive (
+  procurement_id serial primary key,
+  procurement_date TIMESTAMP,
+    status_id INTEGER REFERENCES statuses(status_id),
+    user_id integer REFERENCES users(user_id),
+    order_id INTEGER REFERENCES orders(order_id),
+      comment text
+);

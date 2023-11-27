@@ -11,52 +11,86 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-
+@Data
 @RequiredArgsConstructor
 @Table(name = "applications")
 @JsonIgnoreProperties("hibernateLazyInitializer")
 public class Application {
+
     @Id
-    @Column(name = "application_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long applicationId;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "open_date")
-    @NonNull
-    Date openDate;
+    @Column(name = "application_id")
+    private Integer applicationId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "close_date")
-    @NonNull
-    Date closeDate;
-
-    @Column(name="description")
-    @NonNull
-    String description;
-
-    @Column(name="comment")
-    @NonNull
-    String comment;
+    @Column(name = "application_date")
+    private Date applicationDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id_open", nullable = false, referencedColumnName = "id")
-    @NonNull
-    User userOpen;
-    @ManyToOne
-    @JoinColumn(name = "user_id_close", referencedColumnName = "id")
-    User userClose;
+    @JoinColumn(name = "status_id", referencedColumnName = "status_id")
+    private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "status_id", nullable = false, referencedColumnName = "status_id")
-    @NonNull
-    Status status;
+    @JoinColumn(name = "create_user_id", referencedColumnName = "user_id")
+    private User createUser;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_user_id", referencedColumnName = "user_id")
+    private User customerUser;
+
+    @ManyToOne
+    @JoinColumn(name = "appeal_id", referencedColumnName = "appeal_id")
+    private Appeal appeal;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
+    private Category category;
+
+    @Column(name = "product_name")
+    private String productName;
+
+    @Column(name = "product_characteristic")
+    private String productCharacteristic;
+
+    @Column(name = "price_for_one")
+    private Double priceForOne;
+
+    @Column(name = "amount")
+    private Integer amount;
+
+    @Column(name = "application_comment")
+    private String applicationComment;
+
+    @Column(name = "final_price")
+    private Double finalPrice;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "closing_date")
+    private Date closingDate;
+
+    @ManyToOne
+    @JoinColumn(name = "closing_user_id", referencedColumnName = "user_id")
+    private User closingUser;
+
+    @Column(name = "comment")
+    private String comment;
+
 
     public Application() {
-        openDate = new Date();
-        closeDate = new Date();
-        description = "";
+        applicationDate = new Date();
+        closingDate = new Date();
+        createUser = new User();
+        customerUser = new User();
+        appeal = new Appeal();
+        category = new Category();
+        productName = "";
+        productCharacteristic = "";
+        priceForOne = 0.0;
+        amount = 0;
+        applicationComment = "";
+        finalPrice = amount * priceForOne;
+        closingUser = new User();
         comment = "";
-        userOpen = new User();
         status = new Status();
     }
 
@@ -64,34 +98,42 @@ public class Application {
     public String toString() {
         return "Application{" +
                 "applicationId=" + applicationId +
-                ", openDate=" + openDate +
-                ", closeDate=" + closeDate +
-                ", description='" + description + '\'' +
-                ", comment='" + comment + '\'' +
-                ", userOpen=" + userOpen +
-                ", userClose=" + userClose +
+                ", applicationDate=" + applicationDate +
                 ", status=" + status +
+                ", createUser=" + createUser +
+                ", customerUser=" + customerUser +
+                ", appeal=" + appeal +
+                ", category=" + category +
+                ", productName='" + productName + '\'' +
+                ", productCharacteristic='" + productCharacteristic + '\'' +
+                ", priceForOne=" + priceForOne +
+                ", amount=" + amount +
+                ", applicationComment='" + applicationComment + '\'' +
+                ", finalPrice=" + finalPrice +
+                ", closingDate=" + closingDate +
+                ", closingUser=" + closingUser +
+                ", comment='" + comment + '\'' +
                 '}';
     }
 
-    public String formatOpenDateForChange() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(openDate);
-    }
-
-    public String formatCloseDateForChange() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(new Date());
-    }
+//    public String formatOpenDateForChange() {
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//        return format.format(openDate);
+//    }
 //
-    public String getOpenDateInNormalFormat() {
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        return format.format(openDate);
-    }
-
-    public String getCloseDateInNormalFormat() {
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        return format.format(closeDate);
-    }
+//    public String formatCloseDateForChange() {
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//        return format.format(new Date());
+//    }
+////
+//    public String getOpenDateInNormalFormat() {
+//        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+//        return format.format(openDate);
+//    }
+//
+//    public String getCloseDateInNormalFormat() {
+//        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+//        return format.format(closeDate);
+//    }
 
 }

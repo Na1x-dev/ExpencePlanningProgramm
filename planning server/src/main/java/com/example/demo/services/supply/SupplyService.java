@@ -1,7 +1,5 @@
 package com.example.demo.services.supply;
 
-import com.example.demo.models.Supply;
-
 import java.util.List;
 
 public interface SupplyService {

@@ -1,8 +1,6 @@
 package com.example.demo.services.supplier;
 
 
-import com.example.demo.models.Supplier;
-
 import java.util.List;
 
 public interface SupplierService {

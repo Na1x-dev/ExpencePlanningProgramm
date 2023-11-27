@@ -1,7 +1,7 @@
 package com.example.demo.services.courier;
 
 import com.example.demo.models.Courier;
-import com.example.demo.repositories.courier.CourierJpaRepository;
+import com.example.demo.repositories.budget.CourierJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

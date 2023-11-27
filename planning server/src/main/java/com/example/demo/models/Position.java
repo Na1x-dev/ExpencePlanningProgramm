@@ -15,19 +15,24 @@ import java.util.List;
 @JsonIgnoreProperties("hibernateLazyInitializer")
 public class Position {
     @Id
-    @Column(name = "position_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long positionId;
+    @Column(name = "position_id")
+    private Integer positionId;
 
-    @Column(name = "title")
-    @NonNull
-    String title;
+    @Column(name = "position_name")
+    private String positionName;
 
     public Position(){
-        title = "";
+        positionName = "";
     }
 
-//    public Position(String positionTitle) {
-//        this.positionTitle=positionTitle;
-//    }
+    @Override
+    public String toString() {
+        return "Position{" +
+                "positionId=" + positionId +
+                ", positionName='" + positionName + '\'' +
+                '}';
+    }
+
+    // Геттеры и сеттеры
 }
