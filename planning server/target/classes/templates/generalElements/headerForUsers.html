@@ -1,0 +1,17 @@
+<header th:unless="${checkUser.isAdmin()}" th:fragment="header" class="header" xmlns:th="">
+    <div id="header">
+        <a class="header-element header-text">Меню пользователя
+            <div style="font-size:15px;" id="current_date_time_block"></div></a>
+
+        <a class="header-element header-button" th:href="@{../../../../workPage/index/openShift}">Открыть смену</a>
+        <a class="header-element header-button" th:href="@{../../../../applicationPage/index}">Заявки</a>
+        <a class="header-element header-button" th:href="@{../../../../referencePage/index}">Справка</a>
+        <a class="header-element header-button" th:href="@{/logout}">Выход</a>
+    </div>
+
+</header>
+
+
+
+
+

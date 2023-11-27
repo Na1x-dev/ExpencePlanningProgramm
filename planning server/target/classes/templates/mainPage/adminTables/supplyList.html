@@ -1,0 +1,265 @@
+<div  class="main-table" th:fragment="supply-list" xmlns:th="http://www.w3.org/1999/xhtml">
+
+
+
+<!--    <div class="to-something-new-button">-->
+<!--        <dialog id="add-dialog" class="add-dialog dialog">-->
+<!--            <form th:fragment="new-unionMember-form" class="new-unionMember-container"-->
+<!--                  th:action="@{/mainPage/index/add}" method="post">-->
+<!--                <div class="some-text" th:text="'Новый сотрудник'">-->
+<!--                </div>-->
+<!--                <div class="new-unionMember-inputs new-inputs">-->
+<!--                    <input type="text" class="surname-input new-unionMember-input" placeholder="Фамилия"-->
+<!--                           autofocus required="required" th:field="${newUnionMember.surname}"/>-->
+<!--                    <input type="text" class="name-input new-unionMember-input" placeholder="Имя"-->
+<!--                           autofocus required="required" th:field="${newUnionMember.name}"/>-->
+<!--                    <input type="text" class="patronymic-input new-unionMember-input" placeholder="Отчество"-->
+<!--                           autofocus required="required" th:field="${newUnionMember.patronymic}"/>-->
+<!--                    <input type="date" class="birthdate-input new-unionMember-input" placeholder="Дата рождения"-->
+<!--                           autofocus="true" required="required" th:field="${newUnionMember.birthdate}"/>-->
+<!--                    <select required name="gender.genderId">-->
+<!--                        <option disabled value="" selected>Выберите пол</option>-->
+<!--                        <option th:each="gender : ${genders}" th:value="${gender.genderId}"-->
+<!--                                th:utext="${gender.genderTitle}"></option>-->
+<!--                    </select>-->
+
+<!--                    <select required name="position.positionId">-->
+<!--                        <option disabled value="" selected>Выберите должность</option>-->
+<!--                        <option th:each="position : ${positions}" th:value="${position.positionId}"-->
+<!--                                th:utext="${position.positionTitle}"></option>-->
+<!--                    </select>-->
+<!--                    <input type="text" class="phoneNumber-input new-unionMember-input" placeholder="Номер телефона"-->
+<!--                           autofocus required="required" th:field="${newUnionMember.phoneNumbers[0].phoneNumber}"/>-->
+<!--                </div>-->
+<!--                <div class="bottom-new-unionMember-buttons">-->
+<!--                    <button type="submit" class="confirm-add-new-unionMember-button dialog-button">Добавить</button>-->
+<!--                    <button type="button" class="close-add-dialog dialog-button">Отмена</button>-->
+<!--                </div>-->
+<!--            </form>-->
+
+<!--        </dialog>-->
+<!--        <a class="new-unionMember-add-button open-add-dialog" th:onclick="-->
+<!--                            let divParent = this.closest('div');-->
+<!--                            let dialogCloseButton = divParent.querySelector('.new-unionMember-container').querySelector('.bottom-new-unionMember-buttons').querySelector('.close-add-dialog');-->
+<!--                            let addDialog = divParent.querySelector('#add-dialog');-->
+<!--                            addDialog.show();-->
+<!--                            dialogCloseButton.onclick = function(){-->
+<!--                            addDialog.close();}">Добавить сотрудника-->
+<!--        </a>-->
+
+<!--        <a th:href="@{/searchMemberPage/index}">Поиск</a>-->
+
+<!--        <a onClick="javascript:CallPrint('.table');" title="Распечатать проект">Распечатать</a>-->
+
+<!--    </div>-->
+
+    <table th:if="${tableMode.mode==5}" class="table">
+        <thead>
+        <tr>
+            <th style="width: 5%">id</th>
+            <th style="width: 40%">Поставщик</th>
+            <th style="width: 40%">Дата поставки</th>
+            <th colspan="2">
+                <dialog id="add-dialog" class="add-dialog dialog">
+                    <form th:fragment="new-supply-form" class="new-supply-container"
+                          th:action="@{/mainPage/index/supplyList/add}" method="post">
+                        <div class="some-text" th:text="'Новая поставка'">
+                        </div>
+                        <div class="new-supply-inputs new-inputs">
+                            <select required th:name="supplier.supplierId">
+                                <option disabled value="" selected>Выберите поставщика</option>
+                                <option th:each="supplier : ${suppliers}" th:value="${supplier.supplierId}"
+                                        th:utext="${supplier.title}"></option>
+                            </select>
+
+                            <input type="date" class="new-supply-input"
+                                   placeholder="Дата поставки"
+                                   autofocus="true" required="required"
+                                   th:name="supplyDate"/>
+
+                        </div>
+                        <div class="bottom-new-supply-buttons">
+                            <button type="submit" class="confirm-add-new-supply-button dialog-button">Добавить
+                            </button>
+                            <button type="button" class="close-add-dialog dialog-button">Отмена</button>
+                        </div>
+                    </form>
+
+                </dialog>
+                <a class="new-supply-add-button open-add-dialog open-dialog" th:onclick="
+                                        let divParent = this.closest('div');
+                                        let dialogCloseButton = divParent.querySelector('.new-supply-container').querySelector('.bottom-new-supply-buttons').querySelector('.close-add-dialog');
+                                        let addDialog = divParent.querySelector('#add-dialog');
+                                        addDialog.show();
+                                        dialogCloseButton.onclick = function(){
+                                        addDialog.close();}">Добавить
+                </a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="i : ${#numbers.sequence(supplies.size() - 1, 0, -1)}"
+            th:with="supply=${supplies[i]}"
+            class="table-row">
+
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${supply.supplyId}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${supply.supplier.title}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${supply.getDateInNormalFormat()}">
+                </div>
+            </td>
+
+
+            <td style="text-align: center" th:if="${checkUser.isAdmin()}">
+                <div class="table-cell">
+                    <dialog id="update-dialog" class="update-dialog dialog">
+                        <form th:fragment="update-supply-form" class="update-supply-container"
+                              th:action="@{'/mainPage/index/supplyList/update/'+${supply.supplyId}}"
+                              method="post">
+                            <div class="some-text" th:text="'Изменение поставки'">
+                            </div>
+                            <div class="update-supply-inputs update-inputs">
+                                <select required th:name="supplier.supplierId">
+                                    <option disabled value="" selected>Выберите поставщика</option>
+                                    <option th:each="supplier : ${suppliers}" th:value="${supplier.supplierId}"
+                                            th:utext="${supplier.title}" th:selected="(${supply.supplier.supplierId}==${supplier.supplierId})"></option>
+                                </select>
+
+                                <input type="date" class="update-supply-input"
+                                       placeholder="Дата поставки"
+                                       autofocus="true" required="required"
+                                       th:name="supplyDate" th:value="${supply.supplyDate}"/>
+                            </div>
+                            <div class="bottom-update-supply-buttons">
+                                <button type="submit" class="confirm-update-supply-button dialog-button">Изменить
+                                </button>
+                                <button type="button" class="close-update-dialog dialog-button">Отмена</button>
+                            </div>
+                        </form>
+
+                    </dialog>
+                    <a class="supply-update-button open-update-dialog open-dialog" th:onclick="
+                                let tdParent = this.closest('td');
+                                let dialogCloseButton = tdParent.querySelector('.update-supply-container').querySelector('.bottom-update-supply-buttons').querySelector('.close-update-dialog');
+                                let updateDialog = tdParent.querySelector('#update-dialog');
+                                updateDialog.show();
+                                dialogCloseButton.onclick = function(){
+                                updateDialog.close();}">Изменить
+                    </a>
+                </div>
+            </td>
+
+            <td style="text-align: center" th:if="${checkUser.isAdmin()}">
+                <div class="table-cell">
+                    <dialog id="delete-dialog" class="delete-dialog dialog">
+                        <div class="some-text"
+                             th:text="'Вы действительно хотите удалить поставку c id ' + ${supply.supplyId} + '?'">
+                            Удаление
+                        </div>
+                        <a class="dialog-button" id="confirm-delete-supply-button"
+                           th:href="@{'/mainPage/index/supplyList/delete/'+${supply.supplyId}}">Да</a>
+                        <button id="close-delete-dialog-button" class="dialog-button" autofocus>Нет</button>
+                    </dialog>
+                    <!--                th:href="@{'/userPage/index/delete/id='+${user.userId}}"-->
+                    <a class="supply-delete-button open-delete-dialog open-dialog" th:onclick="
+                                    let tdParent = this.closest('td');
+                                    let deleteDialog = tdParent.querySelector('#delete-dialog');
+                                    deleteDialog.show();
+                                    tdParent.querySelector('#close-delete-dialog-button').onclick = function(){
+                                    deleteDialog.close();}">Удалить
+                    </a>
+                </div>
+            </td>
+
+
+<!--            <td style="text-align: center" th:if="${checkUser.isAdmin()}">-->
+<!--                <div class="table-cell">-->
+<!--                    <dialog id="update-dialog" class="update-dialog dialog">-->
+<!--                        <form th:fragment="update-unionMember-form" class="update-unionMember-container"-->
+<!--                              th:action="@{'/mainPage/index/update/'+${unionMember.unionMemberId}}" method="post">-->
+<!--                            <div class="some-text" th:text="'Изменение сотрудника'">-->
+<!--                            </div>-->
+<!--                            <div class="update-unionMember-inputs update-inputs">-->
+<!--                                <input type="text" class="surname-input update-unionMember-input" placeholder="Фамилия"-->
+<!--                                       autofocus required="required" th:value="${unionMember.surname}"-->
+<!--                                       th:name="surname"/>-->
+<!--                                <input type="text" class="name-input update-unionMember-input" placeholder="Имя"-->
+<!--                                       autofocus required="required" th:value="${unionMember.name}" th:name="name"/>-->
+<!--                                <input type="text" class="patronymic-input update-unionMember-input"-->
+<!--                                       placeholder="Отчество"-->
+<!--                                       autofocus required="required" th:value="${unionMember.patronymic}"-->
+<!--                                       th:name="patronymic"/>-->
+<!--                                <input type="date" class="birthdate-input update-unionMember-input"-->
+<!--                                       placeholder="Дата рождения"-->
+<!--                                       autofocus="true" required="required" th:value="${unionMember.formatDateForChange()}"-->
+<!--                                       th:name="birthdate"/>-->
+<!--                                <select required th:name="gender.genderId">-->
+<!--                                    <option disabled value="">Выберите пол</option>-->
+<!--                                    <option th:each="gender : ${genders}" th:value="${gender.genderId}"-->
+<!--                                            th:utext="${gender.genderTitle}"  th:selected="(${unionMember.gender.genderId}==${gender.genderId})" ></option>-->
+<!--                                </select>-->
+
+<!--                                <select required name="position" th:value="${unionMember.position.positionId}"-->
+<!--                                        th:name="position.positionId">-->
+<!--                                    <option disabled value="" selected>Выберите должность</option>-->
+<!--                                    <option th:each="position : ${positions}" th:value="${position.positionId}"-->
+<!--                                            th:utext="${position.positionTitle}"  th:selected="(${unionMember.position.positionId}==${position.positionId})"></option>-->
+<!--                                </select>-->
+<!--                                <input type="text" class="phoneNumber-input update-unionMember-input"-->
+<!--                                       placeholder="Номер телефона"-->
+<!--                                       autofocus required="required"-->
+<!--                                       th:value="${unionMember.phoneNumbers[0].phoneNumber}"-->
+<!--                                       th:name="phoneNumbers[0].phoneNumber"/>-->
+<!--                            </div>-->
+<!--                            <div class="bottom-update-unionMember-buttons">-->
+<!--                                <button type="submit" class="confirm-update-unionMember-button dialog-button">Изменить-->
+<!--                                </button>-->
+<!--                                <button type="button" class="close-update-dialog dialog-button">Отмена</button>-->
+<!--                            </div>-->
+<!--                        </form>-->
+
+<!--                    </dialog>-->
+<!--                    <a class="unionMember-update-button open-update-dialog open-dialog" th:onclick="-->
+<!--                                let tdParent = this.closest('td');-->
+<!--                                let dialogCloseButton = tdParent.querySelector('.update-unionMember-container').querySelector('.bottom-update-unionMember-buttons').querySelector('.close-update-dialog');-->
+<!--                                let updateDialog = tdParent.querySelector('#update-dialog');-->
+<!--                                updateDialog.show();-->
+<!--                                dialogCloseButton.onclick = function(){-->
+<!--                                updateDialog.close();}">Изменить-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </td>-->
+
+<!--            <td style="text-align: center" th:if="${checkUser.isAdmin()}">-->
+<!--                <div class="table-cell">-->
+<!--                    <dialog id="delete-dialog" class="delete-dialog dialog">-->
+<!--                        <div class="some-text"-->
+<!--                             th:text="'Вы действительно хотите удалить сотрудника ' + ${unionMember.getIdAndName()} + '?'">-->
+<!--                            Удаление-->
+<!--                        </div>-->
+<!--                        <a class="dialog-button" id="confirm-delete-unionMember-button"-->
+<!--                           th:href="@{'/mainPage/index/delete/'+${unionMember.unionMemberId}}">Да</a>-->
+<!--                        <button id="close-delete-dialog-button" class="dialog-button" autofocus>Нет</button>-->
+<!--                    </dialog>-->
+<!--                    &lt;!&ndash;                th:href="@{'/userPage/index/delete/id='+${user.userId}}"&ndash;&gt;-->
+<!--                    <a class="unionMember-delete-button open-delete-dialog open-dialog" th:onclick="-->
+<!--                                    let tdParent = this.closest('td');-->
+<!--                                    let deleteDialog = tdParent.querySelector('#delete-dialog');-->
+<!--                                    deleteDialog.show();-->
+<!--                                    tdParent.querySelector('#close-delete-dialog-button').onclick = function(){-->
+<!--                                    deleteDialog.close();}">Удалить-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </td>-->
+
+
+        </tr>
+        </tbody>
+    </table>
+</div>

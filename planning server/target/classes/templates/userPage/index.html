@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+<!--    <link rel="stylesheet" href="../../static/css/users.css" th:rel="stylesheet"-->
+<!--          th:href="@{/css/users.css}">-->
+    <link rel="stylesheet" href="../../static/css/table.css" th:rel="stylesheet"
+          th:href="@{/css/table.css}">
+    <link rel="stylesheet" href="../../static/css/header.css" th:rel="stylesheet"
+          th:href="@{/css/header.css}">
+    <link rel="stylesheet" href="../../static/css/general.css" th:rel="stylesheet"
+          th:href="@{/css/general.css}">
+    <link rel="stylesheet" href="../../static/css/dialog.css" th:rel="stylesheet"
+          th:href="@{/css/dialog.css}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700" rel="stylesheet"
+          th:href="@{https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700}"
+          th:rel="stylesheet">
+</head>
+<body>
+<header th:replace="generalElements/header :: header"></header>
+<header th:replace="generalElements/headerForUsers :: header"></header>
+<!--<header th:replace="generalElements/header :: header"></header>-->
+<main id="main">
+    <div class="main-table" th:replace="userPage/list :: list"></div>
+</main>
+<script th:src="@{/js/main.js}"></script>
+<!--<footer th:replace="commonElements/footer :: footer">someFooter</footer>-->
+</body>
+</html>

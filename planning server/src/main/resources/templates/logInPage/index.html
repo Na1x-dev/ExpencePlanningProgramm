@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Library</title>
+    <link rel="stylesheet" href="../../static/css/logIn.css" th:rel="stylesheet"
+          th:href="@{/css/logIn.css}">
+    <link rel="stylesheet" href="../../static/css/signFormElements.css" th:rel="stylesheet"
+          th:href="@{/css/signFormElements.css}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700" rel="stylesheet"
+          th:href="@{https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700}"
+          th:rel="stylesheet">
+</head>
+
+<body>
+<!--<header th:replace="commonElements/header :: header"></header>-->
+<main id="main">
+    <div th:replace="logInPage/logInForm :: container"></div>
+
+</main>
+
+</body>
+<!--<footer th:replace="commonElements/footer :: footer">someFooter</footer>-->
+</html>

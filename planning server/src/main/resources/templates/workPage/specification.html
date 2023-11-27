@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+    <!--    <link rel="stylesheet" href="../../static/css/main.css" th:rel="stylesheet"-->
+    <!--          th:href="@{/css/main.css}">-->
+    <link rel="stylesheet" href="../../static/css/table.css" th:rel="stylesheet"
+          th:href="@{/css/table.css}">
+    <link rel="stylesheet" href="../../static/css/header.css" th:rel="stylesheet"
+          th:href="@{/css/header.css}">
+    <link rel="stylesheet" href="../../static/css/general.css" th:rel="stylesheet"
+          th:href="@{/css/general.css}">
+    <link rel="stylesheet" href="../../static/css/dialog.css" th:rel="stylesheet"
+          th:href="@{/css/dialog.css}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700" rel="stylesheet"
+          th:href="@{https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700}"
+          th:rel="stylesheet">
+
+</head>
+<body>
+
+
+<div id="invoice" style="width: 700px; margin-left: auto; margin-right: auto;" class="main-specification"
+     xmlns:th="http://www.w3.org/1999/xhtml">
+    <div style="text-align:center;"
+         th:text="'СПЕЦИФИКАЦИЯ № ' + ${order.orderId} + ' от ' + ${order.getDateInNormalFormat()} + ' г.'"></div>
+    <div style="text-align:center;">к договору №___________</div>
+    <div style="text-align:center;">от « » ______ ____г.</div>
+    <br>
+    <table class="table">
+        <thead>
+        <tr>
+            <th style="width: 15%">id заказа</th>
+            <th style="width: 15%">Дата заказа</th>
+            <th style="width: 15%">Наим. товара</th>
+            <th style="width: 15%">Кол-во товара</th>
+            <th style="width: 15%; padding: 10px;">Итоговая цена</th>
+
+        </thead>
+        <tbody>
+        <tr class="table-row">
+            <td style="text-align: center; padding: 10px;">
+                <div class="table-cell" th:text="${order.orderId}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${order.getDateInNormalFormat()}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${order.product.title}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${order.orderCount}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${order.getFinalPrice()}">
+                </div>
+            </td>
+
+
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        <div th:text="'Итог с НДС: '+${order.getFinalPrice()} + ' BYN'"></div>
+        <br>
+        <div>Срок поставки продукта по настоящей спецификации составляет : от 5 рабочих дней и оговаривается с
+            покупателем.
+        </div>
+        <div>Доставка за счет Продавца.</div>
+        <div>Стоимость товара в накладных в белорусских рублях по курсу Национального банка Республики Беларусь на
+            день
+        </div>
+        <div>покупки.</div>
+        <div>Условие оплаты – оплата по факту приобретения товара.</div>
+        <div>Гарантийный срок на товар предназначенный для повседневного использования НЕ предоставляется.</div>
+        <div>Компания не несет ответственности за товар после передачи его в руки покупателя.</div>
+        <div>Все права потребителя защищены.</div>
+        <br>
+        <br>
+
+        <div>«ОАО KosmoShop»</div>
+        <br>
+        <div>М.П___________________</div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
+
+<a id="a" th:href="@{/workPage/index}">a</a>
+<script>
+        let promise = new Promise((resolve, reject) => {
+        const element = document.getElementById('invoice');
+        html2pdf()
+        .from(element)
+        .save();
+        resolve();
+        });
+        let aButton = document.getElementById('a');
+      setTimeout(() => {
+    aButton.click();
+  }, 1000);
+
+
+
+
+</script>
+</body>
+
+
+</html>
+

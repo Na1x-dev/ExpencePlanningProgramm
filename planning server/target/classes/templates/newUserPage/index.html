@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+    <link rel="stylesheet" href="../../static/css/newUser.css" th:rel="stylesheet"
+          th:href="@{/css/newUser.css}">
+    <link rel="stylesheet" href="../../static/css/header.css" th:rel="stylesheet"
+          th:href="@{/css/header.css}">
+    <link rel="stylesheet" href="../../static/css/general.css" th:rel="stylesheet"
+          th:href="@{/css/general.css}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700" rel="stylesheet"
+          th:href="@{https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700}"
+          th:rel="stylesheet">
+</head>
+<body>
+<header th:replace="generalElements/header :: header"></header>
+<header th:replace="generalElements/headerForUsers :: header"></header>
+<!--<header th:replace="generalElements/header :: header"></header>-->
+<main id="main">
+<div th:replace="/newUserPage/userForm :: user-form"></div>
+</main>
+<!--<footer th:replace="commonElements/footer :: footer">someFooter</footer>-->
+<script>
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = year + "-" + month + "-" + day;
+    document.getElementById("date-picker").value = today;
+</script>
+</body>
+</html>

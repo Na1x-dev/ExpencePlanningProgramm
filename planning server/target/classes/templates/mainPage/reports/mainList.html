@@ -1,0 +1,47 @@
+<div class="main-table" th:if="${checkUser.isAdmin() && appMode.mode==2}" th:fragment="list"
+     xmlns:th="http://www.w3.org/1999/xhtml">
+
+    <!--    <script src="../../../static/js/jquery-3.6.3.min.js" type="text/javascript"></script>-->
+    <!--    <script src="https://yastatic.net/jquery/3.6.3/jquery.min.js" type="text/javascript"></script>-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/gh/rainabba/jquery-table2excel@1.1.0/dist/jquery.table2excel.min.js"
+            type="text/javascript"></script>
+
+
+    <script>
+    $(function() {
+        $(".exportToExcel").click(function(event) {
+        console.log("Exporting XLS");
+        $("#table").table2excel({
+            exclude: ".excludeThisClass",
+            name: "gg",
+            filename: "Table.xls",
+            preserveColors: false
+            });
+        });
+    });
+
+    </script>
+
+
+
+
+    <div class="table-menu">
+        <a th:href="@{/mainPage/index/reports/supplyReport}">Отчет поставок</a>
+        <a th:href="@{/mainPage/index/reports/costReport}">Отчет затрат</a>
+        <a th:href="@{/mainPage/index/reports/closeApplicationReport}">Отчет по закр. заявкам</a>
+        <a th:href="@{/mainPage/index/reports/yearReport}">Годовой отчет</a>
+        <a th:href="@{/mainPage/index/reports/deliveryReport}">Отчет по доставкам</a>
+        <a th:href="@{/mainPage/index/reports/processingReport}">Отчет переработки</a>
+        <a class="exportToExcel">Печать таблицы в файл</a>
+    </div>
+
+    <div class="main-table" th:replace="mainPage/reports/supplyReport :: list"></div>
+    <div class="main-table" th:replace="mainPage/reports/costReport :: list"></div>
+    <div class="main-table" th:replace="mainPage/reports/closeApplicationReport :: list"></div>
+    <div class="main-table" th:replace="mainPage/reports/yearReport :: list"></div>
+    <div class="main-table" th:replace="mainPage/reports/deliveryReport :: list"></div>
+    <div class="main-table" th:replace="mainPage/reports/processingReport :: list"></div>
+
+
+</div>

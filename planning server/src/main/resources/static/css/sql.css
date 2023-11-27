@@ -1,0 +1,88 @@
+.sql-header-button {
+    border-bottom: 5px solid #333333;
+}
+
+.sql-form {
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #333333;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-radius: 10px;
+
+}
+
+.sql-textarea {
+    width: 100%;
+    background-color: #444444;
+    border: 0;
+    font-size: 15px;
+    padding: 10px;
+    outline: none;
+    resize: vertical;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    color: #dddddd;
+}
+
+.send-sql-command {
+    width: 100%;
+    color: #dddddd;
+    background-color: #444444;
+    border: 0;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.send-sql-command:hover {
+    background-color: #555555;
+    cursor: pointer;
+}
+
+.sql-output:hover{
+    cursor: default;
+}
+
+.table-cell{
+padding: 10px;}
+
+
+
+.main-table{
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+
+.table, th, td{
+    color: #dddddd;
+    font-size: 15px;
+    background-color: #333333;
+    border-radius: 10px;
+    }
+
+td{
+height: 40px;
+white-space:nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+td > div, td, td > a{
+    background-color: #444444;
+    border-radius: 5px;
+}
+
+.table{
+    table-layout: fixed;
+    padding:10px;
+    border-spacing: 5px;
+    width: 100%;
+}

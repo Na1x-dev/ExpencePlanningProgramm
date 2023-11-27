@@ -1,0 +1,192 @@
+<div class="main-table" th:fragment="list" xmlns:th="http://www.w3.org/1999/xhtml">
+
+
+    <div th:if="${tableMode.mode==3}" class="to-something-new-button">
+        <dialog id="add-dialog" class="add-dialog dialog">
+            <form th:fragment="new-product-form" class="new-product-container"
+                  th:action="@{/workPage/index/delivery/add}" method="post">
+
+                    <div class="some-text" th:text="'Новая доставка'">
+                    </div>
+                    <div class="new-product-inputs new-inputs">
+                        <select required name="order.orderId" >
+                            <option disabled value="" selected>Выберите номер заказа</option>
+                            <option th:each="order : ${nonDeliveredOrders}" th:value="${order.orderId}"
+                                    th:utext="${order.orderId}" ></option>
+                        </select>
+
+                        <select required name="delivery.courier.courierId" >
+                            <option disabled value="" selected>Выберите курьера</option>
+                            <option th:each="courier : ${couriers}" th:value="${courier.courierId}"
+                                    th:utext="${courier.getFIO()}" ></option>
+                        </select>
+
+                        <input type="text" class="new-product-input"
+                               placeholder="Город"
+                               autofocus="true" required="required"
+                               th:name="delivery.city"/>
+
+                        <input type="text" class="new-product-input"
+                               placeholder="Улица"
+                               autofocus="true" required="required"
+                               th:name="delivery.street"/>
+
+                        <input type="number" class="new-product-input"
+                               placeholder="Номер дома"
+                               autofocus="true" required="required"
+                               th:name="delivery.house"/>
+
+                        <input type="text" class="new-product-input"
+                               placeholder="ФИО клиента"
+                               autofocus="true" required="required"
+                               th:name="delivery.clientName"/>
+
+                        <input type="text" class="new-product-input"
+                               placeholder="Телефон клиента"
+                               autofocus="true" required="required"
+                               th:name="delivery.clientPhone"/>
+
+                        <input type="date" class="new-product-input"
+                               placeholder="Дата доставки"
+                               autofocus="true" required="required"
+                               th:name="delivery.deliveryDate"/>
+
+                    </div>
+                <div class="bottom-new-product-buttons">
+                    <button type="submit" class="confirm-add-new-product-button dialog-button">Добавить</button>
+                    <button type="button" class="close-add-dialog dialog-button">Отмена</button>
+                </div>
+            </form>
+
+        </dialog>
+        <a class="new-product-add-button open-add-dialog open-dialog" th:onclick="
+                                        let divParent = this.closest('div');
+                                        let dialogCloseButton = divParent.querySelector('.new-product-container').querySelector('.bottom-new-product-buttons').querySelector('.close-add-dialog');
+                                        let addDialog = divParent.querySelector('#add-dialog');
+                                        addDialog.show();
+                                        dialogCloseButton.onclick = function(){
+                                        addDialog.close();}">Добавить
+        </a>
+        </div>
+
+    <table th:if="${tableMode.mode==3}" class="table">
+        <thead>
+        <tr>
+            <th style="width: 10%">id заказа</th>
+            <th style="width: 10%">id доставки</th>
+            <th style="width: 10%">Адрес</th>
+            <th style="width: 10%">ФИО клиента</th>
+            <th style="width: 10%">Телефон</th>
+            <th style="width: 10%">Дата доставки</th>
+            <th style="width: 10%">id курьера</th>
+            <th style="width: 10%; padding: 10px;">ФИО курьера</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="i : ${#numbers.sequence(deliveryOrders.size() - 1, 0, -1)}"
+            th:with="delOrd=${deliveryOrders[i]}"
+            class="table-row">
+
+            <td style="text-align: center; padding: 10px;">
+                <div class="table-cell" th:text="${delOrd.order.orderId}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${delOrd.delivery.deliveryId}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${delOrd.delivery.city}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${delOrd.delivery.clientName}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${delOrd.delivery.clientPhone}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${delOrd.delivery.getDateInNormalFormat()}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${delOrd.delivery.courier.courierId}">
+                </div>
+            </td>
+            <td style="text-align: center">
+                <div class="table-cell" th:text="${delOrd.delivery.courier.getFIO()}">
+                </div>
+            </td>
+
+
+
+            <td style="text-align: center">
+                <div class="table-cell">
+                    <dialog id="update-dialog" class="update-dialog dialog">
+                        <form th:fragment="update-delivery-form" class="update-delivery-container"
+                              th:action="@{'/workPage/index/delivery/add/'+${delOrd.delivery.deliveryId}}"
+                              method="post">
+                            <div class="some-text" th:text="'Добавление заказа к доставке'">
+                            </div>
+                            <div class="update-delivery-inputs update-inputs">
+                                <select required name="order.orderId" >
+                                    <option disabled value="" selected>Выберите номер заказа</option>
+                                    <option th:each="order : ${nonDeliveredOrders}" th:value="${order.orderId}"
+                                            th:utext="${order.orderId}" ></option>
+                                </select>
+
+                                <input type="text" class="new-product-input"
+                                       placeholder="Город"
+                                       autofocus="true" required="required"
+                                       th:name="delivery.city" th:value="${delOrd.delivery.city}" readonly/>
+
+                                <input type="text" class="new-product-input"
+                                       placeholder="Улица"
+                                       autofocus="true" required="required"
+                                       th:name="delivery.street" th:value="${delOrd.delivery.street}" readonly/>
+
+                                <input type="number" class="new-product-input"
+                                       placeholder="Номер дома"
+                                       autofocus="true" required="required"
+                                       th:name="delivery.house" th:value="${delOrd.delivery.house}" readonly/>
+
+                                <input type="text" class="new-product-input"
+                                       placeholder="ФИО клиента"
+                                       autofocus="true" required="required"
+                                       th:name="delivery.clientName" th:value="${delOrd.delivery.clientName}" readonly/>
+
+                                <input type="text" class="new-product-input"
+                                       placeholder="Телефон клиента"
+                                       autofocus="true" required="required"
+                                       th:name="delivery.clientPhone" th:value="${delOrd.delivery.clientPhone}" readonly/>
+
+                                <input type="date" class="new-product-input"
+                                       placeholder="Дата доставки"
+                                       autofocus="true" required="required"
+                                       th:name="delivery.deliveryDate" th:value="${delOrd.delivery.formatDateForChange()}" readonly/>
+
+                            </div>
+                            <div class="bottom-update-delivery-buttons">
+                                <button type="submit" class="confirm-update-delivery-button dialog-button">Добавить
+                                </button>
+                                <button type="button" class="close-update-dialog dialog-button">Отмена</button>
+                            </div>
+                        </form>
+
+                    </dialog>
+                    <a class="delivery-update-button open-update-dialog open-dialog" th:onclick="
+                                let tdParent = this.closest('td');
+                                let dialogCloseButton = tdParent.querySelector('.update-delivery-container').querySelector('.bottom-update-delivery-buttons').querySelector('.close-update-dialog');
+                                let updateDialog = tdParent.querySelector('#update-dialog');
+                                updateDialog.show();
+                                dialogCloseButton.onclick = function(){
+                                updateDialog.close();}">Добавить
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

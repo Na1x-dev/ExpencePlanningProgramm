@@ -1,0 +1,10 @@
+<header th:unless="${checkUser.isAdmin()}" th:fragment="header"  xmlns:th="">
+    <div id="header">
+        <a class="header-element header-text">Меню пользователя
+            <div style="font-size:15px;" id="current_date_time_block"></div></a>
+        <a class="header-element header-button" th:href="@{../../../../workPage/index/order}">Поставки</a>
+        <a class="header-element header-button" th:href="@{../../../../workPage/index/supply}">Покупки</a>
+        <a class="header-element header-button" th:href="@{../../../../workPage/index/delivery}">Доставки</a>
+        <a class="header-element header-button" th:href="@{../../../../workPage/index/close}">Закрыть смену</a>
+    </div>
+</header>
