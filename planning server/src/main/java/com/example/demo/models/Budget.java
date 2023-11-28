@@ -51,4 +51,7 @@ public class Budget {
                 '}';
     }
 
+    public void setBudgetId(Long id) {
+    budgetId = id;
+    }
 }

@@ -11,7 +11,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @JsonIgnoreProperties("hibernateLazyInitializer")
 @Entity
 @Table(name = "procurement_archive")
@@ -59,6 +58,10 @@ public class ProcurementArchive {
                 ", order=" + order +
                 ", comment='" + comment + '\'' +
                 '}';
+    }
+
+    public void setProcurementArchiveId(Long id) {
+        procurementId = id;
     }
 
     // Геттеры и сеттеры

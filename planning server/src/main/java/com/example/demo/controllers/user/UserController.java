@@ -7,7 +7,7 @@ import com.example.demo.security.SecurityService;
 import com.example.demo.services.category.CategoryService;
 import com.example.demo.services.status.StatusService;
 import com.example.demo.services.supply.SupplyService;
-import com.example.demo.services.product.ProductService;
+import com.example.demo.services.procurementArchive.ProductService;
 import com.example.demo.services.position.PositionService;
 import com.example.demo.services.role.RoleService;
 import com.example.demo.services.order.OrderService;

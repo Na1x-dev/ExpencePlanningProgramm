@@ -36,6 +36,10 @@ public class Department {
                 '}';
     }
 
+    public void setDepartmentId(Long id) {
+        departmentId = id;
+    }
+
 
     // Геттеры и сеттеры
 }

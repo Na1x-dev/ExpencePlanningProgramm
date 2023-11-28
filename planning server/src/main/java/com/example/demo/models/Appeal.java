@@ -73,5 +73,9 @@ public class Appeal {
                 ", comment='" + comment + '\'' +
                 '}';
     }
+
+    public void setAppealId(Long id) {
+        appealId = id;
+    }
 }
 

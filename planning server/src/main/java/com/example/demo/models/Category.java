@@ -33,4 +33,8 @@ public class Category {
                 ", categoryName='" + categoryName + '\'' +
                 '}';
     }
+
+    public void setCategoryId(Long id) {
+    categoryId = id;
+    }
 }

@@ -15,7 +15,7 @@ public interface PositionService {
     boolean update(Long id, Position position);
 
 
-    Position readByTitle(String title);
+//    Position readByTitle(String title);
 
     Position readById(Long positionId);
 }

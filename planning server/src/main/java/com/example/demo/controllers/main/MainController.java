@@ -2,20 +2,12 @@ package com.example.demo.controllers.main;
 
 import com.example.demo.models.*;
 import com.example.demo.services.application.ApplicationService;
-import com.example.demo.services.delivery.DeliveryService;
 import com.example.demo.services.status.StatusService;
-import com.example.demo.services.country.CountryService;
 import com.example.demo.services.category.CategoryService;
-import com.example.demo.services.shift.ShiftService;
-import com.example.demo.services.supplier.SupplierService;
-import com.example.demo.services.supply.SupplyService;
-import com.example.demo.services.product.ProductService;
 import com.example.demo.services.position.PositionService;
-import com.example.demo.services.courier.CourierService;
 import com.example.demo.services.order.OrderService;
 
 import com.example.demo.services.user.UserService;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

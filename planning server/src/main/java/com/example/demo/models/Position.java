@@ -34,5 +34,9 @@ public class Position {
                 '}';
     }
 
+    public void setPositionId(Long id) {
+        positionId = id;
+    }
+
     // Геттеры и сеттеры
 }

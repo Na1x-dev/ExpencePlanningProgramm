@@ -83,4 +83,8 @@ public class Order {
                 ", priceWithVat=" + priceWithVat +
                 '}';
     }
+
+    public void setOrderId(Long id) {
+        orderId = id;
+    }
 }

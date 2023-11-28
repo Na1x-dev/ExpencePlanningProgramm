@@ -12,7 +12,6 @@ import java.util.Date;
 @Getter
 @Setter
 @Data
-@RequiredArgsConstructor
 @Table(name = "applications")
 @JsonIgnoreProperties("hibernateLazyInitializer")
 public class Application {
@@ -114,6 +113,10 @@ public class Application {
                 ", closingUser=" + closingUser +
                 ", comment='" + comment + '\'' +
                 '}';
+    }
+
+    public void setApplicationId(Long id) {
+        applicationId = id;
     }
 
 //    public String formatOpenDateForChange() {

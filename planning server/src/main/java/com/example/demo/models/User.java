@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.sql.SQLType;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -123,4 +124,23 @@ public class User {
     }
 
 
+    public Role getRole() {
+        return role;
+    }
+
+    public String getUsername() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String encode) {
+        password = encode;
+    }
+
+    public void setUserId(Long id) {
+        userId = id;
+    }
 }
