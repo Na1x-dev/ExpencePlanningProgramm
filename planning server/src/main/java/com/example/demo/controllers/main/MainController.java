@@ -1,7 +1,12 @@
 package com.example.demo.controllers.main;
 
 import com.example.demo.models.*;
+import com.example.demo.services.appeal.AppealService;
 import com.example.demo.services.application.ApplicationService;
+import com.example.demo.services.budget.BudgetService;
+import com.example.demo.services.department.DepartmentService;
+import com.example.demo.services.management.ManagementService;
+import com.example.demo.services.procurementArchive.ProcurementArchiveService;
 import com.example.demo.services.status.StatusService;
 import com.example.demo.services.category.CategoryService;
 import com.example.demo.services.position.PositionService;
@@ -33,548 +38,544 @@ public class MainController {
     @Autowired
     ApplicationService applicationService;
     @Autowired
-    ShiftService shiftService;
+    AppealService appealService;
     @Autowired
-    SupplierService supplierService;
+    BudgetService budgetService;
     @Autowired
-    SupplyService supplyService;
+    DepartmentService departmentService;
     @Autowired
-    ProductService productService;
-    @Autowired
-    CourierService courierService;
+    ManagementService managementService;
     @Autowired
     PositionService positionService;
     @Autowired
-    DeliveryService deliveryService;
+    ProcurementArchiveService procurementArchiveService;
 
-    @Autowired
-    CountryService countryService;
 
     TableMode tableMode = new TableMode();
 
     AppMode appMode = new AppMode();
 
 
-    @GetMapping({"/mainPage/index/reports"})
-    public String reportPageMode(Model model, Principal user) {
-        appMode.setMode(2);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index/adminTables"})
-    public String mainPageMode(Model model, Principal user) {
-        appMode.setMode(1);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index/reports/supplyReport"})
-    public String mainPageSupplyReport(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(8);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index/reports/costReport"})
-    public String mainPageCostReport(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(9);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index/reports/closeApplicationReport"})
-    public String mainPageCloseApplicationReport(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(10);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index/reports/yearReport"})
-    public String mainPageYearReport(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(11);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index/reports/deliveryReport"})
-    public String mainPageDeliveryReport(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(12);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index/reports/processingReport"})
-    public String mainPageProcessingReport(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(13);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index"})
-    public String mainPage(Model model, Principal user) {
-        model.addAttribute("appMode", appMode);
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        model.addAttribute("shifts", shiftService.readAll());
-        model.addAttribute("applications", applicationService.readAll());
-        model.addAttribute("categories", categoryService.readAll());
-        model.addAttribute("couriers", courierService.readAll());
-        model.addAttribute("products", productService.readAll());
-        model.addAttribute("suppliers", supplierService.readAll());
-        model.addAttribute("supplies", supplyService.readAll());
-        model.addAttribute("users", userService.readAll());
-        model.addAttribute("tableMode", tableMode);
-        model.addAttribute("countries", countryService.readAll());
-        model.addAttribute("statuses", statusService.readAll());
-        model.addAttribute("suppliesProducts", getSupplyProductList());
-        model.addAttribute("admins", getAdmins());
-        return "mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index/shiftList"})
-    public String mainPageShift(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(1);
-        return "redirect:/mainPage/index";
-    }
-
-
-    @PostMapping("/mainPage/index/shiftList/update/{id}")
-    public String mainPageShiftUpdate(Model model, @ModelAttribute("shift") Shift shift, Principal user, @PathVariable("id") Long shiftId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        shift.setUser(userService.readById(shift.getUser().getUserId()));
-        if (shift.getUser().getUserId() != null)
-            shift.setUser(userService.readById(shift.getUser().getUserId()));
-        shiftService.update(shiftId, shift);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping("/mainPage/index/shiftList/delete/{id}")
-    public String mainPageShiftDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        shiftService.delete(unionMemberId);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/shiftList/add")
-    public String mainPageShiftAdd(Model model, @ModelAttribute("shift") Shift shift, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-
-        shift.setUser(userService.readById(shift.getUser().getUserId()));
-        if (shift.getUser().getUserId() != null)
-            shift.setUser(userService.readById(shift.getUser().getUserId()));
-        shiftService.create(shift);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index/productList"})
-    public String mainPageProduct(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(2);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/productList/update/{id}")
-    public String mainPageProductUpdate(Model model, @ModelAttribute("product") Product product, Principal user, @PathVariable("id") Long productId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        productService.update(productId, product);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping("/mainPage/index/productList/delete/{id}")
-    public String mainPageProductDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        productService.delete(unionMemberId);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/productList/add")
-    public String mainPageProductAdd(Model model, @ModelAttribute("product") Product product, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        productService.create(product);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index/categoryList"})
-    public String mainPageCategory(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(3);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/categoryList/update/{id}")
-    public String mainPageCategoryUpdate(Model model, @ModelAttribute("category") Category category, Principal user, @PathVariable("id") Long categoryId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        categoryService.update(categoryId, category);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping("/mainPage/index/categoryList/delete/{id}")
-    public String mainPageCategoryDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        categoryService.delete(unionMemberId);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/categoryList/add")
-    public String mainPageCategoryAdd(Model model, @ModelAttribute("category") Category category, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        categoryService.create(category);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index/supplierList"})
-    public String mainPageSupplier(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(4);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/supplierList/update/{id}")
-    public String mainPageSupplierUpdate(Model model, @ModelAttribute("supplier") Supplier supplier, Principal user, @PathVariable("id") Long supplierId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        supplierService.update(supplierId, supplier);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping("/mainPage/index/supplierList/delete/{id}")
-    public String mainPageSupplierDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        supplierService.delete(unionMemberId);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/supplierList/add")
-    public String mainPageSupplierAdd(Model model, @ModelAttribute("supplier") Supplier supplier, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        supplierService.create(supplier);
-        return "redirect:/mainPage/index";
-    }
-
-
-    @GetMapping({"/mainPage/index/supplyList"})
-    public String mainPageSupply(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(5);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/supplyList/update/{id}")
-    public String mainPageSupplyUpdate(Model model, @ModelAttribute("supply") Supply supply, Principal user, @PathVariable("id") Long supplyId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        supplyService.update(supplyId, supply);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping("/mainPage/index/supplyList/delete/{id}")
-    public String mainPageSupplyDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        supplyService.delete(unionMemberId);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/supplyList/add")
-    public String mainPageSupplyAdd(Model model, @ModelAttribute("supply") Supply supply, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        supplyService.create(supply);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/mainPage/index/courierList"})
-    public String mainPageCourier(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(6);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/courierList/update/{id}")
-    public String mainPageCourierUpdate(Model model, @ModelAttribute("courier") Courier courier, Principal user, @PathVariable("id") Long courierId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        courierService.update(courierId, courier);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping("/mainPage/index/courierList/delete/{id}")
-    public String mainPageCourierDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        courierService.delete(unionMemberId);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/courierList/add")
-    public String mainPageCourierAdd(Model model, @ModelAttribute("courier") Courier courier, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        courierService.create(courier);
-        return "redirect:/mainPage/index";
-    }
-
-
-    @GetMapping({"/mainPage/index/applicationList"})
-    public String mainPageApplication(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(7);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/applicationList/update/{id}")
-    public String mainPageApplicationUpdate(Model model, @ModelAttribute("application") Application application, Principal user, @PathVariable("id") Long applicationId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        System.out.println(application);
-        applicationService.update(applicationId, application);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping("/mainPage/index/applicationList/delete/{id}")
-    public String mainPageApplicationDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        applicationService.delete(unionMemberId);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/mainPage/index/applicationList/add")
-    public String mainPageApplicationAdd(Model model, @ModelAttribute("application") Application application, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        applicationService.create(application);
-        return "redirect:/mainPage/index";
-    }
-
-
-    Shift shift;
-
-    @GetMapping({"/workPage/index/openShift"})
-    public String workPageOpenShift(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        shift = new Shift(userService.findByUsername(user.getName()));
-        tableMode.setMode(1);
-        shift = shiftService.create(shift);
-        return "redirect:/workPage/index";
-    }
-
-    @GetMapping({"/workPage/index"})
-    public String workPage(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        model.addAttribute("tableMode", tableMode);
-        model.addAttribute("products", productService.readAll());
-        model.addAttribute("orders", orderService.readAll());
-        model.addAttribute("suppliesProducts", getSupplyProductList());
-        model.addAttribute("supplies", supplyService.readAll());
-        model.addAttribute("deliveryOrders", getDeliveryOrderList());
-        model.addAttribute("couriers", courierService.readAll());
-        model.addAttribute("nonDeliveredOrders", getNonDeliveredOrders());
-
-        return "workPage/index";
-    }
-
-    public List<User> getAdmins() {
-        List<User> users = userService.readAll();
-        List<User> admins = new ArrayList<>();
-        for (User user : users) {
-            if (user.isAdmin()) {
-                admins.add(user);
-            }
-        }
-        return admins;
-    }
-
-    @GetMapping({"/workPage/index/order"})
-    public String workPageOrder(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(1);
-        return "redirect:/workPage/index";
-    }
-
-    @GetMapping({"/workPage/index/supply"})
-    public String workPageSupply(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(2);
-        return "redirect:/workPage/index";
-    }
-
-    @GetMapping({"/workPage/index/delivery"})
-    public String workPageDelivery(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(3);
-        return "redirect:/workPage/index";
-    }
-
-    @GetMapping({"/workPage/index/close"})
-    public String workPageClose(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        shift.closeShift();
-        shiftService.update(shift.getShiftId(), shift);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping({"/workPage/index/delivery/add"})
-    public String workPageDeliveryAdd(Model model, @ModelAttribute("newDeliveryOrder") DeliveryOrder deliveryOrder, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        Delivery delivery = deliveryOrder.getDelivery();
-        Order order = orderService.readById(deliveryOrder.getOrder().getOrderId());
-        delivery.getOrders().add(order);
-        delivery = deliveryService.create(delivery);
-        order.setDelivery(delivery);
-        orderService.update(order.getOrderId(), order);
-        return "redirect:/workPage/index";
-    }
-
-    @PostMapping({"/workPage/index/delivery/add/{id}"})
-    public String workPageDeliveryAddById(Model model, @ModelAttribute("newDeliveryOrder") DeliveryOrder deliveryOrder, @PathVariable("id") Long deliveryId, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        Delivery delivery = deliveryService.readById(deliveryId);
-        Order order = orderService.readById(deliveryOrder.getOrder().getOrderId());
-        delivery.getOrders().add(order);
-        deliveryService.update(delivery.getDeliveryId(), delivery);
-        order.setDelivery(delivery);
-        orderService.update(order.getOrderId(), order);
-        return "redirect:/workPage/index";
-    }
-
-
-    public List<SupplyProduct> getSupplyProductList() {
-        List<Supply> supplies = supplyService.readAll();
-        List<SupplyProduct> supplyProducts = new ArrayList<>();
-        for (Supply supply : supplies) {
-            //          if (!unionMember.getName().equals("")) {
-            Set<Product> products = supply.getProducts();
-            for (Product product : products) {
-                supplyProducts.add(new SupplyProduct(supply, product));
-            }
-        }
-        //    }
-        return supplyProducts;
-    }
-
-    public List<Order> getNonDeliveredOrders() {
-        List<Order> orders = orderService.readAll();
-        List<Order> newOrders = new ArrayList<>();
-        for (Order order : orders) {
-            if (order.getDelivery() == null) {
-                newOrders.add(order);
-            }
-        }
-        return newOrders;
-    }
-
-    @GetMapping({"/applicationPage/index"})
-    public String applicationPage(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        model.addAttribute("application", new Application());
-
-        return "applicationPage/index";
-    }
-
-    @PostMapping("/applicationPage/index")
-    public String applicationPage(Model model, @ModelAttribute("application") Application application, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        application.setStatus(statusService.readByTitle("Запрос"));
-        application.setUserOpen(userService.findByUsername(user.getName()));
-        application.setUserClose(userService.findByUsername("-"));
-        applicationService.create(application);
-        return "redirect:/mainPage/index";
-    }
-
-
-    @GetMapping({"/mainPage/index/productSupplyList"})
-    public String productSupplyList(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        tableMode.setMode(14);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping({"/referencePage/index"})
-    public String referencePage(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        return "referencePage/index";
-    }
-
-    @PostMapping("/mainPage/index/productSupplyList/add")
-    public String productSupplyListAdd(Model model, @ModelAttribute("newSupplyProduct") SupplyProduct supplyProduct, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-
-        System.out.println(supplyProduct.toString());
-
-        Supply supply = supplyService.readById(supplyProduct.getSupply().getSupplyId());
-        Product product = productService.readById(supplyProduct.getProduct().getProductId());
-        product.getSupplies().add(supply);
-        supply.getProducts().add(product);
-
-        System.out.println(supply.toString());
-        System.out.println(product.toString());
-
-//        productService.update(product.getProductId(), product);
-        supplyService.update(supply.getSupplyId(), supply);
-        return "redirect:/mainPage/index";
-    }
-
-    @GetMapping("/mainPage/index/productSupplyList/delete/{supplyId}/{productId}")
-    public String productSupplyListDelete(Model model, Principal user, @PathVariable("supplyId") Long supplyId, @PathVariable("productId") Long productId) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        Supply supply = supplyService.readById(supplyId);
-        Product product = productService.readById(productId);
-        supply.getProducts().remove(product);
-        supplyService.update(supplyId, supply);
-        return "redirect:/mainPage/index";
-    }
-
-    @PostMapping("/workPage/index/productSupplyList/add")
-    public String productSupplyListAddWorkPage(Model model, @ModelAttribute("newSupplyProduct") SupplyProduct supplyProduct, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        Supply supply = supplyService.readById(supplyProduct.getSupply().getSupplyId());
-        supply.getProducts().add(supplyProduct.getProduct());
-        supplyService.update(supply.getSupplyId(), supply);
-        return "redirect:/workPage/index";
-    }
-
-    @PostMapping("/workPage/index/orderList/add")
-    public String orderListAddWorkPage(Model model, @ModelAttribute("newOrder") Order order, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        Product product = productService.readById(order.getProduct().getProductId());
-        product.setProductCount(product.getProductCount() - order.getOrderCount());
-        if (product.getProductCount() >= 0) {
-            productService.update(product.getProductId(), product);
-            order = orderService.create(order);
-            order.setProduct(productService.readById(order.getProduct().getProductId()));
-            model.addAttribute("order", order);
-            someOrder = order;
-            return "redirect:/workPage/specification";
-        }
-        return "redirect:/workPage/index";
-    }
-
-    Order someOrder;
-
-    @GetMapping({"/workPage/specification"})
-    public String specificationPage(Model model, Principal user) {
-        System.out.println(someOrder);
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        model.addAttribute("order", someOrder);
-        return "workPage/specification";
-    }
-
-
-    public List<SupplyProduct> getProductSupplyList() {
-        List<Product> products = productService.readAll();
-        List<SupplyProduct> supplyProducts = new ArrayList<>();
-        for (Product product : products) {
-            Set<Supply> supplies = product.getSupplies();
-            for (Supply supply : supplies) {
-                supplyProducts.add(new SupplyProduct(supply, product));
-            }
-        }
-        //    }
-        return supplyProducts;
-    }
-
-
-    public List<DeliveryOrder> getDeliveryOrderList() {
-        List<Delivery> deliveries = deliveryService.readAll();
-        List<DeliveryOrder> deliveryOrders = new ArrayList<>();
-        for (Delivery delivery : deliveries) {
-            List<Order> orders = delivery.getOrders();
-            for (Order order : orders) {
-                deliveryOrders.add(new DeliveryOrder(delivery, order));
-            }
-        }
-        return deliveryOrders;
-    }
+//    @GetMapping({"/mainPage/index/reports"})
+//    public String reportPageMode(Model model, Principal user) {
+//        appMode.setMode(2);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping({"/mainPage/index/adminTables"})
+//    public String mainPageMode(Model model, Principal user) {
+//        appMode.setMode(1);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping({"/mainPage/index/reports/supplyReport"})
+//    public String mainPageSupplyReport(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(8);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping({"/mainPage/index/reports/costReport"})
+//    public String mainPageCostReport(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(9);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping({"/mainPage/index/reports/closeApplicationReport"})
+//    public String mainPageCloseApplicationReport(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(10);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping({"/mainPage/index/reports/yearReport"})
+//    public String mainPageYearReport(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(11);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping({"/mainPage/index/reports/deliveryReport"})
+//    public String mainPageDeliveryReport(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(12);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping({"/mainPage/index/reports/processingReport"})
+//    public String mainPageProcessingReport(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(13);
+//        return "redirect:/mainPage/index";
+//    }
+
+//    @GetMapping({"/mainPage/index"})
+//    public String mainPage(Model model, Principal user) {
+//        model.addAttribute("appMode", appMode);
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        model.addAttribute("shifts", shiftService.readAll());
+//        model.addAttribute("applications", applicationService.readAll());
+//        model.addAttribute("categories", categoryService.readAll());
+//        model.addAttribute("couriers", courierService.readAll());
+//        model.addAttribute("products", productService.readAll());
+//        model.addAttribute("suppliers", supplierService.readAll());
+//        model.addAttribute("supplies", supplyService.readAll());
+//        model.addAttribute("users", userService.readAll());
+//        model.addAttribute("tableMode", tableMode);
+//        model.addAttribute("countries", countryService.readAll());
+//        model.addAttribute("statuses", statusService.readAll());
+//        model.addAttribute("suppliesProducts", getSupplyProductList());
+//        model.addAttribute("admins", getAdmins());
+//        return "mainPage/index";
+//    }
+
+//    @GetMapping({"/mainPage/index/shiftList"})
+//    public String mainPageShift(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(1);
+//        return "redirect:/mainPage/index";
+//    }
+
+
+//    @PostMapping("/mainPage/index/shiftList/update/{id}")
+//    public String mainPageShiftUpdate(Model model, @ModelAttribute("shift") Shift shift, Principal user, @PathVariable("id") Long shiftId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        shift.setUser(userService.readById(shift.getUser().getUserId()));
+//        if (shift.getUser().getUserId() != null)
+//            shift.setUser(userService.readById(shift.getUser().getUserId()));
+//        shiftService.update(shiftId, shift);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping("/mainPage/index/shiftList/delete/{id}")
+//    public String mainPageShiftDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        shiftService.delete(unionMemberId);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/shiftList/add")
+//    public String mainPageShiftAdd(Model model, @ModelAttribute("shift") Shift shift, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//
+//        shift.setUser(userService.readById(shift.getUser().getUserId()));
+//        if (shift.getUser().getUserId() != null)
+//            shift.setUser(userService.readById(shift.getUser().getUserId()));
+//        shiftService.create(shift);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping({"/mainPage/index/productList"})
+//    public String mainPageProduct(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(2);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/productList/update/{id}")
+//    public String mainPageProductUpdate(Model model, @ModelAttribute("product") Product product, Principal user, @PathVariable("id") Long productId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        productService.update(productId, product);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping("/mainPage/index/productList/delete/{id}")
+//    public String mainPageProductDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        productService.delete(unionMemberId);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/productList/add")
+//    public String mainPageProductAdd(Model model, @ModelAttribute("product") Product product, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        productService.create(product);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping({"/mainPage/index/categoryList"})
+//    public String mainPageCategory(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(3);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/categoryList/update/{id}")
+//    public String mainPageCategoryUpdate(Model model, @ModelAttribute("category") Category category, Principal user, @PathVariable("id") Long categoryId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        categoryService.update(categoryId, category);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping("/mainPage/index/categoryList/delete/{id}")
+//    public String mainPageCategoryDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        categoryService.delete(unionMemberId);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/categoryList/add")
+//    public String mainPageCategoryAdd(Model model, @ModelAttribute("category") Category category, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        categoryService.create(category);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping({"/mainPage/index/supplierList"})
+//    public String mainPageSupplier(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(4);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/supplierList/update/{id}")
+//    public String mainPageSupplierUpdate(Model model, @ModelAttribute("supplier") Supplier supplier, Principal user, @PathVariable("id") Long supplierId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        supplierService.update(supplierId, supplier);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping("/mainPage/index/supplierList/delete/{id}")
+//    public String mainPageSupplierDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        supplierService.delete(unionMemberId);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/supplierList/add")
+//    public String mainPageSupplierAdd(Model model, @ModelAttribute("supplier") Supplier supplier, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        supplierService.create(supplier);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//
+//    @GetMapping({"/mainPage/index/supplyList"})
+//    public String mainPageSupply(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(5);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/supplyList/update/{id}")
+//    public String mainPageSupplyUpdate(Model model, @ModelAttribute("supply") Supply supply, Principal user, @PathVariable("id") Long supplyId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        supplyService.update(supplyId, supply);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping("/mainPage/index/supplyList/delete/{id}")
+//    public String mainPageSupplyDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        supplyService.delete(unionMemberId);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/supplyList/add")
+//    public String mainPageSupplyAdd(Model model, @ModelAttribute("supply") Supply supply, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        supplyService.create(supply);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping({"/mainPage/index/courierList"})
+//    public String mainPageCourier(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(6);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/courierList/update/{id}")
+//    public String mainPageCourierUpdate(Model model, @ModelAttribute("courier") Courier courier, Principal user, @PathVariable("id") Long courierId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        courierService.update(courierId, courier);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping("/mainPage/index/courierList/delete/{id}")
+//    public String mainPageCourierDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        courierService.delete(unionMemberId);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/courierList/add")
+//    public String mainPageCourierAdd(Model model, @ModelAttribute("courier") Courier courier, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        courierService.create(courier);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//
+//    @GetMapping({"/mainPage/index/applicationList"})
+//    public String mainPageApplication(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(7);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/applicationList/update/{id}")
+//    public String mainPageApplicationUpdate(Model model, @ModelAttribute("application") Application application, Principal user, @PathVariable("id") Long applicationId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        System.out.println(application);
+//        applicationService.update(applicationId, application);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping("/mainPage/index/applicationList/delete/{id}")
+//    public String mainPageApplicationDelete(Model model, Principal user, @PathVariable("id") Long unionMemberId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        applicationService.delete(unionMemberId);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/applicationList/add")
+//    public String mainPageApplicationAdd(Model model, @ModelAttribute("application") Application application, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        applicationService.create(application);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//
+//    Shift shift;
+//
+//    @GetMapping({"/workPage/index/openShift"})
+//    public String workPageOpenShift(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        shift = new Shift(userService.findByUsername(user.getName()));
+//        tableMode.setMode(1);
+//        shift = shiftService.create(shift);
+//        return "redirect:/workPage/index";
+//    }
+//
+//    @GetMapping({"/workPage/index"})
+//    public String workPage(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        model.addAttribute("tableMode", tableMode);
+//        model.addAttribute("products", productService.readAll());
+//        model.addAttribute("orders", orderService.readAll());
+//        model.addAttribute("suppliesProducts", getSupplyProductList());
+//        model.addAttribute("supplies", supplyService.readAll());
+//        model.addAttribute("deliveryOrders", getDeliveryOrderList());
+//        model.addAttribute("couriers", courierService.readAll());
+//        model.addAttribute("nonDeliveredOrders", getNonDeliveredOrders());
+//
+//        return "workPage/index";
+//    }
+//
+//    public List<User> getAdmins() {
+//        List<User> users = userService.readAll();
+//        List<User> admins = new ArrayList<>();
+//        for (User user : users) {
+//            if (user.isAdmin()) {
+//                admins.add(user);
+//            }
+//        }
+//        return admins;
+//    }
+//
+//    @GetMapping({"/workPage/index/order"})
+//    public String workPageOrder(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(1);
+//        return "redirect:/workPage/index";
+//    }
+//
+//    @GetMapping({"/workPage/index/supply"})
+//    public String workPageSupply(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(2);
+//        return "redirect:/workPage/index";
+//    }
+//
+//    @GetMapping({"/workPage/index/delivery"})
+//    public String workPageDelivery(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(3);
+//        return "redirect:/workPage/index";
+//    }
+//
+//    @GetMapping({"/workPage/index/close"})
+//    public String workPageClose(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        shift.closeShift();
+//        shiftService.update(shift.getShiftId(), shift);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping({"/workPage/index/delivery/add"})
+//    public String workPageDeliveryAdd(Model model, @ModelAttribute("newDeliveryOrder") DeliveryOrder deliveryOrder, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        Delivery delivery = deliveryOrder.getDelivery();
+//        Order order = orderService.readById(deliveryOrder.getOrder().getOrderId());
+//        delivery.getOrders().add(order);
+//        delivery = deliveryService.create(delivery);
+//        order.setDelivery(delivery);
+//        orderService.update(order.getOrderId(), order);
+//        return "redirect:/workPage/index";
+//    }
+//
+//    @PostMapping({"/workPage/index/delivery/add/{id}"})
+//    public String workPageDeliveryAddById(Model model, @ModelAttribute("newDeliveryOrder") DeliveryOrder deliveryOrder, @PathVariable("id") Long deliveryId, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        Delivery delivery = deliveryService.readById(deliveryId);
+//        Order order = orderService.readById(deliveryOrder.getOrder().getOrderId());
+//        delivery.getOrders().add(order);
+//        deliveryService.update(delivery.getDeliveryId(), delivery);
+//        order.setDelivery(delivery);
+//        orderService.update(order.getOrderId(), order);
+//        return "redirect:/workPage/index";
+//    }
+//
+//
+//    public List<SupplyProduct> getSupplyProductList() {
+//        List<Supply> supplies = supplyService.readAll();
+//        List<SupplyProduct> supplyProducts = new ArrayList<>();
+//        for (Supply supply : supplies) {
+//            //          if (!unionMember.getName().equals("")) {
+//            Set<Product> products = supply.getProducts();
+//            for (Product product : products) {
+//                supplyProducts.add(new SupplyProduct(supply, product));
+//            }
+//        }
+//        //    }
+//        return supplyProducts;
+//    }
+//
+//    public List<Order> getNonDeliveredOrders() {
+//        List<Order> orders = orderService.readAll();
+//        List<Order> newOrders = new ArrayList<>();
+//        for (Order order : orders) {
+//            if (order.getDelivery() == null) {
+//                newOrders.add(order);
+//            }
+//        }
+//        return newOrders;
+//    }
+//
+//    @GetMapping({"/applicationPage/index"})
+//    public String applicationPage(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        model.addAttribute("application", new Application());
+//
+//        return "applicationPage/index";
+//    }
+//
+//    @PostMapping("/applicationPage/index")
+//    public String applicationPage(Model model, @ModelAttribute("application") Application application, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        application.setStatus(statusService.readByTitle("Запрос"));
+//        application.setUserOpen(userService.findByUsername(user.getName()));
+//        application.setUserClose(userService.findByUsername("-"));
+//        applicationService.create(application);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//
+//    @GetMapping({"/mainPage/index/productSupplyList"})
+//    public String productSupplyList(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        tableMode.setMode(14);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping({"/referencePage/index"})
+//    public String referencePage(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        return "referencePage/index";
+//    }
+//
+//    @PostMapping("/mainPage/index/productSupplyList/add")
+//    public String productSupplyListAdd(Model model, @ModelAttribute("newSupplyProduct") SupplyProduct supplyProduct, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//
+//        System.out.println(supplyProduct.toString());
+//
+//        Supply supply = supplyService.readById(supplyProduct.getSupply().getSupplyId());
+//        Product product = productService.readById(supplyProduct.getProduct().getProductId());
+//        product.getSupplies().add(supply);
+//        supply.getProducts().add(product);
+//
+//        System.out.println(supply.toString());
+//        System.out.println(product.toString());
+//
+////        productService.update(product.getProductId(), product);
+//        supplyService.update(supply.getSupplyId(), supply);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping("/mainPage/index/productSupplyList/delete/{supplyId}/{productId}")
+//    public String productSupplyListDelete(Model model, Principal user, @PathVariable("supplyId") Long supplyId, @PathVariable("productId") Long productId) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        Supply supply = supplyService.readById(supplyId);
+//        Product product = productService.readById(productId);
+//        supply.getProducts().remove(product);
+//        supplyService.update(supplyId, supply);
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @PostMapping("/workPage/index/productSupplyList/add")
+//    public String productSupplyListAddWorkPage(Model model, @ModelAttribute("newSupplyProduct") SupplyProduct supplyProduct, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        Supply supply = supplyService.readById(supplyProduct.getSupply().getSupplyId());
+//        supply.getProducts().add(supplyProduct.getProduct());
+//        supplyService.update(supply.getSupplyId(), supply);
+//        return "redirect:/workPage/index";
+//    }
+//
+//    @PostMapping("/workPage/index/orderList/add")
+//    public String orderListAddWorkPage(Model model, @ModelAttribute("newOrder") Order order, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        Product product = productService.readById(order.getProduct().getProductId());
+//        product.setProductCount(product.getProductCount() - order.getOrderCount());
+//        if (product.getProductCount() >= 0) {
+//            productService.update(product.getProductId(), product);
+//            order = orderService.create(order);
+//            order.setProduct(productService.readById(order.getProduct().getProductId()));
+//            model.addAttribute("order", order);
+//            someOrder = order;
+//            return "redirect:/workPage/specification";
+//        }
+//        return "redirect:/workPage/index";
+//    }
+//
+//    Order someOrder;
+//
+//    @GetMapping({"/workPage/specification"})
+//    public String specificationPage(Model model, Principal user) {
+//        System.out.println(someOrder);
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        model.addAttribute("order", someOrder);
+//        return "workPage/specification";
+//    }
+//
+//
+//    public List<SupplyProduct> getProductSupplyList() {
+//        List<Product> products = productService.readAll();
+//        List<SupplyProduct> supplyProducts = new ArrayList<>();
+//        for (Product product : products) {
+//            Set<Supply> supplies = product.getSupplies();
+//            for (Supply supply : supplies) {
+//                supplyProducts.add(new SupplyProduct(supply, product));
+//            }
+//        }
+//        //    }
+//        return supplyProducts;
+//    }
+//
+//
+//    public List<DeliveryOrder> getDeliveryOrderList() {
+//        List<Delivery> deliveries = deliveryService.readAll();
+//        List<DeliveryOrder> deliveryOrders = new ArrayList<>();
+//        for (Delivery delivery : deliveries) {
+//            List<Order> orders = delivery.getOrders();
+//            for (Order order : orders) {
+//                deliveryOrders.add(new DeliveryOrder(delivery, order));
+//            }
+//        }
+//        return deliveryOrders;
+//    }
 
 //
 //    @PostMapping("/mainPage/index/update/{id}")

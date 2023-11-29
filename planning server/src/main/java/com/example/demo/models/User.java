@@ -56,21 +56,21 @@ public class User {
     @JoinColumn(name = "department_id", referencedColumnName = "department_id")
     private Department department;
 
-//    @Transient
-//    @NonNull String passwordConfirm;
+    @Transient
+    @NonNull String passwordConfirm;
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-//        User user = (User) o;
-//        return userId != null && Objects.equals(userId, user.userId);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return getClass().hashCode();
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return userId != null && Objects.equals(userId, user.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 
     public User() {
     }

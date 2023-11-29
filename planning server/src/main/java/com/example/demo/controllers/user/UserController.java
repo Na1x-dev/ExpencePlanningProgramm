@@ -4,10 +4,14 @@ import com.example.demo.models.*;
 import com.example.demo.security.SecurityService;
 
 
+import com.example.demo.services.appeal.AppealService;
+import com.example.demo.services.application.ApplicationService;
+import com.example.demo.services.budget.BudgetService;
 import com.example.demo.services.category.CategoryService;
+import com.example.demo.services.department.DepartmentService;
+import com.example.demo.services.management.ManagementService;
+import com.example.demo.services.procurementArchive.ProcurementArchiveService;
 import com.example.demo.services.status.StatusService;
-import com.example.demo.services.supply.SupplyService;
-import com.example.demo.services.procurementArchive.ProductService;
 import com.example.demo.services.position.PositionService;
 import com.example.demo.services.role.RoleService;
 import com.example.demo.services.order.OrderService;
@@ -22,109 +26,133 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class UserController {
     @Autowired
-    private UserService userService;
+    UserService userService;
     @Autowired
-    private SecurityService securityService;
+    StatusService statusService;
     @Autowired
-    private UserValidator userValidator;
+    CategoryService categoryService;
     @Autowired
-    private RoleService roleService;
-
+    OrderService orderService;
     @Autowired
-    private CategoryService categoryService;
-
+    ApplicationService applicationService;
     @Autowired
-    private OrderService orderService;
-
+    AppealService appealService;
     @Autowired
-    private ProductService productService;
-
+    BudgetService budgetService;
     @Autowired
-    private PositionService positionService;
+    DepartmentService departmentService;
     @Autowired
-    private SupplyService supplyService;
-
+    ManagementService managementService;
     @Autowired
-    private StatusService statusService;
+    PositionService positionService;
+    @Autowired
+    ProcurementArchiveService procurementArchiveService;
 
-    @GetMapping("/signUpPage/index")
-    public String registration(Model model) {
-        if (securityService.isAuthenticated()) {
-            return "redirect:/";
-        }
-        User user = new User();
-        model.addAttribute("userForm", user);
-        return "signUpPage/index";
-    }
 
-    @PostMapping("/signUpPage/index")
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
-        userValidator.validate(userForm, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "signUpPage/index";
-        }
-        userService.create(userForm);
-//        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-        return "redirect:/mainPage/index";
-    }
+//    public void autoCreateEmptyPosition() {
+//        if (positionService.readByTitle("") == null) {
+//            positionService.create(new Position());
+//        }
+//    }
+//
+//
+//    public void autoCreateStatuses() {
+//        if (statusService.readByTitle("Запрос") == null) {
+//            statusService.create(new Status("Запрос"));
+//        }
+//        if (statusService.readByTitle("Исполнение") == null) {
+//            statusService.create(new Status("Исполнение"));
+//        }
+//        if (statusService.readByTitle("Выполнено") == null) {
+//            statusService.create(new Status("Выполнено"));
+//        }
+//    }
+//
 
-    @GetMapping("/logInPage/index")
-    public String login(Model model, String error, String logout) {
-        autoCreateRoles();
-        autoCreateEmptyPosition();
-        autoRegisterAdmin();
-        autoCreateStatuses();
-        autoRegisterEmptyUser();
-        if (securityService.isAuthenticated()) {
-            return "redirect:/";
-        }
-        if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
-        if (logout != null)
-            model.addAttribute("message", "You have been logged out successfully.");
-        return "logInPage/index";
-    }
 
-    @GetMapping("/logout")
-    public String logout(Model model, String error, String logout) {
-        return "logInPage/index";
-    }
 
-    @GetMapping({"/"})
-    public String startPage(Model model) {
-        return "redirect:mainPage/index";
-    }
 
-    public void autoRegisterAdmin() {
-        if (userService.findByUsername("admin") == null) {
-            Role role = roleService.readByRoleName("ROLE_ADMIN");
-            User admin = new User("admin", "admin", role, "admin");
-            admin.setPosition(positionService.readByTitle(""));
-            userService.create(admin);
-            securityService.autoLogin(admin.getUsername(), admin.getPassword());
-        }
-    }
 
-    public void autoRegisterEmptyUser() {
-        if (userService.findByUsername("-") == null) {
-            Role role = roleService.readByRoleName("ROLE_ADMIN");
-            User empty = new User("-", "", role, "");
-            empty.setPosition(positionService.readByTitle(""));
-            userService.create(empty);
-            securityService.autoLogin(empty.getUsername(), empty.getPassword());
-        }
-    }
 
-    public void autoCreateRoles() {
-        if (roleService.readByRoleName("ROLE_ADMIN") == null) {
-            Role role = new Role("ROLE_ADMIN");
-            roleService.create(role);
-        }
-        if (roleService.readByRoleName("ROLE_USER") == null) {
-            Role role = new Role("ROLE_USER");
-            roleService.create(role);
-        }
-    }
+
+//    @GetMapping("/signUpPage/index")
+//    public String registration(Model model) {
+//        if (securityService.isAuthenticated()) {
+//            return "redirect:/";
+//        }
+//        User user = new User();
+//        model.addAttribute("userForm", user);
+//        return "signUpPage/index";
+//    }
+//
+//    @PostMapping("/signUpPage/index")
+//    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+//        userValidator.validate(userForm, bindingResult);
+//        if (bindingResult.hasErrors()) {
+//            return "signUpPage/index";
+//        }
+//        userService.create(userForm);
+////        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
+//        return "redirect:/mainPage/index";
+//    }
+//
+//    @GetMapping("/logInPage/index")
+//    public String login(Model model, String error, String logout) {
+//        autoCreateRoles();
+//        autoCreateEmptyPosition();
+//        autoRegisterAdmin();
+//        autoCreateStatuses();
+//        autoRegisterEmptyUser();
+//        if (securityService.isAuthenticated()) {
+//            return "redirect:/";
+//        }
+//        if (error != null)
+//            model.addAttribute("error", "Your username and password is invalid.");
+//        if (logout != null)
+//            model.addAttribute("message", "You have been logged out successfully.");
+//        return "logInPage/index";
+//    }
+//
+//    @GetMapping("/logout")
+//    public String logout(Model model, String error, String logout) {
+//        return "logInPage/index";
+//    }
+//
+//    @GetMapping({"/"})
+//    public String startPage(Model model) {
+//        return "redirect:mainPage/index";
+//    }
+//
+//    public void autoRegisterAdmin() {
+//        if (userService.findByUsername("admin") == null) {
+//            Role role = roleService.readByRoleName("ROLE_ADMIN");
+//            User admin = new User("admin", "admin", role, "admin");
+//            admin.setPosition(positionService.readByTitle(""));
+//            userService.create(admin);
+//            securityService.autoLogin(admin.getUsername(), admin.getPassword());
+//        }
+//    }
+//
+//    public void autoRegisterEmptyUser() {
+//        if (userService.findByUsername("-") == null) {
+//            Role role = roleService.readByRoleName("ROLE_ADMIN");
+//            User empty = new User("-", "", role, "");
+//            empty.setPosition(positionService.readByTitle(""));
+//            userService.create(empty);
+//            securityService.autoLogin(empty.getUsername(), empty.getPassword());
+//        }
+//    }
+//
+//    public void autoCreateRoles() {
+//        if (roleService.readByRoleName("ROLE_ADMIN") == null) {
+//            Role role = new Role("ROLE_ADMIN");
+//            roleService.create(role);
+//        }
+//        if (roleService.readByRoleName("ROLE_USER") == null) {
+//            Role role = new Role("ROLE_USER");
+//            roleService.create(role);
+//        }
+//    }
 
 //    public void autoCreateGenders() {
 //        if (genderService.readByGenderTitle("Мужской") == null) {
@@ -143,25 +171,8 @@ public class UserController {
 //    }
 //}
 //
-    public void autoCreateEmptyPosition() {
-        if (positionService.readByTitle("") == null) {
-            positionService.create(new Position());
-        }
-    }
 
-
-    public void autoCreateStatuses() {
-        if (statusService.readByTitle("Запрос") == null) {
-            statusService.create(new Status("Запрос"));
-        }
-        if (statusService.readByTitle("Исполнение") == null) {
-            statusService.create(new Status("Исполнение"));
-        }
-        if (statusService.readByTitle("Выполнено") == null) {
-            statusService.create(new Status("Выполнено"));
-        }
-    }
-//
+    //
 //    public void autoCreateRetireePosition() {
 //        if (positionService.readByTitle("Пенсионер") == null) {
 //            positionService.create(new Position("Пенсионер"));

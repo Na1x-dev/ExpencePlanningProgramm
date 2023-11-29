@@ -1,8 +1,14 @@
 package com.example.demo.controllers.sale;
 
 import com.example.demo.models.*;
+import com.example.demo.services.appeal.AppealService;
+import com.example.demo.services.application.ApplicationService;
+import com.example.demo.services.budget.BudgetService;
+import com.example.demo.services.department.DepartmentService;
+import com.example.demo.services.management.ManagementService;
+import com.example.demo.services.order.OrderService;
+import com.example.demo.services.procurementArchive.ProcurementArchiveService;
 import com.example.demo.services.status.StatusService;
-import com.example.demo.services.budget.CountryService;
 import com.example.demo.services.category.CategoryService;
 import com.example.demo.services.position.PositionService;
 import com.example.demo.services.user.UserService;
@@ -18,53 +24,63 @@ import java.security.Principal;
 @Controller
 public class SaleController {
     @Autowired
-    PositionService positionService;
+    UserService userService;
     @Autowired
-    CountryService countryService;
+    StatusService statusService;
     @Autowired
     CategoryService categoryService;
     @Autowired
-    StatusService statusService;
-//    @Autowired
-//    SupplyDetailService supplyDetailService;
+    OrderService orderService;
     @Autowired
-    UserService userService;
+    ApplicationService applicationService;
+    @Autowired
+    AppealService appealService;
+    @Autowired
+    BudgetService budgetService;
+    @Autowired
+    DepartmentService departmentService;
+    @Autowired
+    ManagementService managementService;
+    @Autowired
+    PositionService positionService;
+    @Autowired
+    ProcurementArchiveService procurementArchiveService;
 
-    @GetMapping({"/salesPage/index"})
-    public String salesPage(Model model, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        model.addAttribute("sales", positionService.readAll());
-        return "salesPage/index";
-    }
-
-    @GetMapping({"/newSalePage/index"})
-    public String newSale(Model model, Principal user) {
-        Application newApplication = new Application();
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-        model.addAttribute("newSale", newApplication);
-//        model.addAttribute("showBookList", getBookList());
-//        model.addAttribute("bookAuthorList", getAuthorNameList(getBookList()));
-//        model.addAttribute("bookPublisherList", getPublisherNameList(getBookList()));
-//        model.addAttribute("bookLanguageList", getLanguageNameList(getBookList()));
-//        for (int i = 0; i < getBookList().size(); i++) {
-//            System.out.println(i + " - " + getBookList().get(i));
-//        }
-        return "newSalePage/index";
-    }
-
-    @PostMapping({"/newSalePage/index"})
-    public String newSale(Model model, @ModelAttribute("newSale") Application newApplication, Principal user) {
-        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
-//        saveBook(newSupply.getSupplyDetails().get(0).getBook());
-//        if (sellBooks(newApplication, model)) {
-//            saveSale(newApplication);
-            return "redirect:/salesPage/index";
-//        }
-//        else {
-//            return "/newSalePage/index";
-//        }
-    }
+//    @GetMapping({"/salesPage/index"})
+//    public String salesPage(Model model, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        model.addAttribute("sales", positionService.readAll());
+//        return "salesPage/index";
+//    }
 //
+//    @GetMapping({"/newSalePage/index"})
+//    public String newSale(Model model, Principal user) {
+//        Application newApplication = new Application();
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+//        model.addAttribute("newSale", newApplication);
+////        model.addAttribute("showBookList", getBookList());
+////        model.addAttribute("bookAuthorList", getAuthorNameList(getBookList()));
+////        model.addAttribute("bookPublisherList", getPublisherNameList(getBookList()));
+////        model.addAttribute("bookLanguageList", getLanguageNameList(getBookList()));
+////        for (int i = 0; i < getBookList().size(); i++) {
+////            System.out.println(i + " - " + getBookList().get(i));
+////        }
+//        return "newSalePage/index";
+//    }
+//
+//    @PostMapping({"/newSalePage/index"})
+//    public String newSale(Model model, @ModelAttribute("newSale") Application newApplication, Principal user) {
+//        model.addAttribute("checkUser", userService.findByUsername(user.getName()));
+////        saveBook(newSupply.getSupplyDetails().get(0).getBook());
+////        if (sellBooks(newApplication, model)) {
+////            saveSale(newApplication);
+//            return "redirect:/salesPage/index";
+////        }
+////        else {
+////            return "/newSalePage/index";
+////        }
+//    }
+////
 //    private List<UnionMember> getBookList() {
 //        List<UnionMember> unionMembers = bookService.readAll();
 //        for (int i = 0; i < unionMembers.size(); ) {

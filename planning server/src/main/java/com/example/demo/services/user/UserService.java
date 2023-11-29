@@ -10,7 +10,7 @@ import java.util.Set;
 public interface UserService {
     void create(User user);
 
-    User findByUsername(String username);
+    User findByUserName(String userName);
 
     List<User> readAll();
 
