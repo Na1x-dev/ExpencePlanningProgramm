@@ -17,9 +17,9 @@ import java.util.Set;
         property = "id")
 @Entity
 @Table(name = "users")
-//@Getter
-//@Setter
-//@Data
+@Getter
+@Setter
+@Data
 @ToString
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class User {
@@ -56,8 +56,6 @@ public class User {
     @JoinColumn(name = "department_id", referencedColumnName = "department_id")
     private Department department;
 
-    @Transient
-    @NonNull String passwordConfirm;
 
     @Override
     public boolean equals(Object o) {

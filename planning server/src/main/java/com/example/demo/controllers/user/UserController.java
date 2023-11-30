@@ -18,12 +18,14 @@ import com.example.demo.services.order.OrderService;
 import com.example.demo.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 public class UserController {
     @Autowired
     UserService userService;
@@ -47,158 +49,86 @@ public class UserController {
     PositionService positionService;
     @Autowired
     ProcurementArchiveService procurementArchiveService;
+    @Autowired
+    RoleService roleService;
+    @Autowired
+    private SecurityService securityService;
+
+    public void autoRegisterAdmin() {
+        if (userService.findByUserName("admin") == null) {
+            Role role = roleService.readByRoleName("администратор");
+            User admin = new User("admin", "admin", role);
+            userService.create(admin);
+            securityService.autoLogin(admin.getUsername(), admin.getPassword());
+        }
+    }
+
+    public void autoCreateRoles() {
+        if (roleService.readByRoleName("администратор") == null) {
+            Role role = new Role("администратор");
+            roleService.create(role);
+        }
+        if (roleService.readByRoleName("заказчик") == null) {
+            Role role = new Role("заказчик");
+            roleService.create(role);
+        }
+        if (roleService.readByRoleName("исполнитель") == null) {
+            Role role = new Role("исполнитель");
+            roleService.create(role);
+        }
+    }
+
+    public void autoCreateStatuses() {
+        if (statusService.readByTitle("создано") == null) {
+            statusService.create(new Status("создано"));
+        }
+        if (statusService.readByTitle("зарегистрировано") == null) {
+            statusService.create(new Status("зарегистрировано"));
+        }
+        if (statusService.readByTitle("отклонено") == null) {
+            statusService.create(new Status("отклонено"));
+        }
+        if (statusService.readByTitle("закрыто") == null) {
+            statusService.create(new Status("закрыто"));
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody User loginUser) {
+        autoCreateRoles();
+        autoRegisterAdmin();
+        autoCreateStatuses();
 
 
-//    public void autoCreateEmptyPosition() {
-//        if (positionService.readByTitle("") == null) {
-//            positionService.create(new Position());
-//        }
-//    }
-//
-//
-//    public void autoCreateStatuses() {
-//        if (statusService.readByTitle("Запрос") == null) {
-//            statusService.create(new Status("Запрос"));
-//        }
-//        if (statusService.readByTitle("Исполнение") == null) {
-//            statusService.create(new Status("Исполнение"));
-//        }
-//        if (statusService.readByTitle("Выполнено") == null) {
-//            statusService.create(new Status("Выполнено"));
-//        }
-//    }
-//
+        // Здесь вы можете выполнить проверку логина и пароля в вашей системе
+        // и вернуть соответствующий HTTP-ответ в зависимости от результата проверки.
+        // Например, вернуть HTTP-статус 200 и сообщение "Успешная авторизация" в случае успешной авторизации,
+        // или вернуть HTTP-статус 401 и сообщение "Неверные логин или пароль" в случае неверных учетных данных.
 
+        if (isValidCredentials(loginUser.getUsername(), loginUser.getPassword())) {
+            return ResponseEntity.ok("Успешная авторизация");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неверные логин или пароль");
+        }
+    }
 
+    private boolean isValidCredentials(String username, String password) {
+        // Здесь вы можете выполнить проверку логина и пароля в вашей системе
+        // и вернуть true, если учетные данные действительны, или false в противном случае.
+        // В этом примере проверка всегда возвращает true.
 
+        User checkUser = userService.findByUserName(username);
+        if (checkUser == null) {
+            return false;
+        } else {
+            if(checkUser.getPassword().equals(password)){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
 
+    }
 
-
-
-//    @GetMapping("/signUpPage/index")
-//    public String registration(Model model) {
-//        if (securityService.isAuthenticated()) {
-//            return "redirect:/";
-//        }
-//        User user = new User();
-//        model.addAttribute("userForm", user);
-//        return "signUpPage/index";
-//    }
-//
-//    @PostMapping("/signUpPage/index")
-//    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
-//        userValidator.validate(userForm, bindingResult);
-//        if (bindingResult.hasErrors()) {
-//            return "signUpPage/index";
-//        }
-//        userService.create(userForm);
-////        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-//        return "redirect:/mainPage/index";
-//    }
-//
-//    @GetMapping("/logInPage/index")
-//    public String login(Model model, String error, String logout) {
-//        autoCreateRoles();
-//        autoCreateEmptyPosition();
-//        autoRegisterAdmin();
-//        autoCreateStatuses();
-//        autoRegisterEmptyUser();
-//        if (securityService.isAuthenticated()) {
-//            return "redirect:/";
-//        }
-//        if (error != null)
-//            model.addAttribute("error", "Your username and password is invalid.");
-//        if (logout != null)
-//            model.addAttribute("message", "You have been logged out successfully.");
-//        return "logInPage/index";
-//    }
-//
-//    @GetMapping("/logout")
-//    public String logout(Model model, String error, String logout) {
-//        return "logInPage/index";
-//    }
-//
-//    @GetMapping({"/"})
-//    public String startPage(Model model) {
-//        return "redirect:mainPage/index";
-//    }
-//
-//    public void autoRegisterAdmin() {
-//        if (userService.findByUsername("admin") == null) {
-//            Role role = roleService.readByRoleName("ROLE_ADMIN");
-//            User admin = new User("admin", "admin", role, "admin");
-//            admin.setPosition(positionService.readByTitle(""));
-//            userService.create(admin);
-//            securityService.autoLogin(admin.getUsername(), admin.getPassword());
-//        }
-//    }
-//
-//    public void autoRegisterEmptyUser() {
-//        if (userService.findByUsername("-") == null) {
-//            Role role = roleService.readByRoleName("ROLE_ADMIN");
-//            User empty = new User("-", "", role, "");
-//            empty.setPosition(positionService.readByTitle(""));
-//            userService.create(empty);
-//            securityService.autoLogin(empty.getUsername(), empty.getPassword());
-//        }
-//    }
-//
-//    public void autoCreateRoles() {
-//        if (roleService.readByRoleName("ROLE_ADMIN") == null) {
-//            Role role = new Role("ROLE_ADMIN");
-//            roleService.create(role);
-//        }
-//        if (roleService.readByRoleName("ROLE_USER") == null) {
-//            Role role = new Role("ROLE_USER");
-//            roleService.create(role);
-//        }
-//    }
-
-//    public void autoCreateGenders() {
-//        if (genderService.readByGenderTitle("Мужской") == null) {
-//            Gender gender = new Gender("Мужской");
-//            genderService.create(gender);
-//        }
-//        if (genderService.readByGenderTitle("Женский") == null) {
-//            Gender gender = new Gender("Женский");
-//            genderService.create(gender);
-//        }
-//    }
-//
-//public void autoCreateEmptyPosition() {
-//    if (positionService.readByTitle("") == null) {
-//        positionService.create(new Position());
-//    }
-//}
-//
-
-    //
-//    public void autoCreateRetireePosition() {
-//        if (positionService.readByTitle("Пенсионер") == null) {
-//            positionService.create(new Position("Пенсионер"));
-//        }
-//    }
-//
-//    public void autoCreateEmptyMeetingMinute() {
-//        if (meetingMinuteService.readByMeetingMinuteNumber(0) == null) {
-//            meetingMinuteService.create(new MeetingMinute());
-//        }
-//    }
-//
-//    public void autoCreateEmptyParent() {
-//        if (unionMemberService.readByName("") == null) {
-//            UnionMember unionMember = new UnionMember();
-//            unionMember.getPhoneNumbers().get(0).setUnionMember(unionMember);
-//            unionMember.setGender(genderService.readByGenderTitle("Мужской"));
-//            unionMember.setPosition(positionService.readByTitle(""));
-//            System.out.println(unionMember);
-//            unionMemberService.create(unionMember);
-//            phoneNumberService.create(unionMember.getPhoneNumbers().get(0));
-//        }
-//    }
-//
-//    public void autoCreatePhoneNumber() {
-//        if (phoneNumberService.readById(0L) == null) {
-//        }
-//    }
 }

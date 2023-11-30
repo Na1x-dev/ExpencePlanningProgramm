@@ -27,6 +27,10 @@ public class Status {
         statusName = "";
     }
 
+    public Status(String statusName) {
+        this.statusName = statusName;
+    }
+
     @Override
     public String toString() {
         return "Status{" +
