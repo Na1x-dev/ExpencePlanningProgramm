@@ -12,7 +12,10 @@ module com.example.demo1 {
     requires com.almasb.fxgl.all;
     requires java.net.http;
     requires lombok;
+    requires com.google.gson;
 
     opens com.example.demo1 to javafx.fxml;
+    opens com.example.demo1.models to com.google.gson;
     exports com.example.demo1;
+
 }

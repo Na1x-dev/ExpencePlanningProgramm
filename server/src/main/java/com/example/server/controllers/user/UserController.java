@@ -93,12 +93,12 @@ public class UserController {
 
 
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User loginForm) {
+    @PostMapping(value="/login", consumes={"application/json"})
+    public ResponseEntity<?> login(@RequestBody User loginForm) {
+        System.out.println(loginForm);
         autoCreateRoles();
         autoRegisterAdmin();
         autoCreateStatuses();
-        System.out.println("gay");
 
         // Ваша логика аутентификации и авторизации здесь
         // ...

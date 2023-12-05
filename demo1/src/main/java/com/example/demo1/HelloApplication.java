@@ -10,6 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import com.google.gson.*;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -37,6 +38,8 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
         primaryStage.setTitle("Авторизация");
 
         Label usernameLabel = new Label("Логин:");
@@ -57,7 +60,8 @@ public class HelloApplication extends Application {
             HttpClient client = HttpClient.newHttpClient();
 
             // Создание JSON-запроса с данными логина и пароля
-            String requestBody = String.format("{\"user\":\"%s\"}", user);
+//            String requestBody = String.format("{\"user\":\"%s\"}", user);
+            String requestBody = gson.toJson(user);
             System.out.println(requestBody);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(SERVER_URL))
