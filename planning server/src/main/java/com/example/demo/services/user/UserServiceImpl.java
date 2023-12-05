@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     private UserJpaRepository userRepository;
     @Autowired
     private RoleJpaRepository roleRepository;
-    @Autowired
+
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Override
     public void create(User user) {

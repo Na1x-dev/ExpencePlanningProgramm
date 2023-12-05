@@ -2,18 +2,10 @@ package com.example.demo.controllers.userPage;
 
 import com.example.demo.controllers.user.UserValidator;
 
-import com.example.demo.models.User;
-import com.example.demo.security.SecurityService;
 import com.example.demo.services.position.PositionService;
 import com.example.demo.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.util.Objects;
 
 @Controller
 public class UserPageController {
@@ -21,8 +13,6 @@ public class UserPageController {
     UserService userService;
     @Autowired
     UserValidator userValidator;
-    @Autowired
-    SecurityService securityService;
     @Autowired
     PositionService positionService;
 

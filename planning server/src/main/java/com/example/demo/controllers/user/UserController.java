@@ -1,7 +1,6 @@
 package com.example.demo.controllers.user;
 
 import com.example.demo.models.*;
-import com.example.demo.security.SecurityService;
 
 
 import com.example.demo.services.appeal.AppealService;
@@ -20,12 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
+@RequestMapping("/api")
 public class UserController {
     @Autowired
     UserService userService;
@@ -51,15 +49,14 @@ public class UserController {
     ProcurementArchiveService procurementArchiveService;
     @Autowired
     RoleService roleService;
-    @Autowired
-    private SecurityService securityService;
+
 
     public void autoRegisterAdmin() {
         if (userService.findByUserName("admin") == null) {
             Role role = roleService.readByRoleName("администратор");
             User admin = new User("admin", "admin", role);
             userService.create(admin);
-            securityService.autoLogin(admin.getUsername(), admin.getPassword());
+//            securityService.autoLogin(admin.getUsername(), admin.getPassword());
         }
     }
 
@@ -93,42 +90,34 @@ public class UserController {
         }
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User loginUser) {
+    public ResponseEntity<String> login(@RequestBody User loginForm) {
         autoCreateRoles();
         autoRegisterAdmin();
         autoCreateStatuses();
 
 
-        // Здесь вы можете выполнить проверку логина и пароля в вашей системе
-        // и вернуть соответствующий HTTP-ответ в зависимости от результата проверки.
-        // Например, вернуть HTTP-статус 200 и сообщение "Успешная авторизация" в случае успешной авторизации,
-        // или вернуть HTTP-статус 401 и сообщение "Неверные логин или пароль" в случае неверных учетных данных.
+        // Ваша логика аутентификации и авторизации здесь
+        // ...
 
-        if (isValidCredentials(loginUser.getUsername(), loginUser.getPassword())) {
-            return ResponseEntity.ok("Успешная авторизация");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неверные логин или пароль");
+        // Пример успешного входа
+        if (isValidCredentials(loginForm.getUsername(), loginForm.getPassword())) {
+            return ResponseEntity.ok("Вход выполнен успешно");
         }
+
+        // Пример ошибки входа
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неверные учетные данные");
     }
 
     private boolean isValidCredentials(String username, String password) {
-        // Здесь вы можете выполнить проверку логина и пароля в вашей системе
-        // и вернуть true, если учетные данные действительны, или false в противном случае.
-        // В этом примере проверка всегда возвращает true.
 
         User checkUser = userService.findByUserName(username);
         if (checkUser == null) {
             return false;
         } else {
-            if(checkUser.getPassword().equals(password)){
-                return true;
-            }
-            else {
-                return false;
-            }
+            return checkUser.getPassword().equals(password);
         }
-
     }
-
 }
+
