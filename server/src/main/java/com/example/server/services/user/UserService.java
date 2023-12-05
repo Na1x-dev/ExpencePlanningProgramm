@@ -14,8 +14,8 @@ public interface UserService {
 
     List<User> readAll();
 
-    boolean update(User user, Long id);
+    boolean update(User user, Long userId);
 
-    boolean delete(Long id);
+    boolean delete(Long userId);
     User readById(Long userId);
 }

@@ -20,10 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.http.MediaType;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api", consumes = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
     @Autowired
     UserService userService;
@@ -98,7 +98,7 @@ public class UserController {
         autoCreateRoles();
         autoRegisterAdmin();
         autoCreateStatuses();
-
+        System.out.println("gay");
 
         // Ваша логика аутентификации и авторизации здесь
         // ...

@@ -39,9 +39,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean update(User user, Long id) {
-        if (userRepository.existsById(id)) {
-            user.setUserId(id);
+    public boolean update(User user, Long userId) {
+        if (userRepository.existsByUserId(userId)) {
+            user.setUserId(userId);
             userRepository.save(user);
             return true;
         }
@@ -49,9 +49,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean delete(Long id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
+    public boolean delete(Long userId) {
+        if (userRepository.existsByUserId(userId)) {
+            userRepository.deleteById(userId);
             return true;
         }
         return false;

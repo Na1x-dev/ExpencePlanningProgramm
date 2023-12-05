@@ -1,5 +1,6 @@
 package com.example.demo1;
 
+import com.example.demo1.models.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,6 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -47,14 +49,16 @@ public class HelloApplication extends Application {
         Label resultLabel = new Label();
 
         loginButton.setOnAction(event -> {
-            String username = usernameField.getText();
-            String password = passwordField.getText();
+            User user = new User();
+            user.setUserName(usernameField.getText());
+            user.setPassword(passwordField.getText());
 
             // Создание HTTP-клиента
             HttpClient client = HttpClient.newHttpClient();
 
             // Создание JSON-запроса с данными логина и пароля
-            String requestBody = String.format("{\"username\":\"%s\",\"password\":\"%s\"}", username, password);
+            String requestBody = String.format("{\"user\":\"%s\"}", user);
+            System.out.println(requestBody);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(SERVER_URL))
                     .header("Content-Type", "application/json")
@@ -83,4 +87,5 @@ public class HelloApplication extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
 }
