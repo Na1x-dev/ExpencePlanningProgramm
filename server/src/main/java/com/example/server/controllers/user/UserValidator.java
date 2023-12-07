@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+//@EnableWebMvc
 @Component
 public class UserValidator implements Validator {
     @Autowired

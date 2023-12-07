@@ -12,9 +12,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 @Entity
 @Table(name = "users")
 @Getter
@@ -80,8 +77,6 @@ public class User {
         this.userName = userName;
         this.password = password;
         this.role = role;
-        position = new Position();
-        department = new Department();
     }
 
 

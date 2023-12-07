@@ -49,8 +49,7 @@ public class UserController {
     ProcurementArchiveService procurementArchiveService;
     @Autowired
     RoleService roleService;
-
-
+    
     public void autoRegisterAdmin() {
         if (userService.findByUserName("admin") == null) {
             Role role = roleService.readByRoleName("администратор");
@@ -90,25 +89,15 @@ public class UserController {
         }
     }
 
-
-
-
-    @PostMapping(value="/login", consumes={"application/json"})
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User loginForm) {
-        System.out.println(loginForm);
         autoCreateRoles();
         autoRegisterAdmin();
         autoCreateStatuses();
 
-        // Ваша логика аутентификации и авторизации здесь
-        // ...
-
-        // Пример успешного входа
         if (isValidCredentials(loginForm.getUsername(), loginForm.getPassword())) {
             return ResponseEntity.ok("Вход выполнен успешно");
         }
-
-        // Пример ошибки входа
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неверные учетные данные");
     }
 

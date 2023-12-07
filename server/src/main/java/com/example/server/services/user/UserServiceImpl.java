@@ -6,7 +6,7 @@ import com.example.server.repositories.role.RoleJpaRepository;
 import com.example.server.repositories.user.UserJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +18,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleJpaRepository roleRepository;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Override
     public void create(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 //        user.setRoles(new HashSet<>(roleRepository.findAll()));
 //        user.addRole(roleRepository.findByName("ROLE_USER"));
         userRepository.save(user);

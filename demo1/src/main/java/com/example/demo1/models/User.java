@@ -6,7 +6,7 @@ import lombok.*;
 public class User {
 
 //    @JsonProperty("userId")
-    private Long id;
+    private Long userId;
 
     private String lastName;
 
@@ -25,7 +25,7 @@ public class User {
     private Department department;
 
     public User() {
-        id = 0L;
+        userId = 0L;
         lastName = "";
         firstName = "";
         patronymic = "";
@@ -72,7 +72,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + id +
+                "userId=" + userId +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", patronymic='" + patronymic + '\'' +
