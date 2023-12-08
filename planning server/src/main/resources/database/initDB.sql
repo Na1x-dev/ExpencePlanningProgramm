@@ -33,7 +33,7 @@ create table if not EXISTS users (
     last_name text,
     first_name text,
     patronymic text,
-    user_name text UNIQUE,
+    user_name varchar(30) UNIQUE,
     password text,
     position_id INTEGER REFERENCES positions(position_id),
     role_id INTEGER REFERENCES roles(role_id),
