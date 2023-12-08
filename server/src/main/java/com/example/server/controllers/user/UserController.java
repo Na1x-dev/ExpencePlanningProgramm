@@ -49,7 +49,7 @@ public class UserController {
     ProcurementArchiveService procurementArchiveService;
     @Autowired
     RoleService roleService;
-    
+
     public void autoRegisterAdmin() {
         if (userService.findByUserName("admin") == null) {
             Role role = roleService.readByRoleName("администратор");
