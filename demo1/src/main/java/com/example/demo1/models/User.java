@@ -36,15 +36,15 @@ public class User {
         department = new Department();
     }
 
-    public User(String userName, String password, Role role) {
+    public User(String userName, String password) {
         lastName = "";
         firstName = "";
         patronymic = "";
         this.userName = userName;
         this.password = password;
-        this.role = role;
-        position = new Position();
-        department = new Department();
+        role = null;
+        position = null;
+        department = null;
     }
 
 
