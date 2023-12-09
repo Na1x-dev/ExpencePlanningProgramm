@@ -45,7 +45,10 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Button>
-            <Label fx:id="resultLabel" />
+            <Label fx:id="resultLabel">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Label>
          </children>
       </VBox>
    </children>

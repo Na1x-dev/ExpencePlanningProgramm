@@ -3,7 +3,14 @@ package com.example.demo1;
 import com.example.demo1.models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import lombok.Data;
+
+import java.io.IOException;
 
 @Data
 public class AppData {
@@ -20,6 +27,20 @@ public class AppData {
             instance = new AppData();
         }
         return instance;
+    }
+
+    public static void toNextStage(String fxmlFile, Button button, String pageTitle){
+        Stage stage = (Stage) button.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(AppData.class.getResource(fxmlFile));
+        Parent root1 = null;
+        try {
+            root1 = (Parent) fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setTitle(pageTitle);
+        stage.setScene(new Scene(root1));
+        stage.show();
     }
 
 }

@@ -1,5 +1,11 @@
 package com.example.demo1;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
@@ -11,6 +17,14 @@ import java.util.Properties;
 
 public class RequestsBuilder {
     private static HttpClient client = HttpClient.newHttpClient();
+
+    public static HttpRequest getRequestWithProperty(String path, String property) {
+        return HttpRequest.newBuilder()
+                .uri(URI.create(getServerURL() + path + "/" + property))
+                .header("Accept", "application/json")
+                .build();
+    }
+
     public static HttpRequest postRequest(String requestBody, String path) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(getServerURL() + path))
@@ -19,7 +33,7 @@ public class RequestsBuilder {
                 .build();
     }
 
-    public static String getServerURL(){
+    public static String getServerURL() {
         Properties prop = new Properties();
         String fileName = "src/main/resources/app.properties";
         try {
@@ -30,12 +44,14 @@ public class RequestsBuilder {
         return prop.getProperty("server-url");
     }
 
-    public static HttpResponse<String> sendRequest(String requestBody, String path){
+    public static HttpResponse<String> sendRequest(HttpRequest request) {
         try {
-            return client.send(RequestsBuilder.postRequest(requestBody, path), HttpResponse.BodyHandlers.ofString());
+            return client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             return null;
         }
     }
+
+
 
 }

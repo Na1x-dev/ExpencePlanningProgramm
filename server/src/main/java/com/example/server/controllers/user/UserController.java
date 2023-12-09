@@ -22,8 +22,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
-@RequestMapping(value = "/api", consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api", method = { RequestMethod.GET, RequestMethod.POST })
 public class UserController {
     @Autowired
     UserService userService;
@@ -87,6 +90,25 @@ public class UserController {
         if (statusService.readByTitle("закрыто") == null) {
             statusService.create(new Status("закрыто"));
         }
+    }
+
+    @GetMapping(value = "/login/user/{userName}")
+    public ResponseEntity<User> getUserForLogin(@PathVariable(name = "userName") String userName) {
+        System.out.println("hhh");
+        final User user = userService.findByUserName(userName);
+
+        return user != null
+                ? new ResponseEntity<>(user, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(value = "/login/all")
+    public ResponseEntity<List<User>> read() {
+        final List<User> clients = userService.readAll();
+
+        return clients != null &&  !clients.isEmpty()
+                ? new ResponseEntity<>(clients, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/login")
