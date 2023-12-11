@@ -1,6 +1,8 @@
 package com.example.demo1;
 
+import com.example.demo1.models.Status;
 import com.example.demo1.models.User;
+import com.example.demo1.models.Role;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +13,8 @@ import javafx.stage.Stage;
 import lombok.Data;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.List;
 
 @Data
 public class AppData {
@@ -18,6 +22,8 @@ public class AppData {
     private User user;
     private GsonBuilder builder = new GsonBuilder();
     private Gson gson = builder.create();
+    private List<Status> statuses;
+    private List<Role> roles;
 
     private AppData() {
     }

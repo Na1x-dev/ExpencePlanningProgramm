@@ -1,11 +1,5 @@
 package com.example.demo1;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
@@ -18,20 +12,6 @@ import java.util.Properties;
 public class RequestsBuilder {
     private static HttpClient client = HttpClient.newHttpClient();
 
-    public static HttpRequest getRequestWithProperty(String path, String property) {
-        return HttpRequest.newBuilder()
-                .uri(URI.create(getServerURL() + path + "/" + property))
-                .header("Accept", "application/json")
-                .build();
-    }
-
-    public static HttpRequest postRequest(String requestBody, String path) {
-        return HttpRequest.newBuilder()
-                .uri(URI.create(getServerURL() + path))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
-    }
 
     public static String getServerURL() {
         Properties prop = new Properties();
@@ -52,6 +32,30 @@ public class RequestsBuilder {
         }
     }
 
+    public static HttpResponse<String> getRequest(String path) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(getServerURL() + path))
+                .header("Accept", "application/json")
+                .build();
+        return RequestsBuilder.sendRequest(request);
+    }
+
+    public static HttpResponse<String> getRequestWithProperty(String path, String property) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(getServerURL() + path + "/" + property))
+                .header("Accept", "application/json")
+                .build();
+        return RequestsBuilder.sendRequest(request);
+    }
+
+    public static HttpResponse<String> postRequest(String requestBody, String path) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(getServerURL() + path))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+        return RequestsBuilder.sendRequest(request);
+    }
 
 
 }

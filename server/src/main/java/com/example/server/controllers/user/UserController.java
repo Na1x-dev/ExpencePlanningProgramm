@@ -92,11 +92,25 @@ public class UserController {
         }
     }
 
+    @GetMapping(value = "/login/statuses")
+    public ResponseEntity<List<Status>> readStatuses() {
+        final List<Status> statuses = statusService.readAll();
+        return statuses != null &&  !statuses.isEmpty()
+                ? new ResponseEntity<>(statuses, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(value = "/login/roles")
+    public ResponseEntity<List<Role>> readRole() {
+        final List<Role> roles = roleService.readAll();
+        return roles != null &&  !roles.isEmpty()
+                ? new ResponseEntity<>(roles, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @GetMapping(value = "/login/user/{userName}")
     public ResponseEntity<User> getUserForLogin(@PathVariable(name = "userName") String userName) {
-        System.out.println("hhh");
         final User user = userService.findByUserName(userName);
-
         return user != null
                 ? new ResponseEntity<>(user, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -105,7 +119,6 @@ public class UserController {
     @GetMapping(value = "/login/all")
     public ResponseEntity<List<User>> read() {
         final List<User> clients = userService.readAll();
-
         return clients != null &&  !clients.isEmpty()
                 ? new ResponseEntity<>(clients, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
