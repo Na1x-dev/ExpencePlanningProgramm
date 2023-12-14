@@ -24,10 +24,6 @@ public class NextPageController {
     @FXML
     void logOut(ActionEvent event) {
         AppData.toNextStage("login.fxml", logOutButton, "login");
-        AppData appData = AppData.getInstance();
-        System.out.println(appData.getRoles());
-        System.out.println(appData.getStatuses());
-        System.out.println(appData.getUser());
     }
 
     @FXML
