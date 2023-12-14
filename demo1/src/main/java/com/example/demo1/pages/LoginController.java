@@ -1,4 +1,4 @@
-package com.example.demo1;
+package com.example.demo1.pages;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -12,6 +12,8 @@ import java.net.http.HttpResponse;
 import java.io.IOException;
 import java.util.List;
 
+import com.example.demo1.AppData;
+import com.example.demo1.RequestsBuilder;
 import com.example.demo1.models.Role;
 import com.example.demo1.models.Status;
 import com.example.demo1.models.User;
@@ -74,7 +76,7 @@ public class LoginController {
                 getUserFromServer(appData.getUser());
                 getRolesFromServer();
                 getStatusesFromServer();
-                AppData.toNextStage("nextPage.fxml", loginButton, "nextPage");
+                AppData.toNextStage("customerPage.fxml", loginButton, "Customer Page");
             } else {
                 resultLabel.setText("Неверные логин или пароль");
             }

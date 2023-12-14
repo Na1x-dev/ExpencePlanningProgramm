@@ -17,5 +17,7 @@ module com.example.demo1 {
     opens com.example.demo1 to javafx.fxml;
     opens com.example.demo1.models to com.google.gson;
     exports com.example.demo1;
+    exports com.example.demo1.pages;
+    opens com.example.demo1.pages to javafx.fxml;
 
 }
