@@ -15,6 +15,7 @@ public class AppealServiceImpl implements AppealService {
 
     @Override
     public Appeal create(Appeal appeal) {
+        System.out.println(appeal);
         return appealJpaRepository.save(appeal);
     }
 
@@ -40,6 +41,11 @@ public class AppealServiceImpl implements AppealService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<Appeal> findByUserName(String userName) {
+        return appealJpaRepository.findByUserUserName(userName);
     }
 
 

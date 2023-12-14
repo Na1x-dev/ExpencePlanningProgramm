@@ -66,7 +66,6 @@ public class LoginController {
     @FXML
     void login(ActionEvent event) {
         appData.setUser(new User(userNameField.getText(), passwordField.getText()));
-
         HttpResponse<String> response = RequestsBuilder.postRequest(appData.getGson().toJson(appData.getUser()), "/login");
         if (response == null) {
             resultLabel.setText("Сервер недоступен");
@@ -86,6 +85,7 @@ public class LoginController {
     private void getUserFromServer(User user) {
         HttpResponse<String> response = RequestsBuilder.getRequestWithProperty("/login/user", user.getUserName());
         appData.setUser(appData.getGson().fromJson(response.body(), User.class));
+        appData.getUser().setUserName(userNameField.getText());
     }
 
     private void getStatusesFromServer() {

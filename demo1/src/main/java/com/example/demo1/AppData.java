@@ -1,5 +1,6 @@
 package com.example.demo1;
 
+import java.text.SimpleDateFormat;
 import com.example.demo1.models.Status;
 import com.example.demo1.models.User;
 import com.example.demo1.models.Role;
@@ -24,8 +25,11 @@ public class AppData {
     private Gson gson = builder.create();
     private List<Status> statuses;
     private List<Role> roles;
+    SimpleDateFormat formatForServer;
+    SimpleDateFormat formatForClient;
 
     private AppData() {
+       formatForServer = new SimpleDateFormat("yyyy-MM-dd");
     }
 
     public static AppData getInstance() {

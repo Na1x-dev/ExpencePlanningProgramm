@@ -6,8 +6,10 @@ package com.example.demo1.pages;
 
 import com.example.demo1.AppData;
 import java.net.URL;
+import java.net.http.HttpResponse;
 import java.util.ResourceBundle;
 
+import com.example.demo1.RequestsBuilder;
 import com.example.demo1.models.Appeal;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,6 +41,8 @@ public class CreateAppealController {
     @FXML
     private TextArea textArea;
 
+    AppData appData;
+
     @FXML
     void back(ActionEvent event) {
         AppData.toNextStage("customerPage.fxml", backButton, "Customer Page");
@@ -49,15 +53,15 @@ public class CreateAppealController {
         if (!textArea.getText().isEmpty()) {
             Appeal appeal = new Appeal();
             appeal.setAppealText(textArea.getText());
-            //PUT
-            System.out.println(appeal);
+            HttpResponse<String> response = RequestsBuilder.postRequest(appData.getGson().toJson(appeal), "/appeals/create");
+            System.out.println(response);
             AppData.toNextStage("customerPage.fxml", backButton, "Customer Page");
         }
     }
 
     @FXML
     void initialize() {
-
+        appData = AppData.getInstance();
     }
 
 }

@@ -12,7 +12,7 @@ public class Appeal {
 
     private Long appealId;
 
-    private Date registrationDate;
+    private String registrationDate;
 
     private Status status;
 
@@ -20,14 +20,14 @@ public class Appeal {
 
     private String appealText;
 
-    private Date closingDate;
+    private String closingDate;
 
     private User closingUser;
 
     private String comment;
 
     public Appeal(){
-        registrationDate = new Date();
+        registrationDate = AppData.getInstance().getFormatForServer().format(new Date());
         status = AppData.getInstance().findStatus("создано");
         user = AppData.getInstance().getUser();
         appealText = "";

@@ -55,8 +55,8 @@ public class Appeal {
         status = new Status();
         user = new User();
         appealText = "";
-        closingDate = new Date();
-        closingUser = new User();
+        closingDate = null;
+        closingUser = null;
         comment = "";
     }
 

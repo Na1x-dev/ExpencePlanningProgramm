@@ -1,10 +1,17 @@
 package com.example.demo1.pages;
 
+import java.lang.reflect.Type;
 import java.net.URL;
+import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import com.example.demo1.RequestsBuilder;
 import com.example.demo1.models.Appeal;
+import com.example.demo1.models.Status;
+import com.google.gson.reflect.TypeToken;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -26,15 +33,6 @@ public class CustomerPageController {
     private AnchorPane anchorPane;
 
     @FXML
-    private TableColumn<?, ?> appealId;
-
-    @FXML
-    private TableColumn<?, ?> closeDate;
-
-    @FXML
-    private TableColumn<?, ?> comment;
-
-    @FXML
     private Button createAppealButton;
 
     @FXML
@@ -45,6 +43,14 @@ public class CustomerPageController {
 
     @FXML
     private Button logOutButton;
+    @FXML
+    private TableColumn<?, ?> appealId;
+
+    @FXML
+    private TableColumn<?, ?> closeDate;
+
+    @FXML
+    private TableColumn<?, ?> comment;
 
     @FXML
     private TableColumn<?, ?> registrationDate;
@@ -54,6 +60,9 @@ public class CustomerPageController {
 
     @FXML
     private TableColumn<?, ?> text;
+
+
+    AppData appData = AppData.getInstance();
 
     @FXML
     void logOut(ActionEvent event) {
@@ -70,7 +79,24 @@ public class CustomerPageController {
     void initialize() {
         createAppealButton.setMinWidth(hbox.getPrefWidth() * 2);
         logOutButton.setMinWidth(hbox.getPrefWidth());
-        System.out.println(hbox.getMaxWidth());
+        getUserAppeals();
+    }
+
+    public void getUserAppeals() {
+        HttpResponse<String> response = RequestsBuilder.getRequestWithProperty("/appeals/getByUser", appData.getUser().getUserName());
+        Type listType = new TypeToken<ArrayList<Appeal>>() {
+        }.getType();
+        List<Appeal> appeals = appData.getGson().fromJson(response.body(), listType);
+        System.out.println(appeals);
+
+
+        for (Appeal appeal : appeals) {
+
+
+// Добавьте новую строку в TableView
+            customerTable.getItems().add(appeal);
+
+        }
     }
 
 }

@@ -109,8 +109,9 @@ public class UserController {
     }
 
     @GetMapping(value = "/login/user/{userName}")
-    public ResponseEntity<User> getUserForLogin(@PathVariable(name = "userName") String userName) {
+    public ResponseEntity<?> getUserForLogin(@PathVariable(name = "userName") String userName) {
         final User user = userService.findByUserName(userName);
+        System.out.println(user);
         return user != null
                 ? new ResponseEntity<>(user, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
