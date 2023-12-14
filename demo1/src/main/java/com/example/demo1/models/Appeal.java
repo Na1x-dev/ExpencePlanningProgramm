@@ -1,6 +1,7 @@
 package com.example.demo1.models;
 
 
+import com.example.demo1.AppData;
 import lombok.Data;
 
 import java.util.*;
@@ -27,11 +28,11 @@ public class Appeal {
 
     public Appeal(){
         registrationDate = new Date();
-        status = new Status();
-        user = new User();
+        status = AppData.getInstance().findStatus("создано");
+        user = AppData.getInstance().getUser();
         appealText = "";
-        closingDate = new Date();
-        closingUser = new User();
+        closingDate = null;
+        closingUser = null;
         comment = "";
     }
 

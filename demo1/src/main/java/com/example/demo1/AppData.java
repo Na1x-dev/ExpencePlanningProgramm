@@ -35,7 +35,7 @@ public class AppData {
         return instance;
     }
 
-    public static void toNextStage(String fxmlFile, Button button, String pageTitle){
+    public static void toNextStage(String fxmlFile, Button button, String pageTitle) {
         Stage stage = (Stage) button.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(AppData.class.getResource(fxmlFile));
         Parent root1 = null;
@@ -49,4 +49,12 @@ public class AppData {
         stage.show();
     }
 
+    public Status findStatus(String statusName) {
+        for(Status status : statuses){
+            if(status.getStatusName().equals(statusName)){
+                return status;
+            }
+        }
+        return null;
+    }
 }
