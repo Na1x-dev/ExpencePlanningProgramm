@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: #feefff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.pages.CustomerPageController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0"  xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.pages.CustomerPageController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" prefWidth="20.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="2000.0" />
@@ -23,11 +23,11 @@
    <children>
       <HBox fx:id="hbox" maxWidth="Infinity" minWidth="0" prefHeight="100.0" GridPane.columnIndex="1" HBox.hgrow="ALWAYS">
          <children>
-            <Button fx:id="createAppealButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toCreateAppeal" prefHeight="40.0" style="-fx-background-color: #fcccff;" text="Создать обращение" HBox.hgrow="ALWAYS">
+            <Button fx:id="createAppealButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toCreateAppeal" prefHeight="40.0" text="Создать обращение" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets right="5.0" top="10.0" />
                </HBox.margin></Button>
-            <Button fx:id="logOutButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#logOut" prefHeight="40.0" style="-fx-background-color: #fcccff;" text="Выйти" HBox.hgrow="ALWAYS">
+            <Button fx:id="logOutButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#logOut" prefHeight="40.0" text="Выйти" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets left="5.0" top="10.0" />
                </HBox.margin></Button>
@@ -35,14 +35,14 @@
       </HBox>
       <AnchorPane fx:id="anchorPane" prefHeight="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <TableView fx:id="customerTable" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"  layoutY="110.0" maxWidth="Infinity" minWidth="0" prefHeight="300.0">
+            <TableView fx:id="customerTable" layoutY="110.0" maxWidth="Infinity" minWidth="0" prefHeight="300.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
               <columns>
-                <TableColumn fx:id="appealId" prefWidth="75.0" text="Номер обращения" />
-                <TableColumn fx:id="registrationDate" prefWidth="109.0" text="Дата обращения" />
-                  <TableColumn fx:id="text" prefWidth="150.0" text="Текст обращения" />
-                  <TableColumn fx:id="status" minWidth="7.0" prefWidth="62.0" text="Статус" />
-                  <TableColumn fx:id="closeDate" prefWidth="100.0" text="Дата закрытия" />
-                  <TableColumn fx:id="comment" prefWidth="103.0" text="Комментарий" />
+                <TableColumn fx:id="appealId" text="Номер обращения" />
+                <TableColumn fx:id="registrationDate" text="Дата обращения" />
+                  <TableColumn fx:id="text" text="Текст обращения" />
+                  <TableColumn fx:id="status" text="Статус" />
+                  <TableColumn fx:id="closeDate" text="Дата закрытия" />
+                  <TableColumn fx:id="comment" text="Комментарий" />
               </columns>
             </TableView>
          </children>

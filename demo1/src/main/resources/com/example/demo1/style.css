@@ -1,6 +1,32 @@
-#logOutButton{
-
-
+.button {
+    -fx-background-color: #5082ff;
+    -fx-text-fill: #fff;
+    -fx-background-radius: 5;
+    -fx-font-size: 16;
 }
-#logOutButton:hover {
+
+.button:hover {
+    -fx-background-color: rgb(72, 92, 255);
+    -fx-cursor: hand;
+}
+
+.text-field, .text-area{
+    -fx-background-color: #ffffff;
+    -fx-border-color: #5082ff;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-size: 16;
+    -fx-border-width: 2;
+    -fx-text-fill: #777;
+    -fx-font-weight: bold;
+}
+
+.split-pane{
+    -fx-background-color: #0000ff;
+}
+
+.label{
+    -fx-text-fill: #444;
+    -fx-font-weight: bold;
+    -fx-font-size: 18;
 }
