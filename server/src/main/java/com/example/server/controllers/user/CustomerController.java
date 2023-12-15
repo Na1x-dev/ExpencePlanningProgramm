@@ -53,9 +53,7 @@ public class CustomerController {
     @GetMapping(value = "/appeals/getByUser/{userName}")
     public ResponseEntity<?> getAppealsOfUser(@PathVariable(name = "userName") String userName) {
         List<Appeal> appeals = appealService.findByUserName(userName);
-        return appeals != null &&  !appeals.isEmpty()
-                ? new ResponseEntity<>(appeals, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(appeals, HttpStatus.OK);
     }
 
     @PostMapping(value = "/appeals/create")

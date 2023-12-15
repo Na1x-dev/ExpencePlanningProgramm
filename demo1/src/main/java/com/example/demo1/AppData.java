@@ -1,11 +1,13 @@
 package com.example.demo1;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import com.example.demo1.models.Status;
 import com.example.demo1.models.User;
 import com.example.demo1.models.Role;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,6 +17,7 @@ import lombok.Data;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -30,6 +33,19 @@ public class AppData {
 
     private AppData() {
        formatForServer = new SimpleDateFormat("yyyy-MM-dd");
+       formatForClient = new SimpleDateFormat("dd.MM.yyyy");
+    }
+
+    public Date getDateFromString(String strDate){
+        try {
+            return formatForServer.parse(strDate);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String getDateForClient(String serverDate){
+        return formatForClient.format(getDateFromString(serverDate));
     }
 
     public static AppData getInstance() {
@@ -49,7 +65,10 @@ public class AppData {
             throw new RuntimeException(e);
         }
         stage.setTitle(pageTitle);
-        stage.setScene(new Scene(root1));
+        Scene scene = new Scene(root1);
+        String css = AppData.class.getResource("style.css").toExternalForm();
+        scene.getStylesheets().add(css);
+        stage.setScene(scene);
         stage.show();
     }
 

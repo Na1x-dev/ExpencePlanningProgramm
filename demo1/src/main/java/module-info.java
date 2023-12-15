@@ -15,9 +15,8 @@ module com.example.demo1 {
     requires com.google.gson;
 
     opens com.example.demo1 to javafx.fxml;
-    opens com.example.demo1.models to com.google.gson;
+    opens com.example.demo1.models to com.google.gson, javafx.base;
     exports com.example.demo1;
     exports com.example.demo1.pages;
     opens com.example.demo1.pages to javafx.fxml;
-
 }

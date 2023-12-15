@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -16,19 +17,25 @@
       <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" prefWidth="20.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <HBox fx:id="hbox" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+      <HBox fx:id="hbox" maxWidth="Infinity" minWidth="0" prefHeight="100.0" GridPane.columnIndex="1" HBox.hgrow="ALWAYS">
          <children>
-            <Button fx:id="createAppealButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#toCreateAppeal" prefHeight="40.0" style="-fx-background-color: #fcccff;" text="Создать обращение" />
-            <Button fx:id="logOutButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#logOut" prefHeight="40.0"  style="-fx-background-color: #fcccff;" text="Выйти" />
+            <Button fx:id="createAppealButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toCreateAppeal" prefHeight="40.0" style="-fx-background-color: #fcccff;" text="Создать обращение" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="5.0" top="10.0" />
+               </HBox.margin></Button>
+            <Button fx:id="logOutButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#logOut" prefHeight="40.0" style="-fx-background-color: #fcccff;" text="Выйти" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="5.0" top="10.0" />
+               </HBox.margin></Button>
          </children>
       </HBox>
-      <AnchorPane fx:id="anchorPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <AnchorPane fx:id="anchorPane" prefHeight="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <TableView fx:id="customerTable" layoutX="-1.0" layoutY="113.0" prefHeight="308.0" prefWidth="600.0">
+            <TableView fx:id="customerTable" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"  layoutY="110.0" maxWidth="Infinity" minWidth="0" prefHeight="300.0">
               <columns>
                 <TableColumn fx:id="appealId" prefWidth="75.0" text="Номер обращения" />
                 <TableColumn fx:id="registrationDate" prefWidth="109.0" text="Дата обращения" />

@@ -13,9 +13,11 @@ public class Application extends javafx.application.Application {
         AppData appData = AppData.getInstance();
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         primaryStage.setTitle("login");
-        primaryStage.setScene(new Scene(root, 700, 600));
+        String css = getClass().getResource("style.css").toExternalForm();
+        Scene scene = new Scene(root, 700, 600);
+        scene.getStylesheets().add(css);
+        primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 
 
