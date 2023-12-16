@@ -17,6 +17,7 @@ public class Application extends javafx.application.Application {
         Scene scene = new Scene(root, 700, 600);
         scene.getStylesheets().add(css);
         primaryStage.setScene(scene);
+//        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 

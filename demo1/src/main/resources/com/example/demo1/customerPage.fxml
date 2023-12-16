@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0"  xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.pages.CustomerPageController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.pages.CustomerPageController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" prefWidth="20.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="2000.0" />
@@ -37,12 +37,12 @@
          <children>
             <TableView fx:id="customerTable" layoutY="110.0" maxWidth="Infinity" minWidth="0" prefHeight="300.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
               <columns>
-                <TableColumn fx:id="appealId" text="Номер обращения" />
-                <TableColumn fx:id="registrationDate" text="Дата обращения" />
-                  <TableColumn fx:id="text" text="Текст обращения" />
-                  <TableColumn fx:id="status" text="Статус" />
-                  <TableColumn fx:id="closeDate" text="Дата закрытия" />
-                  <TableColumn fx:id="comment" text="Комментарий" />
+                <TableColumn fx:id="appealId" minWidth="200.0" text="Номер обращения" />
+                <TableColumn fx:id="registrationDate" minWidth="200.0" text="Дата обращения" />
+                  <TableColumn fx:id="text" minWidth="200.0" text="Текст обращения" />
+                  <TableColumn fx:id="status" minWidth="200.0" text="Статус" />
+                  <TableColumn fx:id="closeDate" minWidth="200.0" text="Дата закрытия" />
+                  <TableColumn fx:id="comment" minWidth="200.0" text="Комментарий" />
               </columns>
             </TableView>
          </children>

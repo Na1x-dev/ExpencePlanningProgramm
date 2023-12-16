@@ -10,7 +10,7 @@
     -fx-cursor: hand;
 }
 
-.text-field, .text-area{
+.text-field, .text-area {
     -fx-background-color: #ffffff;
     -fx-border-color: #5082ff;
     -fx-border-radius: 5;
@@ -19,14 +19,38 @@
     -fx-border-width: 2;
     -fx-text-fill: #777;
     -fx-font-weight: bold;
+
 }
 
-.split-pane{
-    -fx-background-color: #0000ff;
+.table-view, .table-view .corner {
+    -fx-background-color: transparent;
+    /*-fx-text-alignment: center;*/
+
 }
 
-.label{
+.table-view .column-header-background, .table-view .column-header, .table-view .column-header-background .filler {
+    -fx-background-color: #6491ff;
+    -fx-padding: 5;
+    -fx-background-radius: 5;
+}
+
+.table-view .label{
+    -fx-text-fill: #fff;
+
+}
+
+.table-row-cell {
+    -fx-font-size: 16;
+    -fx-padding: 5;
+}
+
+
+.label {
     -fx-text-fill: #444;
     -fx-font-weight: bold;
     -fx-font-size: 18;
+}
+
+.grid-pane {
+    -fx-background-color: lightblue;
 }

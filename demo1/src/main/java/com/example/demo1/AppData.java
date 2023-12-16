@@ -69,6 +69,7 @@ public class AppData {
         String css = AppData.class.getResource("style.css").toExternalForm();
         scene.getStylesheets().add(css);
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
     }
 

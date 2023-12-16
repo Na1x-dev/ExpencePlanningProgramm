@@ -15,6 +15,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -90,11 +91,7 @@ public class CustomerPageController {
         }.getType();
         List<Appeal> appeals = appData.getGson().fromJson(response.body(), listType);
         for (Appeal appeal : appeals) {
-
-
-// Добавьте новую строку в TableView
             customerTable.getItems().add(appeal);
-
         }
     }
 
@@ -117,3 +114,28 @@ public class CustomerPageController {
     }
 
 }
+
+
+
+
+//        buttonColumn.setCellFactory(column -> new TableCell<>() {
+//            private final Button button = new Button("Click me");
+//
+//            {
+//                button.setOnAction(event -> {
+//                    String rowData = getItem();
+//                    System.out.println("Button clicked for: " + rowData);
+//                });
+//            }
+//
+//            @Override
+//            protected void updateItem(String item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (empty) {
+//                    setGraphic(null);
+//                } else {
+//                    setGraphic(button);
+//                }
+//            }
+//        });
+//        customerTable.getColumns().add(buttonColumn);
