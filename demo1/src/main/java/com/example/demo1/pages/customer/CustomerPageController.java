@@ -1,4 +1,4 @@
-package com.example.demo1.pages;
+package com.example.demo1.pages.customer;
 
 import java.lang.reflect.Type;
 import java.net.URL;

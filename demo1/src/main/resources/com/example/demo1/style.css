@@ -24,6 +24,7 @@
 
 .table-view, .table-view .corner {
     -fx-background-color: transparent;
+    -fx-pref-height: 700;
     /*-fx-text-alignment: center;*/
 
 }
@@ -44,13 +45,10 @@
     -fx-padding: 5;
 }
 
-
 .label {
     -fx-text-fill: #444;
     -fx-font-weight: bold;
     -fx-font-size: 18;
 }
 
-.grid-pane {
-    -fx-background-color: lightblue;
-}
+

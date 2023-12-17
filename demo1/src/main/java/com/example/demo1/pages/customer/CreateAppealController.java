@@ -2,7 +2,7 @@
  * Sample Skeleton for 'createAppealPage.fxml' Controller Class
  */
 
-package com.example.demo1.pages;
+package com.example.demo1.pages.customer;
 
 import com.example.demo1.AppData;
 import java.net.URL;
