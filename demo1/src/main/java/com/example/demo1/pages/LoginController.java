@@ -75,7 +75,10 @@ public class LoginController {
                 getUserFromServer(appData.getUser());
                 getRolesFromServer();
                 getStatusesFromServer();
-                AppData.toNextStage("customerPage.fxml", loginButton, "Customer Page");
+//                if (appData.getUser().getRole().getRoleName().equals("заказчик"))
+//                    AppData.toNextStage("customer/CustomerPage.fxml", loginButton, "Customer Page");
+//                else if (appData.getUser().getRole().getRoleName().equals("администратор"))
+                    AppData.toNextStage("executor/AppealsPage.fxml", loginButton, "Executor Page");
             } else {
                 resultLabel.setText("Неверные логин или пароль");
             }
@@ -90,13 +93,15 @@ public class LoginController {
 
     private void getStatusesFromServer() {
         HttpResponse<String> response = RequestsBuilder.getRequest("/login/statuses");
-        Type listType = new TypeToken<ArrayList<Status>>(){}.getType();
+        Type listType = new TypeToken<ArrayList<Status>>() {
+        }.getType();
         appData.setStatuses(appData.getGson().fromJson(response.body(), listType));
     }
 
     private void getRolesFromServer() {
         HttpResponse<String> response = RequestsBuilder.getRequest("/login/roles");
-        Type listType = new TypeToken<ArrayList<Role>>(){}.getType();
+        Type listType = new TypeToken<ArrayList<Role>>() {
+        }.getType();
         appData.setRoles(appData.getGson().fromJson(response.body(), listType));
     }
 

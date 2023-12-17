@@ -73,7 +73,7 @@ public class CustomerPageController {
 
     @FXML
     void toCreateAppeal(ActionEvent event) {
-        AppData.toNextStage("createAppealPage.fxml", createAppealButton, "Create Appeal");
+        AppData.toNextStage("customer/CreateAppealPage.fxml", createAppealButton, "Create Appeal");
     }
 
 

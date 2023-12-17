@@ -1,5 +1,5 @@
 /**
- * Sample Skeleton for 'createAppealPage.fxml' Controller Class
+ * Sample Skeleton for 'CreateAppealPage.fxml' Controller Class
  */
 
 package com.example.demo1.pages.customer;
@@ -45,7 +45,7 @@ public class CreateAppealController {
 
     @FXML
     void back(ActionEvent event) {
-        AppData.toNextStage("customerPage.fxml", backButton, "Customer Page");
+        AppData.toNextStage("customer/CustomerPage.fxml", backButton, "Customer Page");
     }
 
     @FXML
@@ -55,7 +55,7 @@ public class CreateAppealController {
             appeal.setAppealText(textArea.getText());
             HttpResponse<String> response = RequestsBuilder.postRequest(appData.getGson().toJson(appeal), "/appeals/create");
             System.out.println(response);
-            AppData.toNextStage("customerPage.fxml", backButton, "Customer Page");
+            AppData.toNextStage("customer/CustomerPage.fxml", backButton, "Customer Page");
         }
     }
 
