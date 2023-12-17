@@ -35,7 +35,7 @@
       </HBox>
       <AnchorPane fx:id="anchorPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <TextArea fx:id="textArea" layoutX="-3.0" layoutY="77.0" prefHeight="292.0" prefWidth="600.0" promptText="Текст обращения...">
+            <TextArea fx:id="textArea" layoutX="-3.0" layoutY="77.0" prefHeight="292.0" prefWidth="600.0"  AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" promptText="Текст обращения...">
                <font>
                   <Font size="16.0" />
                </font>
