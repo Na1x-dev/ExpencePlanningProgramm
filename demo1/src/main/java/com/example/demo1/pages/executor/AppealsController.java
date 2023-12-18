@@ -69,6 +69,7 @@ public class AppealsController {
     void logOut(ActionEvent event) {
         AppData.toNextStage("login.fxml", logOutButton, "login");
     }
+
     @FXML
     void toAppealsTable(ActionEvent event) {
 //        AppData.toNextStage("executor/AppealsPage.fxml", AppealsButton, "Executor Page");
@@ -93,11 +94,15 @@ public class AppealsController {
     void toProcurementArchiveTable(ActionEvent event) {
         AppData.toNextStage("executor/ProcurementArchivePage.fxml", ProcurementArchiveButton, "Executor Page");
     }
+    @FXML
+    void toCreateAppeal(ActionEvent actionEvent) {
+    }
 
     @FXML
     void initialize() {
         AppealsButton.setStyle("-fx-background-color: #fff; -fx-text-fill: #555");
     }
+
 
 }
 

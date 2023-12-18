@@ -24,7 +24,7 @@
 
 .table-view, .table-view .corner {
     -fx-background-color: transparent;
-    -fx-pref-height: 700;
+    -fx-pref-height: 500;
     /*-fx-text-alignment: center;*/
 
 }

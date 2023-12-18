@@ -69,6 +69,8 @@ public class LoginController {
         HttpResponse<String> response = RequestsBuilder.postRequest(appData.getGson().toJson(appData.getUser()), "/login");
         if (response == null) {
             resultLabel.setText("Сервер недоступен");
+            userNameField.setStyle("-fx-border-color: rgb(222,185,27)");
+            passwordField.setStyle("-fx-border-color: rgb(222,185,27)");
         } else {
             if (response.statusCode() == 200) {
                 resultLabel.setText("Успешная авторизация");
@@ -81,6 +83,8 @@ public class LoginController {
                     AppData.toNextStage("executor/AppealsPage.fxml", loginButton, "Executor Page");
             } else {
                 resultLabel.setText("Неверные логин или пароль");
+                userNameField.setStyle("-fx-border-color: rgb(222,27,63)");
+                passwordField.setStyle("-fx-border-color: rgb(222,27,63)");
             }
         }
     }

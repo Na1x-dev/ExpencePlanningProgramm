@@ -25,6 +25,7 @@
    <children>
       <VBox fx:id="vbox" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="299.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
+            <Label alignment="TOP_LEFT" contentDisplay="TOP" lineSpacing="5.0" prefHeight="109.0" prefWidth="300.0" text="УЧЕТ РАСХОДОВ БАНКОВСКО-ФИНАНСОВОЙ ОРГАНИЗАЦИИ" textOverrun="CENTER_ELLIPSIS" wrapText="true" />
             <Label alignment="TOP_LEFT" text="Логин">
                <font>
                   <Font size="18.0" />
