@@ -21,4 +21,6 @@ module com.example.demo1 {
     opens com.example.demo1.pages to javafx.fxml;
     exports com.example.demo1.pages.customer;
     opens com.example.demo1.pages.customer to javafx.fxml;
+    opens com.example.demo1.pages.executor to javafx.fxml;
+//    opens com.example.demo1.pages.admin to javafx.fxml;
 }
