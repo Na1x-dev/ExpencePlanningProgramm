@@ -101,6 +101,7 @@ public class AppealsController {
     @FXML
     void initialize() {
         AppealsButton.setStyle("-fx-background-color: #fff; -fx-text-fill: #555");
+        appealsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
 

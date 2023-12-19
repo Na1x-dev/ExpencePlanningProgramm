@@ -83,6 +83,7 @@ public class CustomerPageController {
         createAppealButton.setMinWidth(hbox.getPrefWidth() * 2);
         logOutButton.setMinWidth(hbox.getPrefWidth());
         getUserAppeals();
+        customerTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     public void getUserAppeals() {
@@ -99,7 +100,6 @@ public class CustomerPageController {
         appealId.setCellValueFactory(new PropertyValueFactory<>("appealId"));
         closeDate.setCellValueFactory(new PropertyValueFactory<>("closingDate"));
         comment.setCellValueFactory(new PropertyValueFactory<>("comment"));
-        registrationDate.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
         registrationDate.setCellValueFactory(cellData -> {
             Appeal appeal = cellData.getValue();
                 return new SimpleStringProperty(appData.getDateForClient(appeal.getRegistrationDate()));
@@ -110,7 +110,6 @@ public class CustomerPageController {
             return new SimpleStringProperty(statusName);
         });
         text.setCellValueFactory(new PropertyValueFactory<>("appealText"));
-
     }
 
 }

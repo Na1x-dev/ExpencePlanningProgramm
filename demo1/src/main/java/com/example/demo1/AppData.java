@@ -2,9 +2,8 @@ package com.example.demo1;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import com.example.demo1.models.Status;
-import com.example.demo1.models.User;
-import com.example.demo1.models.Role;
+
+import com.example.demo1.models.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,6 +16,7 @@ import lombok.Data;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,13 +30,30 @@ public class AppData {
     private List<Role> roles;
     SimpleDateFormat formatForServer;
     SimpleDateFormat formatForClient;
+    private List<Class> modelsList;
+    private int adminMode = 0;
 
     private AppData() {
-       formatForServer = new SimpleDateFormat("yyyy-MM-dd");
-       formatForClient = new SimpleDateFormat("dd.MM.yyyy");
+        formatForServer = new SimpleDateFormat("yyyy-MM-dd");
+        formatForClient = new SimpleDateFormat("dd.MM.yyyy");
+        initModelsList();
     }
 
-    public Date getDateFromString(String strDate){
+    private void initModelsList() {
+        modelsList = new ArrayList<>();
+        modelsList.add(Appeal.class);
+        modelsList.add(com.example.demo1.models.Application.class);
+        modelsList.add(Budget.class);
+        modelsList.add(Category.class);
+        modelsList.add(Department.class);
+        modelsList.add(Management.class);
+        modelsList.add(Order.class);
+        modelsList.add(Position.class);
+        modelsList.add(ProcurementArchive.class);
+        modelsList.add(User.class);
+    }
+
+    public Date getDateFromString(String strDate) {
         try {
             return formatForServer.parse(strDate);
         } catch (ParseException e) {
@@ -44,7 +61,7 @@ public class AppData {
         }
     }
 
-    public String getDateForClient(String serverDate){
+    public String getDateForClient(String serverDate) {
         return formatForClient.format(getDateFromString(serverDate));
     }
 
@@ -74,8 +91,8 @@ public class AppData {
     }
 
     public Status findStatus(String statusName) {
-        for(Status status : statuses){
-            if(status.getStatusName().equals(statusName)){
+        for (Status status : statuses) {
+            if (status.getStatusName().equals(statusName)) {
                 return status;
             }
         }

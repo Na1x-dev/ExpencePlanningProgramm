@@ -7,6 +7,7 @@ import com.example.demo1.AppData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 
 public class ApplicationsController {
 

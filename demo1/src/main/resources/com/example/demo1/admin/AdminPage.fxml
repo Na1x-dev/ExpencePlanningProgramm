@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -49,11 +48,61 @@
 <!--                  <Insets left="5.0" right="5.0" top="10.0" />-->
 <!--               </HBox.margin>-->
 <!--            </Button>-->
-<!--            <Button fx:id="logOutButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" prefHeight="40.0" text="Выйти" HBox.hgrow="ALWAYS">-->
-<!--               <HBox.margin>-->
-<!--                  <Insets left="5.0" top="10.0" />-->
-<!--               </HBox.margin>-->
-<!--            </Button>-->
+            <Button fx:id="AppealsButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toAppeals" prefHeight="40.0" text="Обращения" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="5.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="ApplicationsButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toApplications" prefHeight="40.0" text="Заявки" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="BudgetButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toBudget" prefHeight="40.0" text="Бюджет" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="CategoriesButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toCategories" prefHeight="40.0" text="Категории" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="DepartmentsButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toDepartments" prefHeight="40.0" text="Отделы" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="ManagementsButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toManagements" prefHeight="40.0" text="Управления" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="OrdersButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toOrders" prefHeight="40.0" text="Закупки" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="PositionsButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toPositions" prefHeight="40.0" text="Должности" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="ProcurementArchiveButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toProcurementButton" prefHeight="40.0" text="Архив закупок" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="UsersButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#toUsers" prefHeight="40.0" text="Пользователи" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="logOutButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" minWidth="0" mnemonicParsing="false" onAction="#logOut" prefHeight="40.0" text="Выйти" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="5.0" top="10.0" />
+               </HBox.margin>
+            </Button>
          </children>
       </HBox>
       <AnchorPane fx:id="upperAnchorPane" prefHeight="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -67,7 +116,7 @@
       </AnchorPane>
       <AnchorPane fx:id="bottomAnchorPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
          <children>
-            <GridPane  AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"  AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" layoutX="-1.0" layoutY="-2.0" prefHeight="275.0" prefWidth="600.0">
+            <GridPane layoutX="-1.0" layoutY="-2.0" prefHeight="275.0" prefWidth="600.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
