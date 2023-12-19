@@ -36,7 +36,7 @@ public class ApplicationsController {
 
     @FXML
     void toAppealsTable(ActionEvent event) {
-        AppData.toNextStage("executor/AppealsPage.fxml", AppealsButton, "Executor Page");
+        AppData.toNextStage("executor/AdminPage.fxml", AppealsButton, "Executor Page");
     }
 
     @FXML
