@@ -14,7 +14,7 @@ public class Application extends javafx.application.Application {
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         primaryStage.setTitle("login");
         String css = getClass().getResource("style.css").toExternalForm();
-        Scene scene = new Scene(root, 700, 600);
+        Scene scene = new Scene(root, 1000, 800);
         scene.getStylesheets().add(css);
         primaryStage.setScene(scene);
 //        primaryStage.setMaximized(true);
