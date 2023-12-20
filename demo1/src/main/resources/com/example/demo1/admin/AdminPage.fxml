@@ -107,7 +107,7 @@
       </HBox>
       <AnchorPane fx:id="upperAnchorPane" prefHeight="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <TableView fx:id="mainTable" layoutY="110.0" maxWidth="Infinity" minWidth="0" prefHeight="300.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+            <TableView fx:id="mainTable" layoutY="110.0" maxWidth="Infinity" minWidth="0" prefHeight="200.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="100">
                <columns>
 
                </columns>

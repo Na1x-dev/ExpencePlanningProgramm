@@ -30,8 +30,9 @@
 }
 
 .table-view .column-header-background, .table-view .column-header, .table-view .column-header-background .filler {
-    -fx-background-color: #6491ff;
+    /*-fx-background-color: #6491ff;*/
     -fx-padding: 5;
+    -fx-background-color: rgb(72, 92, 255);
     -fx-background-radius: 5;
 }
 
@@ -42,6 +43,7 @@
 
 .table-view .column-header .label{
     -fx-text-fill: #fff;
+    -fx-padding: 5;
 }
 
 .table-row-cell {

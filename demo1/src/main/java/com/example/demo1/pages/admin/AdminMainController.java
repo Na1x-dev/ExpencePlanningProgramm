@@ -13,16 +13,16 @@ import com.example.demo1.models.Appeal;
 import com.example.demo1.models.Status;
 import com.google.gson.reflect.TypeToken;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import com.example.demo1.AppData;
+import javafx.util.Duration;
 
 public class AdminMainController {
     @FXML
@@ -55,8 +55,6 @@ public class AdminMainController {
     private Button ProcurementArchiveButton;
     @FXML
     private Button UsersButton;
-    @FXML
-    private Button logOutButton10;
 
     Class modelClass;
     AppData appData = AppData.getInstance();
@@ -134,16 +132,33 @@ public class AdminMainController {
         modelClass = appData.getModelsList().get(appData.getAdminMode());
         mainTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         createTableColumns();
+        changeButtonsColor();
     }
 
     public void createTableColumns(){
         for(Field field : modelClass.getDeclaredFields()){
-            TableColumn<Object, String> fieldColumn = new TableColumn<>(field.getName());
+            TableColumn<Object, String> fieldColumn = new TableColumn<>();
             fieldColumn.setCellValueFactory(new PropertyValueFactory<>(field.getName()));
+            Tooltip tooltip = new Tooltip(field.getName());
+            tooltip.setShowDelay(Duration.millis(100));
+            fieldColumn.setGraphic(new Label(field.getName()));
+            Tooltip.install(fieldColumn.getGraphic(), tooltip);
             mainTable.getColumns().add(fieldColumn);
         }
     }
 
+    public void changeButtonsColor(){
+        ObservableList<Node> headerButtons = hbox.getChildren();
+        for(Node button : headerButtons){
+            button.setStyle("-fx-background-color: #5082ff; -fx-text-fill: #fff;");
+            button.setOnMouseEntered(mouseEvent -> button.setStyle("-fx-background-color: rgb(72, 92, 255); -fx-text-fill: #fff;"));
+            button.setOnMouseExited(mouseEvent -> button.setStyle("-fx-background-color: #5082ff; -fx-text-fill: #fff;"));
+
+        }
+        headerButtons.get(appData.getAdminMode()).setStyle("-fx-text-fill: #777; -fx-background-color: #fff");
+        headerButtons.get(appData.getAdminMode()).setOnMouseEntered(mouseEvent ->  headerButtons.get(appData.getAdminMode()).setStyle("-fx-background-color: #ddd;-fx-text-fill: #777;"));
+        headerButtons.get(appData.getAdminMode()).setOnMouseExited(mouseEvent ->  headerButtons.get(appData.getAdminMode()).setStyle("-fx-background-color: #fff;-fx-text-fill: #777;"));
+    }
 
     //        System.out.println(appData.getModelsList().get(0));
 //        initTableColumns();
