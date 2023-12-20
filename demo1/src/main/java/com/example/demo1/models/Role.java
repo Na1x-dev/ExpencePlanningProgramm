@@ -3,7 +3,7 @@ import lombok.Data;
 
 
 @Data
-public class Role {
+public class Role implements Model {
     private Long roleId;
 
     private String roleName;

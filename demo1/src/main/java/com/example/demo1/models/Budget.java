@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 
-public class Budget {
+public class Budget  implements Model{
 
     private Long budgetId;
 

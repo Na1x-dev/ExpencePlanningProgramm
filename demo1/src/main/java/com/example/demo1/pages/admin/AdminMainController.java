@@ -4,12 +4,15 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.http.HttpResponse;
-import java.text.ParseException;
+
+import com.google.gson.JsonObject;
+import com.google.gson.internal.LinkedTreeMap;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.example.demo1.RequestsBuilder;
 import com.example.demo1.models.Appeal;
+import com.example.demo1.models.Model;
 import com.example.demo1.models.Status;
 import com.google.gson.reflect.TypeToken;
 import javafx.beans.property.SimpleStringProperty;
@@ -133,10 +136,11 @@ public class AdminMainController {
         mainTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         createTableColumns();
         changeButtonsColor();
+        responseIntoTable();
     }
 
-    public void createTableColumns(){
-        for(Field field : modelClass.getDeclaredFields()){
+    public void createTableColumns() {
+        for (Field field : modelClass.getDeclaredFields()) {
             TableColumn<Object, String> fieldColumn = new TableColumn<>();
             fieldColumn.setCellValueFactory(new PropertyValueFactory<>(field.getName()));
             Tooltip tooltip = new Tooltip(field.getName());
@@ -147,17 +151,30 @@ public class AdminMainController {
         }
     }
 
-    public void changeButtonsColor(){
+    public void responseIntoTable() {
+        HttpResponse<String> response = RequestsBuilder.getRequest("/admin/getAll/" + modelClass.getSimpleName().toLowerCase());
+        Type listType = new TypeToken<ArrayList<LinkedTreeMap>>() {
+        }.getType();
+        List<LinkedTreeMap> responseList = appData.getGson().fromJson(response.body(), listType);
+        for (LinkedTreeMap model : responseList) {
+//            mainTable.getItems().add(object);
+            JsonObject mapModel = appData.getGson().toJsonTree(model).getAsJsonObject();
+            Model newModel = (Model) appData.getGson().fromJson(mapModel, modelClass);
+            System.out.println(newModel);
+        }
+    }
+
+    public void changeButtonsColor() {
         ObservableList<Node> headerButtons = hbox.getChildren();
-        for(Node button : headerButtons){
+        for (Node button : headerButtons) {
             button.setStyle("-fx-background-color: #5082ff; -fx-text-fill: #fff;");
             button.setOnMouseEntered(mouseEvent -> button.setStyle("-fx-background-color: rgb(72, 92, 255); -fx-text-fill: #fff;"));
             button.setOnMouseExited(mouseEvent -> button.setStyle("-fx-background-color: #5082ff; -fx-text-fill: #fff;"));
 
         }
         headerButtons.get(appData.getAdminMode()).setStyle("-fx-text-fill: #777; -fx-background-color: #fff");
-        headerButtons.get(appData.getAdminMode()).setOnMouseEntered(mouseEvent ->  headerButtons.get(appData.getAdminMode()).setStyle("-fx-background-color: #ddd;-fx-text-fill: #777;"));
-        headerButtons.get(appData.getAdminMode()).setOnMouseExited(mouseEvent ->  headerButtons.get(appData.getAdminMode()).setStyle("-fx-background-color: #fff;-fx-text-fill: #777;"));
+        headerButtons.get(appData.getAdminMode()).setOnMouseEntered(mouseEvent -> headerButtons.get(appData.getAdminMode()).setStyle("-fx-background-color: #ddd;-fx-text-fill: #777;"));
+        headerButtons.get(appData.getAdminMode()).setOnMouseExited(mouseEvent -> headerButtons.get(appData.getAdminMode()).setStyle("-fx-background-color: #fff;-fx-text-fill: #777;"));
     }
 
     //        System.out.println(appData.getModelsList().get(0));

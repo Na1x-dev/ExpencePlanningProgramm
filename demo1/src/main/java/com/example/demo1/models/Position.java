@@ -3,7 +3,7 @@ package com.example.demo1.models;
 import lombok.Data;
 
 @Data
-public class Position {
+public class Position implements Model {
     private Long positionId;
 
     private String positionName;

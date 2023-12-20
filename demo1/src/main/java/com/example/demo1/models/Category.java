@@ -7,7 +7,7 @@ import lombok.ToString;
 import java.util.List;
 
 @Data
-public class Category {
+public class Category implements Model {
 
     Long categoryId;
 

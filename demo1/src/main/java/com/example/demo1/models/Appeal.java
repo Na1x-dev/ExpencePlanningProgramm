@@ -8,7 +8,7 @@ import java.util.*;
 
 
 @Data
-public class Appeal {
+public class Appeal implements Model{
 
     private Long appealId;
 
@@ -50,6 +50,10 @@ public class Appeal {
                 '}';
     }
 
+    public void getPropertiesForCreateFields(){
+        Map<String, String> mapFields = new HashMap<>();
+        mapFields.put("user","Пользователь");
+    }
 
 
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 
 
 @Data
-public class Order {
+public class Order implements Model {
     private Long orderId;
 
     private Date orderDate;

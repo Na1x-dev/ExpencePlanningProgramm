@@ -4,7 +4,7 @@ import lombok.Data;
 
 
 @Data
-public class Management {
+public class Management implements Model {
     private Long managementId;
 
     private String managementName;

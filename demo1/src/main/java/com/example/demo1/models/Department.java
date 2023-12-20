@@ -4,7 +4,7 @@ package com.example.demo1.models;
 import lombok.*;
 
 @Data
-public class Department {
+public class Department implements Model {
     private Long departmentId;
 
     private String departmentName;

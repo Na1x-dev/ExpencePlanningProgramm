@@ -3,7 +3,7 @@ package com.example.demo1.models;
 import lombok.*;
 
 @Data
-public class User {
+public class User implements Model {
 
 //    @JsonProperty("userId")
     private Long userId;

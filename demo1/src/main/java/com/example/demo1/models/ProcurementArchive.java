@@ -3,7 +3,7 @@ import lombok.*;
 import java.util.Date;
 @Getter
 @Setter
-public class ProcurementArchive {
+public class ProcurementArchive implements Model {
     private Long procurementId;
 
     private Date procurementDate;
