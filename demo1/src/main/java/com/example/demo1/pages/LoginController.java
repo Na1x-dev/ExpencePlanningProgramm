@@ -68,10 +68,10 @@ public class LoginController {
     void login(ActionEvent event) {
         appData.setUser(new User(userNameField.getText(), passwordField.getText()));
         HttpResponse<String> response = RequestsBuilder.postRequest(appData.getGson().toJson(appData.getUser()), "/login");
-        if (!checkFields(getFields(), resultLabel)) {
+        if (!appData.checkFields(appData.getFields(gridPane1), resultLabel)) {
         } else {
             if (response == null) {
-                serverOffInfo(getFields(), resultLabel);
+                serverOffInfo(appData.getFields(gridPane1), resultLabel);
             } else {
                 if (response.statusCode() == 200) {
                     resultLabel.setText("Успешная авторизация");
@@ -81,7 +81,7 @@ public class LoginController {
 //                if (appData.getUser().getRole().getRoleName().equals("заказчик"))
 //                    AppData.toNextStage("customer/CustomerPage.fxml", loginButton, "Customer Page");
 //                else if (appData.getUser().getRole().getRoleName().equals("исполнитель"))
-//                    AppData.toNextStage("executor/AdminPage.fxml", loginButton, "Executor Page");
+//                    AppData.toNextStage("executor/AppealsPage.fxml", loginButton, "Executor Page");
 //                    else if(appData.getUser().getRole().getRoleName().equals("администратор"))
                     AppData.toNextStage("admin/AdminPage.fxml", loginButton, "Admin Page");
                 } else {
@@ -91,37 +91,6 @@ public class LoginController {
                 }
             }
         }
-    }
-
-    List<TextField> getFields() {
-        List<TextField> fields = new ArrayList<>();
-        Set<Node> nodes = gridPane1.lookupAll(".text-field");
-        for (Node node : nodes) {
-            if (node instanceof TextField) {
-                fields.add((TextField) node);
-            }
-        }
-        return fields;
-    }
-
-    boolean checkFields(List<TextField> fields, Label resultLabel) {
-        boolean checkFlag = true;
-        int emptyFieldsCounter = 0;
-        for (TextField field : fields) {
-            if (field.getText().isEmpty()) {
-                checkFlag = false;
-                field.setStyle("-fx-border-color: rgb(222,27,63)");
-                emptyFieldsCounter++;
-            } else {
-                field.setStyle("-fx-border-color: #5082ff");
-            }
-        }
-        if (emptyFieldsCounter == 1) {
-            resultLabel.setText("Поле должно быть заполнено");
-        } else if (emptyFieldsCounter > 1) {
-            resultLabel.setText("Поля должны быть заполнены");
-        }
-        return checkFlag;
     }
 
     void serverOffInfo(List<TextField> fields, Label resultLabel) {

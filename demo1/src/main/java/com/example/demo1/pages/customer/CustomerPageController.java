@@ -14,10 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -62,6 +59,8 @@ public class CustomerPageController {
 
     @FXML
     private TableColumn<Appeal, String> text;
+    @FXML
+    private Label userNameLabel;
 
 
     AppData appData = AppData.getInstance();
@@ -84,6 +83,7 @@ public class CustomerPageController {
         logOutButton.setMinWidth(hbox.getPrefWidth());
         getUserAppeals();
         customerTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        userNameLabel.setText(appData.getUser().getUserName());
     }
 
     public void getUserAppeals() {
@@ -96,13 +96,13 @@ public class CustomerPageController {
         }
     }
 
-    public void initTableColumns(){
+    public void initTableColumns() {
         appealId.setCellValueFactory(new PropertyValueFactory<>("appealId"));
         closeDate.setCellValueFactory(new PropertyValueFactory<>("closingDate"));
         comment.setCellValueFactory(new PropertyValueFactory<>("comment"));
         registrationDate.setCellValueFactory(cellData -> {
             Appeal appeal = cellData.getValue();
-                return new SimpleStringProperty(appData.getDateForClient(appeal.getRegistrationDate()));
+            return new SimpleStringProperty(appData.getDateForClient(appeal.getRegistrationDate()));
         });
         status.setCellValueFactory(cellData -> {
             Appeal appeal = cellData.getValue();
@@ -113,8 +113,6 @@ public class CustomerPageController {
     }
 
 }
-
-
 
 
 //        buttonColumn.setCellFactory(column -> new TableCell<>() {

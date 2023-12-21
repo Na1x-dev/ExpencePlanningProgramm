@@ -8,9 +8,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lombok.Data;
 
@@ -19,6 +23,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class AppData {
@@ -97,5 +102,67 @@ public class AppData {
             }
         }
         return null;
+    }
+
+    public boolean checkFields(List<TextField> fields, Label resultLabel) {
+        boolean checkFlag = true;
+        int emptyFieldsCounter = 0;
+        for (TextField field : fields) {
+            if (field.getText().isEmpty()) {
+                checkFlag = false;
+                field.setStyle("-fx-border-color: rgb(222,27,63)");
+                emptyFieldsCounter++;
+            } else {
+                field.setStyle("-fx-border-color: #5082ff");
+            }
+        }
+        if (emptyFieldsCounter == 1) {
+            resultLabel.setText("Поле должно быть заполнено");
+        } else if (emptyFieldsCounter > 1) {
+            resultLabel.setText("Поля должны быть заполнены");
+        }
+        return checkFlag;
+    }
+
+    public List<TextField> getFields(Node pane) {
+        List<TextField> fields = new ArrayList<>();
+        Set<Node> nodes = pane.lookupAll(".text-field");
+        for (Node node : nodes) {
+            if (node instanceof TextField) {
+                fields.add((TextField) node);
+            }
+        }
+        return fields;
+    }
+
+    public List<TextArea> getAreas(Node pane) {
+        List<TextArea> areas = new ArrayList<>();
+        Set<Node> nodes = pane.lookupAll(".text-area");
+        for (Node node : nodes) {
+            if (node instanceof TextArea) {
+                areas.add((TextArea) node);
+            }
+        }
+        return areas;
+    }
+
+    public boolean checkAreas(List<TextArea> areas, Label resultLabel) {
+        boolean checkFlag = true;
+        int emptyAreasCounter = 0;
+        for (TextArea area : areas) {
+            if (area.getText().isEmpty()) {
+                checkFlag = false;
+                area.setStyle("-fx-border-color: rgb(222,27,63)");
+                emptyAreasCounter++;
+            } else {
+                area.setStyle("-fx-border-color: #5082ff");
+            }
+        }
+        if (emptyAreasCounter == 1) {
+            resultLabel.setText("Поле должно быть заполнено");
+        } else if (emptyAreasCounter > 1) {
+            resultLabel.setText("Поля должны быть заполнены");
+        }
+        return checkFlag;
     }
 }

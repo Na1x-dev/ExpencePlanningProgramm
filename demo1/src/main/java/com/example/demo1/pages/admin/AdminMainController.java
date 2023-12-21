@@ -155,13 +155,13 @@ public class AdminMainController {
         HttpResponse<String> response = RequestsBuilder.getRequest("/admin/getAll/" + modelClass.getSimpleName().toLowerCase());
         Type listType = new TypeToken<ArrayList<LinkedTreeMap>>() {
         }.getType();
-        List<LinkedTreeMap> responseList = appData.getGson().fromJson(response.body(), listType);
-        for (LinkedTreeMap model : responseList) {
+//        List<LinkedTreeMap> responseList = appData.getGson().fromJson(response.body(), listType);
+//        for (LinkedTreeMap model : responseList) {
 //            mainTable.getItems().add(object);
-            JsonObject mapModel = appData.getGson().toJsonTree(model).getAsJsonObject();
-            Model newModel = (Model) appData.getGson().fromJson(mapModel, modelClass);
-            System.out.println(newModel);
-        }
+//            JsonObject mapModel = appData.getGson().toJsonTree(model).getAsJsonObject();
+//            Model newModel = (Model) appData.getGson().fromJson(mapModel, modelClass);
+//            System.out.println(newModel);
+//        }
     }
 
     public void changeButtonsColor() {

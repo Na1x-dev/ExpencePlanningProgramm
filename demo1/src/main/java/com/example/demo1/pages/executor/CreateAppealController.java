@@ -2,13 +2,9 @@
  * Sample Skeleton for 'CreateAppealPage.fxml' Controller Class
  */
 
-package com.example.demo1.pages.customer;
+package com.example.demo1.pages.executor;
 
 import com.example.demo1.AppData;
-import java.net.URL;
-import java.net.http.HttpResponse;
-import java.util.ResourceBundle;
-
 import com.example.demo1.RequestsBuilder;
 import com.example.demo1.models.Appeal;
 import javafx.event.ActionEvent;
@@ -19,6 +15,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+
+import java.net.URL;
+import java.net.http.HttpResponse;
+import java.util.ResourceBundle;
 
 public class CreateAppealController {
 
@@ -52,7 +52,7 @@ public class CreateAppealController {
 
     @FXML
     void back(ActionEvent event) {
-        AppData.toNextStage("customer/CustomerPage.fxml", backButton, "Customer Page");
+        AppData.toNextStage("executor/AppealsPage.fxml", backButton, "Executor Page");
     }
 
     @FXML
@@ -64,7 +64,7 @@ public class CreateAppealController {
             appeal.setAppealText(textArea.getText());
             HttpResponse<String> response = RequestsBuilder.postRequest(appData.getGson().toJson(appeal), "/appeals/create");
             System.out.println(response);
-            AppData.toNextStage("customer/CustomerPage.fxml", backButton, "Customer Page");
+            AppData.toNextStage("executor/AppealsPage.fxml", backButton, "Executor Page");
         }
     }
 

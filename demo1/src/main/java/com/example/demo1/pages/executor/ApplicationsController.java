@@ -7,6 +7,7 @@ import com.example.demo1.AppData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 
 public class ApplicationsController {
@@ -34,10 +35,13 @@ public class ApplicationsController {
 
     @FXML
     private Button manualButton;
+    @FXML
+    private Label userNameLabel;
+    AppData appData = AppData.getInstance();
 
     @FXML
     void toAppealsTable(ActionEvent event) {
-        AppData.toNextStage("executor/AdminPage.fxml", AppealsButton, "Executor Page");
+        AppData.toNextStage("executor/AppealsPage.fxml", AppealsButton, "Executor Page");
     }
 
     @FXML
@@ -67,6 +71,7 @@ public class ApplicationsController {
     @FXML
     void initialize() {
     ApplicationsButton.setStyle("-fx-background-color: #fff; -fx-text-fill: #555");
+        userNameLabel.setText(appData.getUser().getUserName());
     }
 
 }
