@@ -52,81 +52,61 @@ public class AdminController {
     @GetMapping(value = "/admin/getAll/appeal")
     public ResponseEntity<List<Appeal>> readAppeals() {
         final List<Appeal> appeals = appealService.readAll();
-        return appeals != null &&  !appeals.isEmpty()
-                ? new ResponseEntity<>(appeals, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(appeals, HttpStatus.OK);
     }
 
     @GetMapping(value = "/admin/getAll/application")
     public ResponseEntity<List<Application>> readApplications() {
         final List<Application> applications = applicationService.readAll();
-        return applications != null &&  !applications.isEmpty()
-                ? new ResponseEntity<>(applications, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(applications, HttpStatus.OK);
     }
 
     @GetMapping(value = "/admin/getAll/budget")
     public ResponseEntity<List<Budget>> readBudgets() {
         final List<Budget> budgets = budgetService.readAll();
-        return budgets != null &&  !budgets.isEmpty()
-                ? new ResponseEntity<>(budgets, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(budgets, HttpStatus.OK);
     }
 
     @GetMapping(value = "/admin/getAll/category")
     public ResponseEntity<List<Category>> readCategorys() {
         final List<Category> categories = categoryService.readAll();
-        return categories != null &&  !categories.isEmpty()
-                ? new ResponseEntity<>(categories, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @GetMapping(value = "/admin/getAll/department")
     public ResponseEntity<List<Department>> readDepartments() {
         final List<Department> departments = departmentService.readAll();
-        return departments != null &&  !departments.isEmpty()
-                ? new ResponseEntity<>(departments, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(departments, HttpStatus.OK);
     }
 
     @GetMapping(value = "/admin/getAll/management")
     public ResponseEntity<List<Management>> readManagements() {
         final List<Management> managements = managementService.readAll();
-        return managements != null &&  !managements.isEmpty()
-                ? new ResponseEntity<>(managements, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(managements, HttpStatus.OK);
     }
 
     @GetMapping(value = "/admin/getAll/order")
     public ResponseEntity<List<Order>> readOrders() {
         final List<Order> orders = orderService.readAll();
-        return orders != null &&  !orders.isEmpty()
-                ? new ResponseEntity<>(orders, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @GetMapping(value = "/admin/getAll/position")
     public ResponseEntity<List<Position>> readPositions() {
         final List<Position> positions = positionService.readAll();
-        return positions != null &&  !positions.isEmpty()
-                ? new ResponseEntity<>(positions, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(positions, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/admin/getAll/procurementArchive")
+    @GetMapping(value = "/admin/getAll/procurementarchive")
     public ResponseEntity<List<ProcurementArchive>> readProcurementArchives() {
         final List<ProcurementArchive> procurementArchives = procurementArchiveService.readAll();
-        return procurementArchives != null &&  !procurementArchives.isEmpty()
-                ? new ResponseEntity<>(procurementArchives, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(procurementArchives, HttpStatus.OK);
     }
 
     @GetMapping(value = "/admin/getAll/user")
     public ResponseEntity<List<User>> readUsers() {
         final List<User> users = userService.readAll();
-        return users != null &&  !users.isEmpty()
-                ? new ResponseEntity<>(users, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 

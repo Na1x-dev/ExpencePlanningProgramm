@@ -3,6 +3,8 @@ package com.example.demo1.models;
 
 import com.example.demo1.AppData;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 
@@ -54,7 +56,6 @@ public class Appeal implements Model{
         Map<String, String> mapFields = new HashMap<>();
         mapFields.put("user","Пользователь");
     }
-
 
 }
 

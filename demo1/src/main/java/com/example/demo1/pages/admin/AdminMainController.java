@@ -5,8 +5,10 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.http.HttpResponse;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.LinkedTreeMap;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -15,6 +17,7 @@ import com.example.demo1.models.Appeal;
 import com.example.demo1.models.Model;
 import com.example.demo1.models.Status;
 import com.google.gson.reflect.TypeToken;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,7 +34,7 @@ public class AdminMainController {
     @FXML
     public AnchorPane upperAnchorPane;
     @FXML
-    public TableView<Object> mainTable;
+    public TableView<Map<String, Object>> mainTable;
     @FXML
     public AnchorPane bottomAnchorPane;
     @FXML
@@ -134,34 +137,62 @@ public class AdminMainController {
     void initialize() {
         modelClass = appData.getModelsList().get(appData.getAdminMode());
         mainTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        createTableColumns();
+//        createTableColumns();
         changeButtonsColor();
         responseIntoTable();
     }
 
-    public void createTableColumns() {
-        for (Field field : modelClass.getDeclaredFields()) {
-            TableColumn<Object, String> fieldColumn = new TableColumn<>();
-            fieldColumn.setCellValueFactory(new PropertyValueFactory<>(field.getName()));
-            Tooltip tooltip = new Tooltip(field.getName());
-            tooltip.setShowDelay(Duration.millis(100));
-            fieldColumn.setGraphic(new Label(field.getName()));
-            Tooltip.install(fieldColumn.getGraphic(), tooltip);
-            mainTable.getColumns().add(fieldColumn);
-        }
-    }
+//    public void createTableColumns() {
+//        for (Field field : modelClass.getDeclaredFields()) {
+//            TableColumn<Object, Object> fieldColumn = new TableColumn<>();
+//            fieldColumn.setCellValueFactory(new PropertyValueFactory<>(field.getName()));
+//            Tooltip tooltip = new Tooltip(field.getName());
+//            tooltip.setShowDelay(Duration.millis(100));
+//            fieldColumn.setGraphic(new Label(field.getName()));
+//            Tooltip.install(fieldColumn.getGraphic(), tooltip);
+//            mainTable.getColumns().add(fieldColumn);
+//        }
+//    }
+
+//    public void responseIntoTable() {
+//        HttpResponse<String> response = RequestsBuilder.getRequest("/admin/getAll/" + modelClass.getSimpleName().toLowerCase());
+//        Type listType = new TypeToken<ArrayList<LinkedTreeMap>>() {
+//        }.getType();
+////        List<LinkedTreeMap> responseList = appData.getGson().fromJson(response.body(), listType);
+////        for (LinkedTreeMap model : responseList) {
+////            mainTable.getItems().add(object);
+////            JsonObject mapModel = appData.getGson().toJsonTree(model).getAsJsonObject();
+////            Model newModel = (Model) appData.getGson().fromJson(mapModel, modelClass);
+////            System.out.println(newModel);
+////        }
+//    }
 
     public void responseIntoTable() {
         HttpResponse<String> response = RequestsBuilder.getRequest("/admin/getAll/" + modelClass.getSimpleName().toLowerCase());
-        Type listType = new TypeToken<ArrayList<LinkedTreeMap>>() {
-        }.getType();
-//        List<LinkedTreeMap> responseList = appData.getGson().fromJson(response.body(), listType);
-//        for (LinkedTreeMap model : responseList) {
-//            mainTable.getItems().add(object);
-//            JsonObject mapModel = appData.getGson().toJsonTree(model).getAsJsonObject();
-//            Model newModel = (Model) appData.getGson().fromJson(mapModel, modelClass);
-//            System.out.println(newModel);
-//        }
+        TypeToken<List<Map<String, Object>>> typeToken = new TypeToken<>() {
+        };
+        List<Map<String, Object>> objectList = appData.getGson().fromJson(response.body(), typeToken.getType());
+        if (!objectList.isEmpty()) {
+            Map<String, Object> firstObject = objectList.getFirst();
+            createTableColumns(firstObject);
+        }
+        mainTable.getItems().addAll(objectList);
+    }
+
+    public void createTableColumns(Map<String, Object> object) {
+        for (String propertyName : object.keySet()) {
+            TableColumn<Map<String, Object>, Object> fieldColumn = new TableColumn<>();
+            fieldColumn.setCellValueFactory(data -> {
+                System.out.println(data.getValue().get("registrationDate").getClass());
+                return new SimpleObjectProperty<>(data.getValue().get(propertyName));
+            });
+
+            Tooltip tooltip = new Tooltip(propertyName);
+            tooltip.setShowDelay(Duration.millis(100));
+            fieldColumn.setGraphic(new Label(propertyName));
+            Tooltip.install(fieldColumn.getGraphic(), tooltip);
+            mainTable.getColumns().add(fieldColumn);
+        }
     }
 
     public void changeButtonsColor() {
