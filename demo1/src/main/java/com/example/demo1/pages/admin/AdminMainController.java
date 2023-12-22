@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.http.HttpResponse;
 
+import com.example.demo1.models.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.LinkedTreeMap;
@@ -137,7 +138,6 @@ public class AdminMainController {
     void initialize() {
         modelClass = appData.getModelsList().get(appData.getAdminMode());
         mainTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-//        createTableColumns();
         changeButtonsColor();
         responseIntoTable();
     }
@@ -169,24 +169,35 @@ public class AdminMainController {
 
     public void responseIntoTable() {
         HttpResponse<String> response = RequestsBuilder.getRequest("/admin/getAll/" + modelClass.getSimpleName().toLowerCase());
-        TypeToken<List<Map<String, Object>>> typeToken = new TypeToken<>() {
-        };
-        List<Map<String, Object>> objectList = appData.getGson().fromJson(response.body(), typeToken.getType());
-        if (!objectList.isEmpty()) {
-            Map<String, Object> firstObject = objectList.getFirst();
-            createTableColumns(firstObject);
+        if (response.statusCode() == 200) {
+            TypeToken<List<Map<String, Object>>> typeToken = new TypeToken<>() {
+            };
+            List<Map<String, Object>> objectList = appData.getGson().fromJson(response.body(), typeToken.getType());
+            if (!objectList.isEmpty()) {
+                Map<String, Object> firstObject = objectList.getFirst();
+                createTableColumns(firstObject);
+            }
+            mainTable.getItems().addAll(objectList);
+        } else {
+            System.out.println("null");
         }
-        mainTable.getItems().addAll(objectList);
     }
 
     public void createTableColumns(Map<String, Object> object) {
         for (String propertyName : object.keySet()) {
             TableColumn<Map<String, Object>, Object> fieldColumn = new TableColumn<>();
             fieldColumn.setCellValueFactory(data -> {
-                System.out.println(data.getValue().get("registrationDate").getClass());
+                if (data.getValue().get(propertyName) != null) {
+                    if (data.getValue().get(propertyName).getClass().equals(Double.class)) {
+                        return new SimpleObjectProperty<>(((Double) data.getValue().get(propertyName)).intValue());
+                    }
+                    System.out.println(data.getValue().get(propertyName).getClass().equals(LinkedTreeMap.class));
+                    if (data.getValue().get(propertyName).getClass().equals(LinkedTreeMap.class)) {
+                        return new SimpleObjectProperty<>(((LinkedTreeMap<?,?>) data.getValue().get(propertyName)).get(0));
+                    }
+                }
                 return new SimpleObjectProperty<>(data.getValue().get(propertyName));
             });
-
             Tooltip tooltip = new Tooltip(propertyName);
             tooltip.setShowDelay(Duration.millis(100));
             fieldColumn.setGraphic(new Label(propertyName));

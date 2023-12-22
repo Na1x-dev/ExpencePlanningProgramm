@@ -13,9 +13,11 @@ module com.example.demo1 {
     requires com.almasb.fxgl.all;
     requires java.net.http;
     requires lombok;
+
     requires com.google.gson;
 
-    opens com.example.demo1 to javafx.fxml;
+    exports com.google.gson.internal;
+    opens com.example.demo1 to javafx.fxml, com.google.gson;
     opens com.example.demo1.models to com.google.gson, javafx.base;
     exports com.example.demo1;
     exports com.example.demo1.pages;
@@ -24,5 +26,4 @@ module com.example.demo1 {
     opens com.example.demo1.pages.customer to javafx.fxml;
     opens com.example.demo1.pages.executor to javafx.fxml;
     opens com.example.demo1.pages.admin to javafx.fxml;
-
 }
