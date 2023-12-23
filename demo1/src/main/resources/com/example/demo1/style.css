@@ -10,7 +10,7 @@
     -fx-cursor: hand;
 }
 
-.text-field, .text-area {
+.text-field, .text-area, .combo-box{
     -fx-background-color: #ffffff;
     -fx-border-color: #5082ff;
     -fx-border-radius: 5;
@@ -19,7 +19,6 @@
     -fx-border-width: 2;
     -fx-text-fill: #777;
     -fx-font-weight: bold;
-
 }
 
 .table-view, .table-view .corner {
@@ -27,6 +26,10 @@
     -fx-pref-height: 500;
     /*-fx-text-alignment: center;*/
 
+}
+
+.table-cell {
+    -fx-alignment: center;
 }
 
 .table-view .column-header-background, .table-view .column-header, .table-view .column-header-background .filler {

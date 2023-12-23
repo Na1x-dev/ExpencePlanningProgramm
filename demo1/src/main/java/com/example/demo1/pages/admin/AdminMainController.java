@@ -52,7 +52,8 @@ public class AdminMainController {
     private Button ProcurementArchiveButton;
     @FXML
     private Button UsersButton;
-
+    @FXML
+    private Button CreateButton;
     Class modelClass;
     AppData appData = AppData.getInstance();
 
@@ -123,6 +124,10 @@ public class AdminMainController {
         AppData.toNextStage("login.fxml", logOutButton, "login");
     }
 
+    @FXML
+    void toCreatePage(ActionEvent event) {
+        AppData.toNextStage("admin/AdminFields.fxml", CreateButton, "Admin Page");
+    }
 
     @FXML
     void initialize() {
@@ -131,31 +136,6 @@ public class AdminMainController {
         changeButtonsColor();
         responseIntoTable();
     }
-
-//    public void createTableColumns() {
-//        for (Field field : modelClass.getDeclaredFields()) {
-//            TableColumn<Object, Object> fieldColumn = new TableColumn<>();
-//            fieldColumn.setCellValueFactory(new PropertyValueFactory<>(field.getName()));
-//            Tooltip tooltip = new Tooltip(field.getName());
-//            tooltip.setShowDelay(Duration.millis(100));
-//            fieldColumn.setGraphic(new Label(field.getName()));
-//            Tooltip.install(fieldColumn.getGraphic(), tooltip);
-//            mainTable.getColumns().add(fieldColumn);
-//        }
-//    }
-
-//    public void responseIntoTable() {
-//        HttpResponse<String> response = RequestsBuilder.getRequest("/admin/getAll/" + modelClass.getSimpleName().toLowerCase());
-//        Type listType = new TypeToken<ArrayList<LinkedTreeMap>>() {
-//        }.getType();
-////        List<LinkedTreeMap> responseList = appData.getGson().fromJson(response.body(), listType);
-////        for (LinkedTreeMap model : responseList) {
-////            mainTable.getItems().add(object);
-////            JsonObject mapModel = appData.getGson().toJsonTree(model).getAsJsonObject();
-////            Model newModel = (Model) appData.getGson().fromJson(mapModel, modelClass);
-////            System.out.println(newModel);
-////        }
-//    }
 
     public void responseIntoTable() {
         HttpResponse<String> response = RequestsBuilder.getRequest("/admin/getAll/" + modelClass.getSimpleName().toLowerCase());
@@ -185,7 +165,7 @@ public class AdminMainController {
                     if (modelProperty.getClass().equals(LinkedTreeMap.class)) {
                         return new SimpleObjectProperty<>(((Double) returnIdFromModels(modelProperty)).intValue());
                     }
-                    if(modelProperty.getClass().equals(String.class) && appData.isValidDate((String) modelProperty)){
+                    if (modelProperty.getClass().equals(String.class) && appData.isValidDate((String) modelProperty)) {
                         return new SimpleObjectProperty<>(appData.getDateForAdmin((String) modelProperty));
                     }
                     return new SimpleObjectProperty<>(modelProperty);
@@ -198,7 +178,58 @@ public class AdminMainController {
             Tooltip.install(fieldColumn.getGraphic(), tooltip);
             mainTable.getColumns().add(fieldColumn);
         }
+        mainTable.getColumns().addAll(createUpdateButtons(), createUpdateButtons());
+
     }
+
+    TableColumn<Map<String, Object>, Void> createUpdateButtons(){
+        TableColumn<Map<String, Object>, Void> editColumn = new TableColumn<>("Изменить");
+        editColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button editButton = new Button("Изменить");
+
+            {
+                editButton.setOnAction(event -> {
+                    // Действия при нажатии на кнопку "Изменить"
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(editButton);
+                }
+            }
+        });
+        return editColumn;
+    }
+
+    TableColumn<Map<String, Object>, Void> createDeleteButtons(){
+        TableColumn<Map<String, Object>, Void> deleteColumn = new TableColumn<>("Удалить");
+        deleteColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Удалить");
+
+            {
+                deleteButton.setOnAction(event -> {
+                    // Действия при нажатии на кнопку "Удалить"
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
+                }
+            }
+        });
+        return deleteColumn;
+    }
+
 
     Object returnIdFromModels(Object modelProperty) {
         if (((LinkedTreeMap<?, ?>) modelProperty).get(Appeal.class.getDeclaredFields()[0].getName()) != null) {
@@ -244,61 +275,5 @@ public class AdminMainController {
     }
 
 
-    //        System.out.println(appData.getModelsList().get(0));
-//        initTableColumns();
-//        createAppealButton.setMinWidth(hbox.getPrefWidth() * 2);
-//        logOutButton.setMinWidth(hbox.getPrefWidth());
-//        getUserAppeals();
-
-//    public void getUserAppeals() {
-//        HttpResponse<String> response = RequestsBuilder.getRequestWithProperty("/appeals/getByUser", appData.getUser().getUserName());
-//        Type listType = new TypeToken<ArrayList<Appeal>>() {
-//        }.getType();
-//        List<Appeal> appeals = appData.getGson().fromJson(response.body(), listType);
-//        for (Appeal appeal : appeals) {
-//            customerTable.getItems().add(appeal);
-//        }
-//    }
-
-//    public void initTableColumns(){
-//        appealId.setCellValueFactory(new PropertyValueFactory<>("appealId"));
-//        closeDate.setCellValueFactory(new PropertyValueFactory<>("closingDate"));
-//        comment.setCellValueFactory(new PropertyValueFactory<>("comment"));
-//        registrationDate.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
-//        registrationDate.setCellValueFactory(cellData -> {
-//            Appeal appeal = cellData.getValue();
-//            return new SimpleStringProperty(appData.getDateForClient(appeal.getRegistrationDate()));
-//        });
-//        status.setCellValueFactory(cellData -> {
-//            Appeal appeal = cellData.getValue();
-//            String statusName = appeal.getStatus().getStatusName();
-//            return new SimpleStringProperty(statusName);
-//        });
-//        text.setCellValueFactory(new PropertyValueFactory<>("appealText"));
-//
-//    }
 
 }
-
-
-//        buttonColumn.setCellFactory(column -> new TableCell<>() {
-//            private final Button button = new Button("Click me");
-//
-//            {
-//                button.setOnAction(event -> {
-//                    String rowData = getItem();
-//                    System.out.println("Button clicked for: " + rowData);
-//                });
-//            }
-//
-//            @Override
-//            protected void updateItem(String item, boolean empty) {
-//                super.updateItem(item, empty);
-//                if (empty) {
-//                    setGraphic(null);
-//                } else {
-//                    setGraphic(button);
-//                }
-//            }
-//        });
-//        customerTable.getColumns().add(buttonColumn);

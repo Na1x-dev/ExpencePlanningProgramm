@@ -97,16 +97,40 @@ public class AdminController {
         return new ResponseEntity<>(positions, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/admin/create/position")
+    public ResponseEntity<?> createPosition(@RequestBody Position position) {
+        positionService.create(position);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @GetMapping(value = "/admin/getAll/procurementarchive")
     public ResponseEntity<List<ProcurementArchive>> readProcurementArchives() {
         final List<ProcurementArchive> procurementArchives = procurementArchiveService.readAll();
         return new ResponseEntity<>(procurementArchives, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/admin/getAll/role")
+    public ResponseEntity<List<Role>> readRoles() {
+        final List<Role> roles = roleService.readAll();
+        return new ResponseEntity<>(roles, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/admin/getAll/status")
+    public ResponseEntity<List<Status>> readStatuses() {
+        final List<Status> statuses = statusService.readAll();
+        return new ResponseEntity<>(statuses, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/admin/getAll/user")
     public ResponseEntity<List<User>> readUsers() {
         final List<User> users = userService.readAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/admin/create/user")
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        userService.create(user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 

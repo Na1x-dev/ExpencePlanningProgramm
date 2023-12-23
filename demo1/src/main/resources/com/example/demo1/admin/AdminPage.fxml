@@ -130,7 +130,7 @@
                <children>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <children>
-                        <Button alignment="CENTER" contentDisplay="CENTER" layoutY="26.0" mnemonicParsing="false" prefHeight="40.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"  prefWidth="200.0" text="Добавить" textAlignment="CENTER" />
+                        <Button fx:id="CreateButton" alignment="CENTER" contentDisplay="CENTER" layoutY="26.0" mnemonicParsing="false" onAction="#toCreatePage" prefHeight="40.0" prefWidth="200.0" text="Добавить" textAlignment="CENTER" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" />
                      </children>
                   </AnchorPane>
                </children>

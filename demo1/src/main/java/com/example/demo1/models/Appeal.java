@@ -52,10 +52,7 @@ public class Appeal implements Model{
                 '}';
     }
 
-    public void getPropertiesForCreateFields(){
-        Map<String, String> mapFields = new HashMap<>();
-        mapFields.put("user","Пользователь");
-    }
+
 
 }
 

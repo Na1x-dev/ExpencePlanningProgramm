@@ -2,6 +2,11 @@ package com.example.demo1.models;
 
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Data
 public class User implements Model {
 
@@ -83,5 +88,26 @@ public class User implements Model {
                 ", department=" + department +
                 '}';
     }
+
+    public List<String> getFieldsForCreate(){
+        List<String> listFields = new ArrayList<>();
+        listFields.add("firstName");
+        listFields.add("firstName");
+        listFields.add("patronymic");
+        listFields.add("userName");
+        listFields.add("password");
+        return listFields;
+    }
+
+    public List<String> getFieldsNameForCreate(){
+        List<String> listFieldsName = new ArrayList<>();
+        listFieldsName.add("Фамилия");
+        listFieldsName.add("Имя");
+        listFieldsName.add("Отчество");
+        listFieldsName.add("Логин");
+        listFieldsName.add("Пароль");
+        return listFieldsName;
+    }
+
 
 }

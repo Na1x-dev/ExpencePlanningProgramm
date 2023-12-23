@@ -37,6 +37,7 @@ public class AppData {
     SimpleDateFormat formatForClient;
     SimpleDateFormat formatForAdmin;
     private List<Class> modelsList;
+    private List<Class> fullModelsList;
     private int adminMode = 0;
 
     private AppData() {
@@ -45,6 +46,7 @@ public class AppData {
 //        formatForAdmin = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         formatForAdmin = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         initModelsList();
+        initFullModelsList();
     }
 
     public boolean isValidDate(String date) {
@@ -71,7 +73,23 @@ public class AppData {
         modelsList.add(User.class);
     }
 
-    public Date getDateFromString(String strDate, SimpleDateFormat format) {
+    private void initFullModelsList() {
+        fullModelsList = new ArrayList<>();
+        fullModelsList.add(Appeal.class);
+        fullModelsList.add(com.example.demo1.models.Application.class);
+        fullModelsList.add(Budget.class);
+        fullModelsList.add(Category.class);
+        fullModelsList.add(Department.class);
+        fullModelsList.add(Management.class);
+        fullModelsList.add(Order.class);
+        fullModelsList.add(Position.class);
+        fullModelsList.add(ProcurementArchive.class);
+        fullModelsList.add(User.class);
+        fullModelsList.add(Role.class);
+        fullModelsList.add(Status.class);
+    }
+
+     public Date getDateFromString(String strDate, SimpleDateFormat format) {
         try {
             return format.parse(strDate);
         } catch (ParseException e) {
