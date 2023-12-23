@@ -57,5 +57,21 @@ public class RequestsBuilder {
         return RequestsBuilder.sendRequest(request);
     }
 
+    public static HttpResponse<String> putRequest(String requestBody, String path) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(getServerURL() + path))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+        return RequestsBuilder.sendRequest(request);
+    }
+
+    public static HttpResponse<String> deleteRequest(String path) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(getServerURL() + path))
+                .DELETE()
+                .build();
+        return RequestsBuilder.sendRequest(request);
+    }
 
 }

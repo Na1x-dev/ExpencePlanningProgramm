@@ -3,6 +3,7 @@ package com.example.demo1.pages.admin;
 import java.net.http.HttpResponse;
 
 import com.example.demo1.models.*;
+import com.example.demo1.DialogBox;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.*;
@@ -11,7 +12,9 @@ import com.example.demo1.RequestsBuilder;
 
 import com.google.gson.reflect.TypeToken;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -32,6 +35,10 @@ public class AdminMainController {
     public HBox hbox;
     @FXML
     public Button logOutButton;
+    @FXML
+    public Label pageNameLabel;
+    @FXML
+    public Label userNameLabel;
     @FXML
     private Button AppealsButton;
     @FXML
@@ -54,6 +61,8 @@ public class AdminMainController {
     private Button UsersButton;
     @FXML
     private Button CreateButton;
+    @FXML
+    private TextField searchField;
     Class modelClass;
     AppData appData = AppData.getInstance();
 
@@ -135,6 +144,9 @@ public class AdminMainController {
         mainTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         changeButtonsColor();
         responseIntoTable();
+        initSearchField();
+        userNameLabel.setText(appData.getUser().getUserName());
+        pageNameLabel.setText("Страница модели " + modelClass.getSimpleName());
     }
 
     public void responseIntoTable() {
@@ -143,7 +155,7 @@ public class AdminMainController {
             TypeToken<List<Map<String, Object>>> typeToken = new TypeToken<>() {
             };
             List<Map<String, Object>> objectList = appData.getGson().fromJson(response.body(), typeToken.getType());
-            if (!objectList.isEmpty()) {
+            if (!objectList.isEmpty() && mainTable.getColumns().isEmpty()) {
                 Map<String, Object> firstObject = objectList.getFirst();
                 createTableColumns(firstObject);
             }
@@ -182,15 +194,17 @@ public class AdminMainController {
 
     }
 
-    TableColumn<Map<String, Object>, Void> createUpdateButtons(){
+    TableColumn<Map<String, Object>, Void> createUpdateButtons() {
         TableColumn<Map<String, Object>, Void> editColumn = new TableColumn<>("Изменить");
         editColumn.setCellFactory(param -> new TableCell<>() {
             private final Button editButton = new Button("Изменить");
+
             {
                 editButton.setOnAction(event -> {
                     // Действия при нажатии на кнопку "Изменить"
                 });
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -204,14 +218,22 @@ public class AdminMainController {
         return editColumn;
     }
 
-    TableColumn<Map<String, Object>, Void> createDeleteButtons(){
+    TableColumn<Map<String, Object>, Void> createDeleteButtons() {
         TableColumn<Map<String, Object>, Void> deleteColumn = new TableColumn<>("Удалить");
         deleteColumn.setCellFactory(param -> new TableCell<>() {
             private final Button deleteButton = new Button("Удалить");
 
             {
                 deleteButton.setOnAction(event -> {
-                    // Действия при нажатии на кнопку "Удалить"
+                    String fieldName = modelClass.getDeclaredFields()[0].getName();
+                    Long id = ((Double) getTableView().getItems().get(getIndex()).get(fieldName)).longValue();
+                    DialogBox dialogBox = new DialogBox("Вы действительно хотите удалить " + modelClass.getSimpleName() + " с Id=" + id);
+                    dialogBox.showAndWait();
+                    if (dialogBox.getResult() == DialogBox.Result.OK) {
+                        HttpResponse<String> response = RequestsBuilder.deleteRequest("/admin/delete/" + modelClass.getSimpleName().toLowerCase() + "/" + id);
+                        getTableView().getItems().clear();
+                        responseIntoTable();
+                    }
                 });
             }
 
@@ -258,6 +280,28 @@ public class AdminMainController {
         return null;
     }
 
+    void initSearchField(){
+        FilteredList<Map<String, Object>> filteredData = new FilteredList<>(mainTable.getItems(), p -> true);
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(row -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                for (Object value : row.values()) {
+                    if (value != null) {
+                        String cellValue = value.toString().toLowerCase();
+                        if (cellValue.contains(lowerCaseFilter)) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            });
+        });
+        mainTable.setItems(filteredData);
+    }
+
 
     public void changeButtonsColor() {
         ObservableList<Node> headerButtons = hbox.getChildren();
@@ -271,7 +315,6 @@ public class AdminMainController {
         headerButtons.get(appData.getAdminMode()).setOnMouseEntered(mouseEvent -> headerButtons.get(appData.getAdminMode()).setStyle("-fx-background-color: #ddd;-fx-text-fill: #777;"));
         headerButtons.get(appData.getAdminMode()).setOnMouseExited(mouseEvent -> headerButtons.get(appData.getAdminMode()).setStyle("-fx-background-color: #fff;-fx-text-fill: #777;"));
     }
-
 
 
 }

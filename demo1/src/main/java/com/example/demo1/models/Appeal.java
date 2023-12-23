@@ -53,6 +53,18 @@ public class Appeal implements Model{
     }
 
 
-
+    @Override
+    public String getRussianField(String fieldName) {
+        Map<String, String> fields = new HashMap<>();
+        fields.put("appealId","Id обращения");
+        fields.put("registrationDate","Дата регистрации");
+        fields.put("status","Статус");
+        fields.put("user","Пользователь-создатель");
+        fields.put("appealText","Текст обращения");
+        fields.put("closingDate","Дата закрытия");
+        fields.put("closingUser","Закрывший пользователь");
+        fields.put("comment","Комментарий");
+        return null;
+    }
 }
 
