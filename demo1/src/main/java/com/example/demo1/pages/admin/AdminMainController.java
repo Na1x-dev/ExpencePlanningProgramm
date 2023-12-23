@@ -178,7 +178,7 @@ public class AdminMainController {
             Tooltip.install(fieldColumn.getGraphic(), tooltip);
             mainTable.getColumns().add(fieldColumn);
         }
-        mainTable.getColumns().addAll(createUpdateButtons(), createUpdateButtons());
+        mainTable.getColumns().addAll(createUpdateButtons(), createDeleteButtons());
 
     }
 
@@ -186,13 +186,11 @@ public class AdminMainController {
         TableColumn<Map<String, Object>, Void> editColumn = new TableColumn<>("Изменить");
         editColumn.setCellFactory(param -> new TableCell<>() {
             private final Button editButton = new Button("Изменить");
-
             {
                 editButton.setOnAction(event -> {
                     // Действия при нажатии на кнопку "Изменить"
                 });
             }
-
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);

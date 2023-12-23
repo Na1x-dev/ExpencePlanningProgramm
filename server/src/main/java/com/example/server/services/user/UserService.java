@@ -1,5 +1,6 @@
 package com.example.server.services.user;
 
+import com.example.server.models.Appeal;
 import com.example.server.models.Role;
 import com.example.server.models.User;
 
@@ -14,10 +15,10 @@ public interface UserService {
 
     List<User> readAll();
 
-    boolean update(User user, Long userId);
+    boolean update( Long userId, User user);
 
     boolean delete(Long userId);
     User readById(Long userId);
 
-
+    User read(Long userId);
 }

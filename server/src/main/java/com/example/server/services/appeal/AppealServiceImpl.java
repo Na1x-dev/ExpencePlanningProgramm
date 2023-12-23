@@ -48,5 +48,9 @@ public class AppealServiceImpl implements AppealService {
         return appealJpaRepository.findByUserUserName(userName);
     }
 
+    @Override
+    public Appeal read(Long appealId) {
+        return appealJpaRepository.findByAppealId(appealId);
+    }
 
 }

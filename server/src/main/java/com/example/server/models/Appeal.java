@@ -52,8 +52,6 @@ public class Appeal {
 
     public Appeal(){
         registrationDate = new Date();
-        status = new Status();
-        user = new User();
         appealText = "";
         closingDate = null;
         closingUser = null;

@@ -42,9 +42,6 @@ public class ProcurementArchive {
 
     public ProcurementArchive(){
         procurementDate = new Date();
-        status = new Status();
-        user = new User();
-        order = new Order();
         comment = "";
     }
 
@@ -62,6 +59,9 @@ public class ProcurementArchive {
 
     public void setProcurementArchiveId(Long id) {
         procurementId = id;
+    }
+
+    public void create(ProcurementArchive procurementArchive) {
     }
 
     // Геттеры и сеттеры

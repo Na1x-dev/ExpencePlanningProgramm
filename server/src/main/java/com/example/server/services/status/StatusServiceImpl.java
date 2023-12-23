@@ -34,6 +34,11 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
+    public Status read(Long statusId) {
+        return statusJpaRepository.findByStatusId(statusId);
+    }
+
+    @Override
     public boolean update(Long id, Status status) {
         if (statusJpaRepository.existsById(id)) {
             status.setStatusId(id);

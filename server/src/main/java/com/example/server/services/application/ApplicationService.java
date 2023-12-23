@@ -1,5 +1,6 @@
 package com.example.server.services.application;
 
+import com.example.server.models.Appeal;
 import com.example.server.models.Application;
 
 
@@ -12,6 +13,7 @@ public interface ApplicationService {
 
     boolean delete(Long id);
 
+    Application read(Long applicationId);
     boolean update(Long id, Application application);
 
 }

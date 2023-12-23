@@ -10,4 +10,6 @@ import java.util.List;
 public interface AppealJpaRepository extends JpaRepository<Appeal, Long> {
 
     List<Appeal> findByUserUserName(String userName);
+
+    Appeal findByAppealId(Long appealId);
 }

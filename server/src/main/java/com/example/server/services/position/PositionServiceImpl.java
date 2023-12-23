@@ -43,6 +43,11 @@ public class PositionServiceImpl implements PositionService {
         return false;
     }
 
+    @Override
+    public Position read(Long positionId) {
+        return positionJpaRepository.findByPositionId(positionId);
+    }
+
 //    @Override
 //    public Position readByName(String title) {
 //        return positionJpaRepository.getByTitle(title);

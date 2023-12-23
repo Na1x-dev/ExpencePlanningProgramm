@@ -24,7 +24,6 @@ public class Department {
 
     public Department(){
         departmentName = "";
-        management = new Management();
     }
 
     @Override

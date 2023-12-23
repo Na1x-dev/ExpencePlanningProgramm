@@ -32,7 +32,6 @@ public class Budget {
     private Double finalBudget;
 
     public Budget(){
-        management = new Management();
         budgetCategory1 = 0.0;
         budgetCategory2 = 0.0;
         budgetCategory3 = 0.0;

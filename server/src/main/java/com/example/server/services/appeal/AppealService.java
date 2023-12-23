@@ -14,6 +14,7 @@ public interface AppealService {
 
     boolean update(Long id, Appeal appeal);
 
+    Appeal read(Long appealId);
 
     List<Appeal> findByUserName(String userName);
 }

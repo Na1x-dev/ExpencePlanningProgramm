@@ -34,7 +34,4 @@ public class Category {
                 '}';
     }
 
-    public void setCategoryId(Long id) {
-    categoryId = id;
-    }
 }

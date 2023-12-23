@@ -34,6 +34,11 @@ public class ProcurementArchiveServiceImpl implements ProcurementArchiveService 
     }
 
     @Override
+    public ProcurementArchive read(Long procurementId) {
+        return procurementArchiveJpaRepository.findByProcurementId(procurementId);
+    }
+
+    @Override
     public boolean update(Long id, ProcurementArchive procurementArchive) {
         if (procurementArchiveJpaRepository.existsById(id)) {
             procurementArchive.setProcurementArchiveId(id);

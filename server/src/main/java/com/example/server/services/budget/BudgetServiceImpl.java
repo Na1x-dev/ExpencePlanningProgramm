@@ -33,6 +33,11 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
+    public Budget read(Long budgetId) {
+        return budgetJpaRepository.findByBudgetId(budgetId);
+    }
+
+    @Override
     public boolean update(Long id, Budget budget) {
         if (budgetJpaRepository.existsById(id)) {
             budget.setBudgetId(id);

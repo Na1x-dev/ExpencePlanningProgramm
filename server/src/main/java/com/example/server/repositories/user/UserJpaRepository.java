@@ -1,5 +1,6 @@
 package com.example.server.repositories.user;
 
+import com.example.server.models.Appeal;
 import com.example.server.models.Role;
 import com.example.server.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,6 @@ public interface UserJpaRepository extends JpaRepository<User, Long> {
     User getByUserId(Long userId);
 
     boolean existsByUserId(Long userId);
+
+    User findByUserId(Long userId);
 }

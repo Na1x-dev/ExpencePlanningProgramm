@@ -33,6 +33,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public Application read(Long applicationId) {
+        return applicationJpaRepository.findByApplicationId(applicationId);
+    }
+
+    @Override
     public boolean update(Long id, Application application) {
         if (applicationJpaRepository.existsById(id)) {
             application.setApplicationId(id);

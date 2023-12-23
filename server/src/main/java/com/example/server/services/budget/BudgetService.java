@@ -1,5 +1,6 @@
 package com.example.server.services.budget;
 
+import com.example.server.models.Appeal;
 import com.example.server.models.Budget;
 
 
@@ -12,5 +13,6 @@ public interface BudgetService {
 
     boolean delete(Long id);
 
+    Budget read(Long budgetId);
     boolean update(Long id, Budget budget);
 }

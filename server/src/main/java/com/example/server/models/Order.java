@@ -55,9 +55,6 @@ public class Order {
 
     public Order(){
         orderDate = new Date();
-        status = new Status();
-        createUser = new User();
-        application = new Application();
         procurementOrganization = "";
         unp = 111111111;
         contactPerson = "";

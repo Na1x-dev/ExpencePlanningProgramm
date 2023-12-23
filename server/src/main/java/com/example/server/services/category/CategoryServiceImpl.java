@@ -33,6 +33,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category read(Long categoryId) {
+        return categoryJpaRepository.findByCategoryId(categoryId);
+    }
+
+    @Override
     public boolean update(Long id, Category category) {
         if (categoryJpaRepository.existsById(id)) {
             category.setCategoryId(id);

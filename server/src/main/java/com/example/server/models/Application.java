@@ -80,17 +80,12 @@ public class Application {
     public Application() {
         applicationDate = new Date();
         closingDate = new Date();
-        createUser = new User();
-        customerUser = new User();
-        appeal = new Appeal();
-        category = new Category();
         productName = "";
         productCharacteristic = "";
         priceForOne = 0.0;
         amount = 0;
         applicationComment = "";
         finalPrice = amount * priceForOne;
-        closingUser = new User();
         comment = "";
         status = new Status();
     }

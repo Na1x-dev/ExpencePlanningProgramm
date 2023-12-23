@@ -43,6 +43,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         return false;
     }
 
+    @Override
+    public Department read(Long departmentId) {
+        return departmentJpaRepository.findByDepartmentId(departmentId);
+    }
+
 //    @Override
 //    public Department readById(Long departmentId) {
 //        return departmentJpaRepository.getByDepartmentId(departmentId);

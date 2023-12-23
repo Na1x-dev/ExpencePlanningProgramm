@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleJpaRepository roleRepository;
 
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    //    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Override
     public void create(User user) {
 //        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean update(User user, Long userId) {
+    public boolean update(Long userId, User user) {
         if (userRepository.existsByUserId(userId)) {
             user.setUserId(userId);
             userRepository.save(user);
@@ -60,6 +60,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User readById(Long userId) {
         return userRepository.getByUserId(userId);
+    }
+
+    @Override
+    public User read(Long userId) {
+        return userRepository.findByUserId(userId);
     }
 
 

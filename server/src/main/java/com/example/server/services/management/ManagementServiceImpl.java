@@ -43,6 +43,11 @@ public class ManagementServiceImpl implements ManagementService {
         return false;
     }
 
+    @Override
+    public Management read(Long managementId) {
+        return managementJpaRepository.findByManagementId(managementId);
+    }
+
 //    @Override
 //    public Management readById(Long managementId) {
 //        return managementJpaRepository.getByManagementId(managementId);

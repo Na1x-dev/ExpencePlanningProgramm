@@ -34,6 +34,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order read(Long orderId) {
+        return orderJpaRepository.findByOrderId(orderId);
+    }
+
+    @Override
     public boolean delete(Long id) {
         if (orderJpaRepository.existsById(id)) {
             orderJpaRepository.deleteById(id);
