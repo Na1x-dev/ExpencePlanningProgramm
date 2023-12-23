@@ -35,13 +35,26 @@ public class AppData {
     private List<Role> roles;
     SimpleDateFormat formatForServer;
     SimpleDateFormat formatForClient;
+    SimpleDateFormat formatForAdmin;
     private List<Class> modelsList;
     private int adminMode = 0;
 
     private AppData() {
         formatForServer = new SimpleDateFormat("yyyy-MM-dd");
         formatForClient = new SimpleDateFormat("dd.MM.yyyy");
+//        formatForAdmin = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        formatForAdmin = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         initModelsList();
+    }
+
+    public boolean isValidDate(String date) {
+        try {
+            formatForAdmin.setLenient(false);
+            Date parsedDate = formatForAdmin.parse(date);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private void initModelsList() {
@@ -58,16 +71,20 @@ public class AppData {
         modelsList.add(User.class);
     }
 
-    public Date getDateFromString(String strDate) {
+    public Date getDateFromString(String strDate, SimpleDateFormat format) {
         try {
-            return formatForServer.parse(strDate);
+            return format.parse(strDate);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
     public String getDateForClient(String serverDate) {
-        return formatForClient.format(getDateFromString(serverDate));
+        return formatForClient.format(getDateFromString(serverDate, formatForServer));
+    }
+
+    public String getDateForAdmin(String adminDate) {
+        return formatForClient.format(getDateFromString(adminDate, formatForAdmin));
     }
 
     public static AppData getInstance() {

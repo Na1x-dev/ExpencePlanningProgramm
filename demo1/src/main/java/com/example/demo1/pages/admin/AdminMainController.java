@@ -1,31 +1,21 @@
 package com.example.demo1.pages.admin;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
-import java.net.URL;
 import java.net.http.HttpResponse;
 
-import com.example.demo1.models.User;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.example.demo1.models.*;
 import com.google.gson.internal.LinkedTreeMap;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.example.demo1.RequestsBuilder;
-import com.example.demo1.models.Appeal;
-import com.example.demo1.models.Model;
-import com.example.demo1.models.Status;
+
 import com.google.gson.reflect.TypeToken;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import com.example.demo1.AppData;
@@ -187,16 +177,20 @@ public class AdminMainController {
         for (String propertyName : object.keySet()) {
             TableColumn<Map<String, Object>, Object> fieldColumn = new TableColumn<>();
             fieldColumn.setCellValueFactory(data -> {
-                if (data.getValue().get(propertyName) != null) {
-                    if (data.getValue().get(propertyName).getClass().equals(Double.class)) {
-                        return new SimpleObjectProperty<>(((Double) data.getValue().get(propertyName)).intValue());
+                Object modelProperty = data.getValue().get(propertyName);
+                if (modelProperty != null) {
+                    if (modelProperty.getClass().equals(Double.class)) {
+                        return new SimpleObjectProperty<>(((Double) modelProperty).intValue());
                     }
-                    System.out.println(data.getValue().get(propertyName).getClass().equals(LinkedTreeMap.class));
-                    if (data.getValue().get(propertyName).getClass().equals(LinkedTreeMap.class)) {
-                        return new SimpleObjectProperty<>(((LinkedTreeMap<?,?>) data.getValue().get(propertyName)).get(0));
+                    if (modelProperty.getClass().equals(LinkedTreeMap.class)) {
+                        return new SimpleObjectProperty<>(((Double) returnIdFromModels(modelProperty)).intValue());
                     }
+                    if(modelProperty.getClass().equals(String.class) && appData.isValidDate((String) modelProperty)){
+                        return new SimpleObjectProperty<>(appData.getDateForAdmin((String) modelProperty));
+                    }
+                    return new SimpleObjectProperty<>(modelProperty);
                 }
-                return new SimpleObjectProperty<>(data.getValue().get(propertyName));
+                return null;
             });
             Tooltip tooltip = new Tooltip(propertyName);
             tooltip.setShowDelay(Duration.millis(100));
@@ -205,6 +199,36 @@ public class AdminMainController {
             mainTable.getColumns().add(fieldColumn);
         }
     }
+
+    Object returnIdFromModels(Object modelProperty) {
+        if (((LinkedTreeMap<?, ?>) modelProperty).get(Appeal.class.getDeclaredFields()[0].getName()) != null) {
+            return ((LinkedTreeMap<?, ?>) modelProperty).get(Appeal.class.getDeclaredFields()[0].getName());
+        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Application.class.getDeclaredFields()[0].getName()) != null) {
+            return ((LinkedTreeMap<?, ?>) modelProperty).get(Application.class.getDeclaredFields()[0].getName());
+        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Budget.class.getDeclaredFields()[0].getName()) != null) {
+            return ((LinkedTreeMap<?, ?>) modelProperty).get(Budget.class.getDeclaredFields()[0].getName());
+        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Category.class.getDeclaredFields()[0].getName()) != null) {
+            return ((LinkedTreeMap<?, ?>) modelProperty).get(Category.class.getDeclaredFields()[0].getName());
+        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Department.class.getDeclaredFields()[0].getName()) != null) {
+            return ((LinkedTreeMap<?, ?>) modelProperty).get(Department.class.getDeclaredFields()[0].getName());
+        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Management.class.getDeclaredFields()[0].getName()) != null) {
+            return ((LinkedTreeMap<?, ?>) modelProperty).get(Management.class.getDeclaredFields()[0].getName());
+        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Order.class.getDeclaredFields()[0].getName()) != null) {
+            return ((LinkedTreeMap<?, ?>) modelProperty).get(Order.class.getDeclaredFields()[0].getName());
+        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Position.class.getDeclaredFields()[0].getName()) != null) {
+            return ((LinkedTreeMap<?, ?>) modelProperty).get(Position.class.getDeclaredFields()[0].getName());
+        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(ProcurementArchive.class.getDeclaredFields()[0].getName()) != null) {
+            return ((LinkedTreeMap<?, ?>) modelProperty).get(ProcurementArchive.class.getDeclaredFields()[0].getName());
+        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Status.class.getDeclaredFields()[0].getName()) != null) {
+            return ((LinkedTreeMap<?, ?>) modelProperty).get(Status.class.getDeclaredFields()[0].getName());
+        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Role.class.getDeclaredFields()[0].getName()) != null) {
+            return ((LinkedTreeMap<?, ?>) modelProperty).get(Role.class.getDeclaredFields()[0].getName());
+        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(User.class.getDeclaredFields()[0].getName()) != null) {
+            return ((LinkedTreeMap<?, ?>) modelProperty).get(User.class.getDeclaredFields()[0].getName());
+        }
+        return null;
+    }
+
 
     public void changeButtonsColor() {
         ObservableList<Node> headerButtons = hbox.getChildren();
@@ -218,6 +242,7 @@ public class AdminMainController {
         headerButtons.get(appData.getAdminMode()).setOnMouseEntered(mouseEvent -> headerButtons.get(appData.getAdminMode()).setStyle("-fx-background-color: #ddd;-fx-text-fill: #777;"));
         headerButtons.get(appData.getAdminMode()).setOnMouseExited(mouseEvent -> headerButtons.get(appData.getAdminMode()).setStyle("-fx-background-color: #fff;-fx-text-fill: #777;"));
     }
+
 
     //        System.out.println(appData.getModelsList().get(0));
 //        initTableColumns();

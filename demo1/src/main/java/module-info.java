@@ -14,9 +14,10 @@ module com.example.demo1 {
     requires java.net.http;
     requires lombok;
 
+
     requires com.google.gson;
 
-    exports com.google.gson.internal;
+
     opens com.example.demo1 to javafx.fxml, com.google.gson;
     opens com.example.demo1.models to com.google.gson, javafx.base;
     exports com.example.demo1;
