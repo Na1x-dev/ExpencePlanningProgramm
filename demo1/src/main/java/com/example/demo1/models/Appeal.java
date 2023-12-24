@@ -53,7 +53,7 @@ public class Appeal implements Model{
     }
 
 
-    @Override
+
     public String getRussianField(String fieldName) {
         Map<String, String> fields = new HashMap<>();
         fields.put("appealId","Id обращения");

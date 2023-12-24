@@ -10,14 +10,12 @@ import java.util.ResourceBundle;
 import com.example.demo1.AppData;
 import com.example.demo1.RequestsBuilder;
 import com.example.demo1.models.Appeal;
+import com.example.demo1.models.Application;
 import com.google.gson.reflect.TypeToken;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -76,11 +74,12 @@ public class AppealsController {
     private TableColumn<Appeal, String> text;
 
     @FXML
-            private Button createAppealButton;
+    private Button createAppealButton;
     @FXML
     private Label userNameLabel;
 
     AppData appData = AppData.getInstance();
+
     @FXML
     void logOut(ActionEvent event) {
         AppData.toNextStage("login.fxml", logOutButton, "login");
@@ -110,6 +109,7 @@ public class AppealsController {
     void toProcurementArchiveTable(ActionEvent event) {
         AppData.toNextStage("executor/ProcurementArchivePage.fxml", ProcurementArchiveButton, "Executor Page");
     }
+
     @FXML
     void toCreateAppeal(ActionEvent actionEvent) {
         AppData.toNextStage("executor/CreateAppealPage.fxml", createAppealButton, "Executor Page");
@@ -147,6 +147,34 @@ public class AppealsController {
             String statusName = appeal.getStatus().getStatusName();
             return new SimpleStringProperty(statusName);
         });
+        status.setCellFactory(column -> {
+            return new TableCell<Appeal, String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        setText(item);
+                        ContextMenu contextMenu = new ContextMenu();
+                        MenuItem menuItem1 = new MenuItem("Создать запрос");
+                        menuItem1.setOnAction(actionEvent -> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Ошибка");
+                            alert.setHeaderText("Ошибка");
+                            alert.setContentText("Недостаточное финансирование для создания заявки.");
+
+                            // Отображение модального окна и ожидание закрытия
+                            alert.showAndWait();});
+                        MenuItem menuItem4 = new MenuItem("Закрыто");
+                        contextMenu.getItems().addAll(menuItem1, menuItem4);
+                        setContextMenu(contextMenu);
+                    }
+                }
+            };
+        });
+
         text.setCellValueFactory(new PropertyValueFactory<>("appealText"));
     }
 

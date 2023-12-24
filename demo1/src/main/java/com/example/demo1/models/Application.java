@@ -1,6 +1,7 @@
 package com.example.demo1.models;
 
 
+import com.example.demo1.AppData;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,7 +12,7 @@ public class Application implements Model {
 
     private Long applicationId;
 
-    private Date applicationDate;
+    private String applicationDate;
 
     private Status status;
 
@@ -35,7 +36,7 @@ public class Application implements Model {
 
     private Double finalPrice;
 
-    private Date closingDate;
+    private String closingDate;
 
     private User closingUser;
 
@@ -43,8 +44,8 @@ public class Application implements Model {
 
 
     public Application() {
-        applicationDate = new Date();
-        closingDate = new Date();
+        applicationDate = AppData.getInstance().getFormatForServer().format(new Date());
+        closingDate = AppData.getInstance().getFormatForServer().format(new Date());
         createUser = new User();
         customerUser = new User();
         appeal = new Appeal();

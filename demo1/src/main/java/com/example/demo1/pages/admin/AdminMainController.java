@@ -151,6 +151,7 @@ public class AdminMainController {
 
     public void responseIntoTable() {
         HttpResponse<String> response = RequestsBuilder.getRequest("/admin/getAll/" + modelClass.getSimpleName().toLowerCase());
+        System.out.println(response);
         if (response.statusCode() == 200) {
             TypeToken<List<Map<String, Object>>> typeToken = new TypeToken<>() {
             };
@@ -201,7 +202,7 @@ public class AdminMainController {
 
             {
                 editButton.setOnAction(event -> {
-                    // Действия при нажатии на кнопку "Изменить"
+                    AppData.toNextStage("admin/AdminFields.fxml", CreateButton, "Admin Page");
                 });
             }
 

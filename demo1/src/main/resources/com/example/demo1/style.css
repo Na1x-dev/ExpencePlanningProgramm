@@ -10,7 +10,7 @@
     -fx-cursor: hand;
 }
 
-.text-field, .text-area, .combo-box{
+.text-field, .text-area, .combo-box, .alert{
     -fx-background-color: #ffffff;
     -fx-border-color: #5082ff;
     -fx-border-radius: 5;
