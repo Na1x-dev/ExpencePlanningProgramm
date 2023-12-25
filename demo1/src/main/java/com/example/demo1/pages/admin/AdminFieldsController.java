@@ -125,16 +125,12 @@ public class AdminFieldsController {
             jsonObject.addProperty((field).getId(), ((TextField) field).getText());
         }
         Set<Node> comboBoxNodes = vbox.lookupAll(".combo-box");
-//        for (Node combo : comboBoxNodes) {
-//            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + (combo).getId() + "/" + ((ComboBox<?>) combo).getValue().toString().charAt(0));
-//            JsonObject newJson = new JsonObject();
-
-//            jsonObject.addProperty((combo).getId(), newJson);
-//            System.out.println(jsonObject);
-//        }
-
+        for (Node combo : comboBoxNodes) {
+            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + (combo).getId() + "/" + ((ComboBox<?>) combo).getValue().toString().charAt(0));
+            JsonObject innerObject = appData.getGson().fromJson(response.body(), JsonObject.class);
+            jsonObject.add((combo).getId(), innerObject);
+        }
         HttpResponse<String> response = RequestsBuilder.postRequest(String.valueOf(jsonObject), "/admin/create/" + modelClass.getSimpleName().toLowerCase());
-        System.out.println(response + "   " + response.body());
     }
 
     String getRussianField(String fieldName) {

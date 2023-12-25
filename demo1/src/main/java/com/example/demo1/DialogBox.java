@@ -28,10 +28,10 @@ public class DialogBox extends Stage {
         messageLabel = new Label(message);
 
         // Создание кнопок "OK" и "Cancel"
-        okButton = new Button("OK");
+        okButton = new Button("Да");
         okButton.setPrefHeight(40);
         okButton.setPrefWidth(100);
-        cancelButton = new Button("Cancel");
+        cancelButton = new Button("Нет");
         cancelButton.setPrefHeight(40);
         cancelButton.setPrefWidth(100);
         // Установка обработчиков событий для кнопок
