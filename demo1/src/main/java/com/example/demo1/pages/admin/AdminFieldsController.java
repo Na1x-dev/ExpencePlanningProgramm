@@ -75,7 +75,13 @@ public class AdminFieldsController {
     }
 
     void createMainLabel() {
-        Label mainLabel = new Label(getRussianMainLabel(modelClass.getSimpleName()));
+        Label mainLabel = new Label();
+        if(appData.getPutModelId().equals(-1L)) {
+            mainLabel = new Label(getRussianMainLabel(modelClass.getSimpleName()));
+        }
+        else {
+            mainLabel = new Label(getRussianUpdateMainLabel(modelClass.getSimpleName()));
+        }
         mainLabel.setPadding(new Insets(0, 0, 50, 0));
         vbox.getChildren().add(mainLabel);
     }
@@ -191,6 +197,23 @@ public class AdminFieldsController {
         labelsText.put("Role", "Новая роль");
         labelsText.put("Status", "Новый статус");
         labelsText.put("User", "Новый пользователь");
+        return labelsText.get(labelText);
+    }
+
+    String getRussianUpdateMainLabel(String labelText) {
+        Map<String, String> labelsText = new HashMap<>();
+        labelsText.put("Appeal", "Изменение обращения");
+        labelsText.put("Application", "Изменение Заявки");
+        labelsText.put("Budget", "Изменение бюджета");
+        labelsText.put("Category", "Изменение категории");
+        labelsText.put("Department", "Изменение отдела");
+        labelsText.put("Management", "Изменение управления");
+        labelsText.put("Order", "Изменение закупки");
+        labelsText.put("Position", "Изменение должности");
+        labelsText.put("ProcurementArchive", "Изменение архива закупок");
+        labelsText.put("Role", "Изменение роли");
+        labelsText.put("Status", "Изменение статуса");
+        labelsText.put("User", "Изменение пользователя");
         return labelsText.get(labelText);
     }
 

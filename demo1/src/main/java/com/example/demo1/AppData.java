@@ -39,6 +39,7 @@ public class AppData {
     private List<Class> modelsList;
     private List<Class> fullModelsList;
     private int adminMode = 0;
+    private Long putModelId;
 
     private AppData() {
         formatForServer = new SimpleDateFormat("yyyy-MM-dd");

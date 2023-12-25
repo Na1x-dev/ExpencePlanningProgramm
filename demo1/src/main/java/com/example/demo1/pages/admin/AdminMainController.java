@@ -135,6 +135,7 @@ public class AdminMainController {
 
     @FXML
     void toCreatePage(ActionEvent event) {
+        appData.setPutModelId(-1L);
         AppData.toNextStage("admin/AdminFields.fxml", CreateButton, "Admin Page");
     }
 
@@ -201,6 +202,8 @@ public class AdminMainController {
 
             {
                 editButton.setOnAction(event -> {
+                    String fieldName = modelClass.getDeclaredFields()[0].getName();
+                    appData.setPutModelId(((Double) getTableView().getItems().get(getIndex()).get(fieldName)).longValue());
                     AppData.toNextStage("admin/AdminFields.fxml", CreateButton, "Admin Page");
                 });
             }
