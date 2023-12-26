@@ -167,11 +167,13 @@ public class AppealsController {
                         ContextMenu contextMenu = new ContextMenu();
                         MenuItem menuItem1 = new MenuItem("Создать запрос");
                         menuItem1.setOnAction(actionEvent -> {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Ошибка");
-                            alert.setHeaderText("Ошибка");
-                            alert.setContentText("Недостаточное финансирование для создания заявки.");
-                            alert.showAndWait();
+//                            Alert alert = new Alert(Alert.AlertType.ERROR);
+//                            alert.setTitle("Ошибка");
+//                            alert.setHeaderText("Ошибка");
+//                            alert.setContentText("Недостаточное финансирование для создания заявки.");
+//                            alert.showAndWait();
+
+                            AppData.toNextStage("executor/NewApplicationPage.fxml", logOutButton, "Executor Page");
                         });
                         MenuItem menuItem4 = new MenuItem("Закрыть");
                         menuItem4.setOnAction(actionEvent -> {
