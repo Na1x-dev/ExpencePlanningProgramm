@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.example.demo1.AppData;
+import com.example.demo1.DialogBox;
 import com.example.demo1.RequestsBuilder;
 import com.example.demo1.models.Appeal;
 import com.example.demo1.models.Application;
@@ -136,7 +137,13 @@ public class AppealsController {
 
     public void initTableColumns() {
         appealId.setCellValueFactory(new PropertyValueFactory<>("appealId"));
-        closeDate.setCellValueFactory(new PropertyValueFactory<>("closingDate"));
+        closeDate.setCellValueFactory(cellData -> {
+            Appeal appeal = cellData.getValue();
+            if (appeal.getClosingDate() == null) {
+                return new SimpleStringProperty("");
+            }
+            return new SimpleStringProperty(appData.getDateForClient(appeal.getClosingDate()));
+        });
         comment.setCellValueFactory(new PropertyValueFactory<>("comment"));
         registrationDate.setCellValueFactory(cellData -> {
             Appeal appeal = cellData.getValue();
@@ -164,10 +171,21 @@ public class AppealsController {
                             alert.setTitle("Ошибка");
                             alert.setHeaderText("Ошибка");
                             alert.setContentText("Недостаточное финансирование для создания заявки.");
+                            alert.showAndWait();
+                        });
+                        MenuItem menuItem4 = new MenuItem("Закрыть");
+                        menuItem4.setOnAction(actionEvent -> {
+                            appData.setPutModelId(getTableView().getItems().get(getIndex()).getAppealId());
+                            DialogBox dialogBox = new DialogBox("Вы действительно хотите закрыть обращение с Id=" + appData.getPutModelId());
+                            dialogBox.showAndWait();
+                            if (dialogBox.getResult() == DialogBox.Result.OK) {
+//                                HttpResponse<String> response = RequestsBuilder.deleteRequest("/admin/delete/" + modelClass.getSimpleName().toLowerCase() + "/" + id);
+//                                getTableView().getItems().clear();
+//                                responseIntoTable();
 
-                            // Отображение модального окна и ожидание закрытия
-                            alert.showAndWait();});
-                        MenuItem menuItem4 = new MenuItem("Закрыто");
+                                AppData.toNextStage("executor/AppealCommentPage.fxml", logOutButton, "Executor Page");
+                            }
+                        });
                         contextMenu.getItems().addAll(menuItem1, menuItem4);
                         setContextMenu(contextMenu);
                     }

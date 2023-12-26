@@ -5,6 +5,7 @@ import com.example.server.repositories.appeal.AppealJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -37,6 +38,7 @@ public class AppealServiceImpl implements AppealService {
     public boolean update(Long id, Appeal appeal) {
         if (appealJpaRepository.existsById(id)) {
             appeal.setAppealId(id);
+            appeal.setClosingDate(new Date());
             appealJpaRepository.save(appeal);
             return true;
         }
