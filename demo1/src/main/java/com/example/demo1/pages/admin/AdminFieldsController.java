@@ -136,13 +136,16 @@ public class AdminFieldsController {
                     String comboItem = objectId + ". " + jObject.get(field.getType().getDeclaredFields()[1].getName());
                     comboBox.getItems().add(comboItem);
                     if (appData.getPutModelId() > -1L) {
-                        System.out.println(updateUnit);
-                        System.out.println(idPropertyName.getClass());
-                        System.out.println(updateUnit.get(idPropertyName));
-                        if (updateUnit.get(idPropertyName).equals(objectId)) {
-                            comboBox.setValue(comboItem);
-                            System.out.println("huy");
+                        JsonObject buf = null;
+                        try {
+                            buf = (JsonObject) updateUnit.get(field.getName());
+                            if (buf.get(idPropertyName).equals(objectId)) {
+                                comboBox.setValue(comboItem);
+                            }
+                        }catch (ClassCastException e){
+                            System.out.println("пустое поле");
                         }
+
                     }
                 }
                 comboBox.setPrefWidth(Double.MAX_VALUE);
