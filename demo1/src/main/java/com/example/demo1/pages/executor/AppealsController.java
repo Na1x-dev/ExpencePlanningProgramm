@@ -181,10 +181,6 @@ public class AppealsController {
                             DialogBox dialogBox = new DialogBox("Вы действительно хотите закрыть обращение с Id=" + appData.getPutModelId());
                             dialogBox.showAndWait();
                             if (dialogBox.getResult() == DialogBox.Result.OK) {
-//                                HttpResponse<String> response = RequestsBuilder.deleteRequest("/admin/delete/" + modelClass.getSimpleName().toLowerCase() + "/" + id);
-//                                getTableView().getItems().clear();
-//                                responseIntoTable();
-
                                 AppData.toNextStage("executor/AppealCommentPage.fxml", logOutButton, "Executor Page");
                             }
                         });

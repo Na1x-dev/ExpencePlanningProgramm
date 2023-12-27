@@ -11,6 +11,7 @@ import com.example.demo1.AppData;
 import com.example.demo1.RequestsBuilder;
 import com.example.demo1.models.Appeal;
 import com.example.demo1.models.User;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import javafx.event.ActionEvent;
@@ -52,11 +53,15 @@ public class AdminFieldsController {
     AppData appData = AppData.getInstance();
     Class modelClass;
 
+    JsonObject updateUnit;
+
     @FXML
     void create(ActionEvent event) {
         AppData.toNextStage("admin/AdminPage.fxml", CreateButton, "Admin Page");
-        createModelObject();
-
+        if (appData.getPutModelId() == -1L)
+            createModelObject();
+        else
+            updateModelObject();
     }
 
     @FXML
@@ -69,18 +74,26 @@ public class AdminFieldsController {
         modelClass = appData.getModelsList().get(appData.getAdminMode());
         createMainLabel();
         vbox.getChildren().remove(ButtonBox);
+        initUpdateUnit();
         createFields();
         createComboBoxes();
         vbox.getChildren().add(ButtonBox);
     }
 
+    void initUpdateUnit() {
+        if (appData.getPutModelId() > -1L) {
+            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + modelClass.getSimpleName().toLowerCase() + "/" + appData.getPutModelId());
+            updateUnit = appData.getGson().fromJson(response.body(), JsonObject.class);
+        }
+    }
+
     void createMainLabel() {
         Label mainLabel = new Label();
-        if(appData.getPutModelId().equals(-1L)) {
+        if (appData.getPutModelId().equals(-1L)) {
             mainLabel = new Label(getRussianMainLabel(modelClass.getSimpleName()));
-        }
-        else {
+        } else {
             mainLabel = new Label(getRussianUpdateMainLabel(modelClass.getSimpleName()));
+            CreateButton.setText("Изменить");
         }
         mainLabel.setPadding(new Insets(0, 0, 50, 0));
         vbox.getChildren().add(mainLabel);
@@ -95,6 +108,14 @@ public class AdminFieldsController {
                 textField.setId(field.getName());
                 textField.setPrefHeight(40);
                 vbox.getChildren().add(textField);
+                if (appData.getPutModelId() > -1L) {
+                    String updateInfoText = String.valueOf(updateUnit.get(textField.getId()));
+                    if (updateInfoText.equals("null")) {
+                        updateInfoText = String.valueOf(updateUnit.get("username"));
+                    }
+                    updateInfoText = updateInfoText.replace("\"", "");
+                    textField.setText(updateInfoText);
+                }
             }
         }
     }
@@ -110,8 +131,19 @@ public class AdminFieldsController {
                 ComboBox<String> comboBox = new ComboBox<>();
                 comboBox.setId(field.getName());
                 for (JsonObject jObject : jsonObjectList) {
-                    String comboItem = jObject.get(field.getType().getDeclaredFields()[0].getName()) + ". " + jObject.get(field.getType().getDeclaredFields()[1].getName());
+                    String idPropertyName = field.getType().getDeclaredFields()[0].getName();
+                    JsonElement objectId = jObject.get(idPropertyName);
+                    String comboItem = objectId + ". " + jObject.get(field.getType().getDeclaredFields()[1].getName());
                     comboBox.getItems().add(comboItem);
+                    if (appData.getPutModelId() > -1L) {
+                        System.out.println(updateUnit);
+                        System.out.println(idPropertyName.getClass());
+                        System.out.println(updateUnit.get(idPropertyName));
+                        if (updateUnit.get(idPropertyName).equals(objectId)) {
+                            comboBox.setValue(comboItem);
+                            System.out.println("huy");
+                        }
+                    }
                 }
                 comboBox.setPrefWidth(Double.MAX_VALUE);
                 vbox.getChildren().add(comboBox);
@@ -137,6 +169,20 @@ public class AdminFieldsController {
             jsonObject.add((combo).getId(), innerObject);
         }
         HttpResponse<String> response = RequestsBuilder.postRequest(String.valueOf(jsonObject), "/admin/create/" + modelClass.getSimpleName().toLowerCase());
+    }
+
+    void updateModelObject() {
+        Set<Node> textFieldNodes = vbox.lookupAll(".text-field");
+        for (Node field : textFieldNodes) {
+            updateUnit.addProperty((field).getId(), ((TextField) field).getText());
+        }
+        Set<Node> comboBoxNodes = vbox.lookupAll(".combo-box");
+        for (Node combo : comboBoxNodes) {
+            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + (combo).getId() + "/" + ((ComboBox<?>) combo).getValue().toString().charAt(0));
+            JsonObject innerObject = appData.getGson().fromJson(response.body(), JsonObject.class);
+            updateUnit.add((combo).getId(), innerObject);
+        }
+        HttpResponse<String> response = RequestsBuilder.putRequest(String.valueOf(updateUnit), "/admin/update/" + modelClass.getSimpleName().toLowerCase() + "/" + appData.getPutModelId());
     }
 
     String getRussianField(String fieldName) {

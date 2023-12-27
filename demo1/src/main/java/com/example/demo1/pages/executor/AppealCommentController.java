@@ -62,7 +62,7 @@ public class AppealCommentController {
         appeal.setClosingUser(appData.getUser());
         appeal.setComment(textArea.getText());
         System.out.println(appeal);
-        HttpResponse<String> putResponse = RequestsBuilder.putRequest(appData.getGson().toJson(appeal),"/admin/update/appeal/" + String.valueOf(appData.getPutModelId()));
+        HttpResponse<String> putResponse = RequestsBuilder.putRequest(appData.getGson().toJson(appeal),"/admin/update/appeal/" + appData.getPutModelId());
         AppData.toNextStage("executor/AppealsPage.fxml", backButton, "Executor Page");
     }
 
