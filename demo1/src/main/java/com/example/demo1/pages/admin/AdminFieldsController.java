@@ -107,6 +107,7 @@ public class AdminFieldsController {
                 textField.setPromptText(getRussianField(field.getName()));
                 textField.setId(field.getName());
                 textField.setPrefHeight(40);
+
                 vbox.getChildren().add(textField);
                 if (appData.getPutModelId() > -1L) {
                     String updateInfoText = String.valueOf(updateUnit.get(textField.getId()));

@@ -79,7 +79,7 @@ public class Application {
 
     public Application() {
         applicationDate = new Date();
-        closingDate = new Date();
+        closingDate = null;
         productName = "";
         productCharacteristic = "";
         priceForOne = 0.0;

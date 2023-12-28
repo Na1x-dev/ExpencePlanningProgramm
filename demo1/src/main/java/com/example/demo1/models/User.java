@@ -1,5 +1,6 @@
 package com.example.demo1.models;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -7,10 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Data
 public class User implements Model {
 
-//    @JsonProperty("userId")
+    //    @JsonProperty("userId")
     private Long userId;
 
     private String lastName;
@@ -28,6 +30,7 @@ public class User implements Model {
     private Role role;
 
     private Department department;
+
 
     public User() {
         userId = 0L;
@@ -52,28 +55,6 @@ public class User implements Model {
         department = null;
     }
 
-
-//    public boolean isAdmin() {
-//        for (Role role : roles) {
-//            if (role.name.equals("ROLE_ADMIN")) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//    public void addRole(Role role){
-//        if(roles==null){
-//            roles = new HashSet<>();
-//        }
-//        roles.add(role);
-//    }
-//
-//    public String getFIO(){
-//        return surname + " " + name.charAt(0) + "." + patronymic.charAt(0) + ".";
-//    }
-
-
     @Override
     public String toString() {
         return "User{" +
@@ -89,7 +70,12 @@ public class User implements Model {
                 '}';
     }
 
-    public List<String> getFieldsForCreate(){
+    public String toComboBox(){
+        return (userId + ". " + lastName + " " + (firstName.isEmpty() ? "" : (firstName.charAt(0) + ".")) + (patronymic.isEmpty() ? "" : (patronymic.charAt(0) + ".")));
+
+    }
+
+    public List<String> getFieldsForCreate() {
         List<String> listFields = new ArrayList<>();
         listFields.add("firstName");
         listFields.add("firstName");
@@ -99,7 +85,7 @@ public class User implements Model {
         return listFields;
     }
 
-    public List<String> getFieldsNameForCreate(){
+    public List<String> getFieldsNameForCreate() {
         List<String> listFieldsName = new ArrayList<>();
         listFieldsName.add("Фамилия");
         listFieldsName.add("Имя");

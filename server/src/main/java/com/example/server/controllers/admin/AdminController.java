@@ -89,6 +89,7 @@ public class AdminController {
     }
     @PostMapping(value = "/admin/create/application")
     public ResponseEntity<?> createApplication(@RequestBody Application application) {
+        application.setClosingDate(null);
         applicationService.create(application);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

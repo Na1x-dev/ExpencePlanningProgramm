@@ -172,7 +172,7 @@ public class AppealsController {
 //                            alert.setHeaderText("Ошибка");
 //                            alert.setContentText("Недостаточное финансирование для создания заявки.");
 //                            alert.showAndWait();
-
+                            appData.setPutModelId(getTableView().getItems().get(getIndex()).getAppealId());
                             AppData.toNextStage("executor/NewApplicationPage.fxml", logOutButton, "Executor Page");
                         });
                         MenuItem menuItem4 = new MenuItem("Закрыть");

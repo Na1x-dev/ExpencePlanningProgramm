@@ -25,4 +25,8 @@ public class Category implements Model {
                 '}';
     }
 
+    public String toComboBox(){
+        return categoryId + ". " + categoryName;
+    }
+
 }

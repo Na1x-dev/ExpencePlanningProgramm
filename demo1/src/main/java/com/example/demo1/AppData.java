@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import com.example.demo1.models.*;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.beans.property.SimpleStringProperty;
@@ -30,7 +31,7 @@ public class AppData {
     private static AppData instance = null;
     private User user;
     private GsonBuilder builder = new GsonBuilder();
-    private Gson gson = builder.create();
+    private Gson gson = builder.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
     private List<Status> statuses;
     private List<Role> roles;
     SimpleDateFormat formatForServer;
