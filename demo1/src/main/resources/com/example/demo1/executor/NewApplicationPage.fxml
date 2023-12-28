@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.geometry.Insets?>
 <GridPane fx:id="gridPane1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: #ddddff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.pages.executor.NewApplicationController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -25,31 +26,35 @@
     <children>
         <VBox fx:id="vbox" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="299.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <children>
-                <Label alignment="TOP_LEFT" contentDisplay="TOP" lineSpacing="5.0" prefHeight="109.0" prefWidth="300.0" text="УЧЕТ РАСХОДОВ БАНКОВСКО-ФИНАНСОВОЙ ОРГАНИЗАЦИИ" textOverrun="CENTER_ELLIPSIS" wrapText="true" />
-                <Label alignment="TOP_LEFT" text="Логин">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="userNameField" prefHeight="40.0" prefWidth="353.0" />
-                <Label text="Пароль">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
-                <PasswordField fx:id="passwordField" prefHeight="40.0" prefWidth="353.0" />
-                <Button fx:id="loginButton" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="${vbox.width}" text="Войти" textAlignment="CENTER">
-                    <font>
+                <Label alignment="TOP_LEFT" contentDisplay="TOP" lineSpacing="5.0" prefHeight="49.0" prefWidth="300.0" text="Регистрация новой заявки" textOverrun="CENTER_ELLIPSIS" wrapText="true" />
+            <ComboBox fx:id="customerUser" prefHeight="40.0" prefWidth="Infinity" promptText="Для кого выполняется заявка" />
+            <ComboBox fx:id="category" prefHeight="40.0" prefWidth="Infinity" promptText="Категория заявки" />
+                <TextField fx:id="productName" prefHeight="40.0" prefWidth="Infinity" promptText="Наименование товара" />
+            <TextField fx:id="productCharacteristic" prefHeight="40.0" prefWidth="Infinity" promptText="Характеристика" />
+            <TextField fx:id="priceForOne" prefHeight="40.0" prefWidth="Infinity" promptText="Цена за штуку" />
+            <TextField fx:id="amount" prefHeight="40.0" prefWidth="Infinity" promptText="Количество" />
+            <TextField fx:id="applicationComment" prefHeight="40.0" prefWidth="Infinity" promptText="Комментарий к заявке" />
+            <TextField fx:id="finalPrice" prefHeight="40.0" prefWidth="Infinity" promptText="Итоговая цена" />
+            <HBox prefHeight="54.0" prefWidth="Infinity" GridPane.columnIndex="1" HBox.hgrow="ALWAYS">
+               <children>
+                      <Button fx:id="createButton" alignment="CENTER" mnemonicParsing="false"  HBox.hgrow="ALWAYS" onAction="#create" prefHeight="40.0" prefWidth="400" text="Зарегистрировать" textAlignment="CENTER">
+                          <font>
+                              <Font size="16.0" />
+                          </font>
+                          <HBox.margin>
+                              <Insets right="5.0"/>
+                          </HBox.margin>
+                      </Button>
+                  <Button fx:id="backButton" alignment="CENTER" mnemonicParsing="false" HBox.hgrow="ALWAYS" onAction="#back" prefHeight="40.0" prefWidth="400" text="Назад" textAlignment="CENTER">
+                     <font>
                         <Font size="16.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets top="20.0" />
-                    </VBox.margin>
-                </Button>
-                <Label fx:id="resultLabel">
-                    <VBox.margin>
-                        <Insets top="10.0" />
-                    </VBox.margin></Label>
+                     </font>
+                      <HBox.margin>
+                          <Insets left="5.0"/>
+                      </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
             </children>
         </VBox>
     </children>

@@ -129,6 +129,7 @@ public class AdminFieldsController {
                 }.getType();
                 ArrayList<JsonObject> jsonObjectList = appData.getGson().fromJson(response.body(), listType);
                 ComboBox<String> comboBox = new ComboBox<>();
+                comboBox.setPromptText(getRussianField(field.getName()));
                 comboBox.setId(field.getName());
                 for (JsonObject jObject : jsonObjectList) {
                     String idPropertyName = field.getType().getDeclaredFields()[0].getName();
