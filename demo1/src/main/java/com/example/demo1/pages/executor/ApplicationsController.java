@@ -130,39 +130,36 @@ public class ApplicationsController {
         amount.setCellValueFactory(new PropertyValueFactory<>("amount"));
         productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         finalPrice.setCellValueFactory(new PropertyValueFactory<>("finalPrice"));
-                status.setCellValueFactory(cellData -> {
+        status.setCellValueFactory(cellData -> {
             Application Application = cellData.getValue();
             String statusName = Application.getStatus().getStatusName();
 
             return new SimpleStringProperty(statusName);
         });
-        status.setCellFactory(column -> {
-            return new TableCell<Application, String>() {
-                @Override
-                public void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty) {
-                        setText(null);
-                        setGraphic(null);
-                    } else {
-                        setText(item);
-                        ContextMenu contextMenu = new ContextMenu();
-                        MenuItem menuItem1 = new MenuItem("Создано");
-                        MenuItem menuItem2 = new MenuItem("Зарегистрировано");
-                        MenuItem menuItem3 = new MenuItem("Отклонено");
-                        MenuItem menuItem4 = new MenuItem("Закрыто");
-                        contextMenu.getItems().addAll(menuItem1, menuItem2, menuItem3, menuItem4);
-                        setContextMenu(contextMenu);
-                    }
+        status.setCellFactory(column -> new TableCell<>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    ContextMenu contextMenu = new ContextMenu();
+                    MenuItem menuItem1 = new MenuItem("Создано");
+                    MenuItem menuItem2 = new MenuItem("Зарегистрировано");
+                    MenuItem menuItem3 = new MenuItem("Отклонено");
+                    MenuItem menuItem4 = new MenuItem("Закрыто");
+                    contextMenu.getItems().addAll(menuItem1, menuItem2, menuItem3, menuItem4);
+                    setContextMenu(contextMenu);
                 }
-            };
+            }
         });
-
 
 
         closingDate.setCellValueFactory(cellData -> {
             Application application = cellData.getValue();
-            if(application.getClosingDate() == null){
+            if (application.getClosingDate() == null) {
                 return new SimpleStringProperty("");
             }
             return new SimpleStringProperty(appData.getDateForClient(application.getClosingDate()));

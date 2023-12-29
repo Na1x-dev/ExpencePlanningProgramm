@@ -161,6 +161,7 @@ public class AdminMainController {
                 createTableColumns(firstObject);
             }
             mainTable.getItems().addAll(objectList);
+//            AppData.toNextStage("admin/AdminPage.fxml", logOutButton, "Admin Page");
         } else {
             System.out.println("null");
         }
@@ -234,8 +235,9 @@ public class AdminMainController {
                     dialogBox.showAndWait();
                     if (dialogBox.getResult() == DialogBox.Result.OK) {
                         HttpResponse<String> response = RequestsBuilder.deleteRequest("/admin/delete/" + modelClass.getSimpleName().toLowerCase() + "/" + id);
-                        getTableView().getItems().clear();
-                        responseIntoTable();
+//                        getTableView().getItems().clear();
+//                        responseIntoTable();
+                        AppData.toNextStage("admin/AdminPage.fxml", CreateButton, "Admin Page");
                     }
                 });
             }

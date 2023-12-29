@@ -6,6 +6,8 @@ import java.net.URL;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.example.demo1.AppData;
 import com.example.demo1.RequestsBuilder;
@@ -55,11 +57,12 @@ public class AdminFieldsController {
 
     @FXML
     void create(ActionEvent event) {
-        AppData.toNextStage("admin/AdminPage.fxml", CreateButton, "Admin Page");
+
         if (appData.getPutModelId() == -1L)
             createModelObject();
         else
             updateModelObject();
+        AppData.toNextStage("admin/AdminPage.fxml", CreateButton, "Admin Page");
     }
 
     @FXML
@@ -86,7 +89,7 @@ public class AdminFieldsController {
     }
 
     void createMainLabel() {
-        Label mainLabel = new Label();
+        Label mainLabel;
         if (appData.getPutModelId().equals(-1L)) {
             mainLabel = new Label(getRussianMainLabel(modelClass.getSimpleName()));
         } else {
@@ -100,7 +103,7 @@ public class AdminFieldsController {
     void createFields() {
         List<Field> fields = new ArrayList<>();
         for (Field field : modelClass.getDeclaredFields()) {
-            if (field.getType().equals(String.class) || field.getType().equals(Double.class)) {
+            if ((field.getType().equals(String.class) || field.getType().equals(Double.class)|| field.getType().equals(Integer.class)) && !blackListFields().contains(field.getName())) {
                 fields.add(field);
             }
         }
@@ -127,7 +130,7 @@ public class AdminFieldsController {
             textField.setId(field.getName());
             textField.setPrefHeight(40);
 
-            createLabel(field);
+//            createLabel(field);
 
             String fieldValue = updateValues.get(field.getName());
             if (fieldValue != null) {
@@ -144,9 +147,9 @@ public class AdminFieldsController {
             }
         }
 
-        if (numFields % 2 != 0) {
-            hbox.getChildren().add(new TextField());
-        }
+//        if (numFields % 2 != 0) {
+//            hbox.getChildren().add(new TextField());
+//        }
         if (!hbox.getChildren().isEmpty()) {
             vbox.getChildren().add(hbox);
         }
@@ -166,7 +169,7 @@ public class AdminFieldsController {
 
         Map<String, List<JsonObject>> objectsByClass = new HashMap<>();
         for (Field field : fields) {
-            createLabel(field);
+//            createLabel(field);
 
             String className = field.getType().getSimpleName();
             if (!objectsByClass.containsKey(className)) {
@@ -225,6 +228,8 @@ public class AdminFieldsController {
     }
 
     void createModelObject() {
+        Pattern pattern = Pattern.compile("^(\\d+)\\.");
+        Matcher matcher;
         Set<Node> textFieldNodes = vbox.lookupAll(".text-field");
         JsonObject jsonObject = new JsonObject();
         for (Node field : textFieldNodes) {
@@ -232,7 +237,11 @@ public class AdminFieldsController {
         }
         Set<Node> comboBoxNodes = vbox.lookupAll(".combo-box");
         for (Node combo : comboBoxNodes) {
-            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + (combo).getId() + "/" + ((ComboBox<?>) combo).getValue().toString().charAt(0));
+            matcher = pattern.matcher(((ComboBox<?>)combo).getValue().toString());
+            System.out.println((combo).getId() + "/" + ((ComboBox<?>) combo).getValue().toString());
+            String objectId = matcher.find() ? matcher.group(1) : "";
+            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + (combo).getId() + "/" + objectId);
+            System.out.println(response.body());
             JsonObject innerObject = appData.getGson().fromJson(response.body(), JsonObject.class);
             jsonObject.add((combo).getId(), innerObject);
         }
@@ -240,13 +249,17 @@ public class AdminFieldsController {
     }
 
     void updateModelObject() {
+        Pattern pattern = Pattern.compile("^(\\d+)\\.");
+        Matcher matcher;
         Set<Node> textFieldNodes = vbox.lookupAll(".text-field");
         for (Node field : textFieldNodes) {
             updateUnit.addProperty((field).getId(), ((TextField) field).getText());
         }
         Set<Node> comboBoxNodes = vbox.lookupAll(".combo-box");
         for (Node combo : comboBoxNodes) {
-            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + (combo).getId() + "/" + ((ComboBox<?>) combo).getValue().toString().charAt(0));
+            matcher = pattern.matcher((combo).getId() + "/" + ((ComboBox<?>) combo).getValue().toString());
+            String objectId = matcher.find() ? matcher.group(1) : "";
+            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + (combo).getId() + "/" + objectId);
             JsonObject innerObject = appData.getGson().fromJson(response.body(), JsonObject.class);
             updateUnit.add((combo).getId(), innerObject);
         }
@@ -294,6 +307,7 @@ public class AdminFieldsController {
         fields.put("finalPrice", "Итоговая цена");
         fields.put("finalBudget", "Итоговый бюджет");
         fields.put("priceWithVat", "Итоговая цена с учетом НДС");
+        fields.put("amount", "Количество");
         return fields.get(fieldName);
     }
 
@@ -329,6 +343,16 @@ public class AdminFieldsController {
         labelsText.put("Status", "Изменение статуса");
         labelsText.put("User", "Изменение пользователя");
         return labelsText.get(labelText);
+    }
+
+    ArrayList<String> blackListFields(){
+        ArrayList<String> fields = new ArrayList<>();
+        fields.add("registrationDate");
+        fields.add("closingDate");
+        fields.add("applicationDate");
+        fields.add("applicationComment");
+        fields.add("closingDate");
+        return fields;
     }
 
 }
