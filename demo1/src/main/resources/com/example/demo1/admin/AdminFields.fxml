@@ -13,7 +13,7 @@
 <GridPane fx:id="gridPane1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: #ddddff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.pages.admin.AdminFieldsController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="400" minWidth="20.0" prefWidth="200.0" />
+        <ColumnConstraints hgrow="SOMETIMES"  minWidth="20.0" prefWidth="1000.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
     <rowConstraints>

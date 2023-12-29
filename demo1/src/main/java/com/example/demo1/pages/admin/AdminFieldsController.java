@@ -22,9 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 public class AdminFieldsController {
 
@@ -100,61 +98,126 @@ public class AdminFieldsController {
     }
 
     void createFields() {
+        List<Field> fields = new ArrayList<>();
         for (Field field : modelClass.getDeclaredFields()) {
             if (field.getType().equals(String.class) || field.getType().equals(Double.class)) {
-                createLabel(field);
-                TextField textField = new TextField();
-                textField.setPromptText(getRussianField(field.getName()));
-                textField.setId(field.getName());
-                textField.setPrefHeight(40);
-
-                vbox.getChildren().add(textField);
-                if (appData.getPutModelId() > -1L) {
-                    String updateInfoText = String.valueOf(updateUnit.get(textField.getId()));
-                    if (updateInfoText.equals("null")) {
-                        updateInfoText = String.valueOf(updateUnit.get("username"));
-                    }
-                    updateInfoText = updateInfoText.replace("\"", "");
-                    textField.setText(updateInfoText);
-                }
+                fields.add(field);
             }
+        }
+
+        HBox hbox = new HBox();
+        hbox.setSpacing(10);
+
+        int numFields = 0;
+
+        Map<String, String> updateValues = new HashMap<>();
+        if (appData.getPutModelId() > -1L) {
+            JsonObject updateUnitJson = appData.getGson().toJsonTree(updateUnit).getAsJsonObject();
+            for (Field field : fields) {
+                String fieldName = field.getName();
+                String fieldValue = updateUnitJson.get(fieldName).getAsString();
+                updateValues.put(fieldName, fieldValue);
+            }
+        }
+
+        for (Field field : fields) {
+            TextField textField = new TextField();
+            HBox.setHgrow(textField, Priority.ALWAYS);
+            textField.setPromptText(getRussianField(field.getName()));
+            textField.setId(field.getName());
+            textField.setPrefHeight(40);
+
+            createLabel(field);
+
+            String fieldValue = updateValues.get(field.getName());
+            if (fieldValue != null) {
+                textField.setText(fieldValue);
+            }
+
+            hbox.getChildren().add(textField);
+
+            numFields++;
+            if (numFields % 2 == 0) {
+                vbox.getChildren().add(hbox);
+                hbox = new HBox();
+                hbox.setSpacing(10);
+            }
+        }
+
+        if (numFields % 2 != 0) {
+            hbox.getChildren().add(new TextField());
+        }
+        if (!hbox.getChildren().isEmpty()) {
+            vbox.getChildren().add(hbox);
         }
     }
 
+
     void createComboBoxes() {
+        List<Field> fields = new ArrayList<>();
         for (Field field : modelClass.getDeclaredFields()) {
             if (appData.getFullModelsList().contains(field.getType())) {
-                createLabel(field);
-                HttpResponse<String> response = RequestsBuilder.getRequest("/admin/getAll/" + field.getType().getSimpleName().toLowerCase());
+                fields.add(field);
+            }
+        }
+
+        HBox hbox = new HBox();
+        hbox.setSpacing(10);
+
+        Map<String, List<JsonObject>> objectsByClass = new HashMap<>();
+        for (Field field : fields) {
+            createLabel(field);
+
+            String className = field.getType().getSimpleName();
+            if (!objectsByClass.containsKey(className)) {
+                HttpResponse<String> response = RequestsBuilder.getRequest("/admin/getAll/" + className.toLowerCase());
                 Type listType = new TypeToken<ArrayList<JsonObject>>() {
                 }.getType();
                 ArrayList<JsonObject> jsonObjectList = appData.getGson().fromJson(response.body(), listType);
-                ComboBox<String> comboBox = new ComboBox<>();
-                comboBox.setPromptText(getRussianField(field.getName()));
-                comboBox.setId(field.getName());
-                for (JsonObject jObject : jsonObjectList) {
-                    String idPropertyName = field.getType().getDeclaredFields()[0].getName();
-                    JsonElement objectId = jObject.get(idPropertyName);
-                    String comboItem = objectId + ". " + jObject.get(field.getType().getDeclaredFields()[1].getName());
-                    comboBox.getItems().add(comboItem);
-                    if (appData.getPutModelId() > -1L) {
-                        JsonObject buf = null;
-                        try {
-                            buf = (JsonObject) updateUnit.get(field.getName());
-                            if (buf.get(idPropertyName).equals(objectId)) {
-                                comboBox.setValue(comboItem);
-                            }
-                        }catch (ClassCastException e){
-                            System.out.println("пустое поле");
-                        }
+                objectsByClass.put(className, jsonObjectList);
+            }
 
+            List<JsonObject> jsonObjectList = objectsByClass.get(className);
+
+            ComboBox<String> comboBox = new ComboBox<>();
+            HBox.setHgrow(comboBox, Priority.ALWAYS);
+            comboBox.setPromptText(getRussianField(field.getName()));
+            comboBox.setId(field.getName());
+
+            for (JsonObject jObject : jsonObjectList) {
+                String idPropertyName = field.getType().getDeclaredFields()[0].getName();
+                JsonElement objectId = jObject.get(idPropertyName);
+                String comboItem = objectId + ". " + jObject.get(field.getType().getDeclaredFields()[1].getName());
+                comboBox.getItems().add(comboItem);
+
+                if (appData.getPutModelId() > -1L) {
+                    JsonObject buf = null;
+                    try {
+                        buf = (JsonObject) updateUnit.get(field.getName());
+                        if (buf.get(idPropertyName).equals(objectId)) {
+                            comboBox.setValue(comboItem);
+                        }
+                    } catch (ClassCastException e) {
+                        System.out.println("пустое поле");
                     }
                 }
-                comboBox.setPrefWidth(Double.MAX_VALUE);
-                vbox.getChildren().add(comboBox);
+            }
+
+            comboBox.setPrefWidth(10000);
+            hbox.getChildren().add(comboBox);
+
+            if (hbox.getChildren().size() == 2) {
+                vbox.getChildren().add(hbox);
+                hbox = new HBox();
+                hbox.setSpacing(10);
             }
         }
+
+        if (!hbox.getChildren().isEmpty()) {
+            vbox.getChildren().add(hbox);
+        }
     }
+
 
     void createLabel(Field field) {
         Label label = new Label(getRussianField(field.getName()));
