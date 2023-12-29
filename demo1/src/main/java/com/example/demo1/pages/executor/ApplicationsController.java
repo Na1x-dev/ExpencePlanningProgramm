@@ -162,6 +162,9 @@ public class ApplicationsController {
 
         closingDate.setCellValueFactory(cellData -> {
             Application application = cellData.getValue();
+            if(application.getClosingDate() == null){
+                return new SimpleStringProperty("");
+            }
             return new SimpleStringProperty(appData.getDateForClient(application.getClosingDate()));
         });
         comment.setCellValueFactory(new PropertyValueFactory<>("comment"));

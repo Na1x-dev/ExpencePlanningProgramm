@@ -7,20 +7,16 @@ import com.example.demo1.models.*;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import lombok.Data;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -129,6 +125,8 @@ public class AppData {
         scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.setMaximized(true);
+        stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
+        stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
         stage.show();
     }
 
@@ -161,6 +159,19 @@ public class AppData {
         return checkFlag;
     }
 
+    public boolean checkComboBoxes(List<ComboBox> boxes){
+        boolean checkFlag = true;
+        for (ComboBox comboBox : boxes) {
+            if (comboBox.getValue() == null) {
+                checkFlag = false;
+                comboBox.setStyle("-fx-border-color: rgb(222,27,63)");
+            } else {
+                comboBox.setStyle("-fx-border-color: #5082ff");
+            }
+        }
+        return checkFlag;
+    }
+
     public List<TextField> getFields(Node pane) {
         List<TextField> fields = new ArrayList<>();
         Set<Node> nodes = pane.lookupAll(".text-field");
@@ -170,6 +181,17 @@ public class AppData {
             }
         }
         return fields;
+    }
+
+    public List<ComboBox> getBoxes(Node pane) {
+        List<ComboBox> boxes = new ArrayList<>();
+        Set<Node> nodes = pane.lookupAll(".combo-box");
+        for (Node node : nodes) {
+            if (node instanceof ComboBox<?>) {
+                boxes.add((ComboBox) node);
+            }
+        }
+        return boxes;
     }
 
     public List<TextArea> getAreas(Node pane) {

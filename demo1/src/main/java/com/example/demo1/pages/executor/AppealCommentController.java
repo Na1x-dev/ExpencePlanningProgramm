@@ -56,14 +56,17 @@ public class AppealCommentController {
 
     @FXML
     void close(ActionEvent event) {
-        HttpResponse<String> getResponse = RequestsBuilder.getRequestWithProperty("/admin/get/appeal" , String.valueOf(appData.getPutModelId()));
-        Appeal appeal = appData.getGson().fromJson(getResponse.body(), Appeal.class);
-        appeal.setStatus(appData.findStatus("закрыто"));
-        appeal.setClosingUser(appData.getUser());
-        appeal.setComment(textArea.getText());
-        System.out.println(appeal);
-        HttpResponse<String> putResponse = RequestsBuilder.putRequest(appData.getGson().toJson(appeal),"/admin/update/appeal/" + appData.getPutModelId());
-        AppData.toNextStage("executor/AppealsPage.fxml", backButton, "Executor Page");
+        if (!appData.checkAreas(appData.getAreas(anchorPane), resultLabel)) {
+        } else {
+            HttpResponse<String> getResponse = RequestsBuilder.getRequestWithProperty("/admin/get/appeal", String.valueOf(appData.getPutModelId()));
+            Appeal appeal = appData.getGson().fromJson(getResponse.body(), Appeal.class);
+            appeal.setStatus(appData.findStatus("закрыто"));
+            appeal.setClosingUser(appData.getUser());
+            appeal.setComment(textArea.getText());
+            System.out.println(appeal);
+            HttpResponse<String> putResponse = RequestsBuilder.putRequest(appData.getGson().toJson(appeal), "/admin/update/appeal/" + appData.getPutModelId());
+            AppData.toNextStage("executor/AppealsPage.fxml", backButton, "Executor Page");
+        }
     }
 
     @FXML
