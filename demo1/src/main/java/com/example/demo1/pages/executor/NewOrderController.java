@@ -43,11 +43,23 @@ public class NewOrderController {
 
     @FXML
     public void create(ActionEvent actionEvent) {
-        if (!appData.checkFields(appData.getFields(vbox), new Label()) && !appData.checkComboBoxes(appData.getBoxes(vbox)) ) {
+        if (application.getCreateUser().getDepartment().getManagement().getBudget().getFinalBudget() > Double.parseDouble(finalPrice.getText())) {
+            if (!appData.checkFields(appData.getFields(vbox), new Label()) && !appData.checkComboBoxes(appData.getBoxes(vbox))) {
 
+            } else {
+
+updateBudget(application);
+                createOrder();
+                AppData.toNextStage("executor/OrdersPage.fxml", createButton, "Executor Page");
+
+            }
         } else {
-            createOrder();
-            AppData.toNextStage("executor/OrdersPage.fxml", createButton, "Executor Page");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText("Ошибка");
+//                            alert.setContentText("Недостаточное финансирование для создания заявки.");
+            alert.setContentText("Бюджет составляет " + application.getCreateUser().getDepartment().getManagement().getBudget().getFinalBudget() + "руб");
+            alert.showAndWait();
         }
     }
 
@@ -63,6 +75,16 @@ public class NewOrderController {
         textFieldSetFormat(unp, "\\d{0,9}");
 //        textFieldSetFormat(contactNumber, "^(\\+375|80)\\s?\\(?(17|25|29|33|44)\\)?\\s?\\d{3}(-|\\s)?\\d{2}(-|\\s)?\\d{2}$");
         calculateFinalPrice(vat);
+    }
+
+    void updateBudget(Application application) {
+        Budget budget = application.getCreateUser().getDepartment().getManagement().getBudget();
+        double expenses = Double.parseDouble(finalPrice.getText());
+        budget.setBudgetCategory1(budget.getBudgetCategory1() - expenses / 3);
+        budget.setBudgetCategory2(budget.getBudgetCategory2() - expenses / 3);
+        budget.setBudgetCategory3(budget.getBudgetCategory3() - expenses / 3);
+        budget.setFinalBudget(budget.getBudgetCategory1() + budget.getBudgetCategory2() + budget.getBudgetCategory3());
+        HttpResponse<String> response = RequestsBuilder.putRequest(appData.getGson().toJson(budget), "/admin/update/budget/" + budget.getBudgetId());
     }
 
     void createOrder() {
@@ -105,7 +127,7 @@ public class NewOrderController {
     void calculateFinalPrice(ComboBox<Integer> vat) {
         vat.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 //            if ()
-                finalPrice.setText(String.valueOf((application.getFinalPrice()  * vat.getValue() *0.01) + application.getFinalPrice() ));
+            finalPrice.setText(String.valueOf((application.getFinalPrice() * vat.getValue() * 0.01) + application.getFinalPrice()));
 //            else finalPrice.setText("");
         });
     }

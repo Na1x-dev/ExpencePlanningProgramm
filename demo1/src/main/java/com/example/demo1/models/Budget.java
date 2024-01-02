@@ -9,7 +9,7 @@ public class Budget  implements Model{
 
     private Long budgetId;
 
-    private Management management;
+    private Double finalBudget;
 
     private Double budgetCategory1;
 
@@ -17,10 +17,9 @@ public class Budget  implements Model{
 
     private Double budgetCategory3;
 
-    private Double finalBudget;
+
 
     public Budget(){
-        management = new Management();
         budgetCategory1 = 0.0;
         budgetCategory2 = 0.0;
         budgetCategory3 = 0.0;
@@ -31,7 +30,6 @@ public class Budget  implements Model{
     public String toString() {
         return "Budget{" +
                 "budgetId=" + budgetId +
-                ", management=" + management +
                 ", budgetCategory1=" + budgetCategory1 +
                 ", budgetCategory2=" + budgetCategory2 +
                 ", budgetCategory3=" + budgetCategory3 +

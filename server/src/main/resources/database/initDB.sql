@@ -102,20 +102,24 @@
 --       comment text
 -- );
 
-CREATE TABLE IF NOT EXISTS managements (
-                                           management_id INT AUTO_INCREMENT PRIMARY KEY,
-                                           management_name VARCHAR(255)
-    );
-
 CREATE TABLE IF NOT EXISTS budget (
                                       budget_id INT AUTO_INCREMENT PRIMARY KEY,
-                                      management_id INT,
+
                                       budget_category1 FLOAT,
                                       budget_category2 FLOAT,
                                       budget_category3 FLOAT,
-                                      final_budget FLOAT,
-                                      FOREIGN KEY (management_id) REFERENCES managements(management_id) ON DELETE CASCADE
+                                      final_budget FLOAT
+
+);
+
+CREATE TABLE IF NOT EXISTS managements (
+                                           management_id INT AUTO_INCREMENT PRIMARY KEY,
+                                           management_name VARCHAR(255),
+    budget_id INT,
+    FOREIGN KEY (budget_id) REFERENCES budget(budget_id) ON DELETE CASCADE
     );
+
+
 
 CREATE TABLE IF NOT EXISTS departments (
                                            department_id INT AUTO_INCREMENT PRIMARY KEY,

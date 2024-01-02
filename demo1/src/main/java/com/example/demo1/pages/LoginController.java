@@ -78,12 +78,12 @@ public class LoginController {
                     getUserFromServer(appData.getUser());
                     getRolesFromServer();
                     getStatusesFromServer();
-//                if (appData.getUser().getRole().getRoleName().equals("заказчик"))
-//                    AppData.toNextStage("customer/CustomerPage.fxml", loginButton, "Customer Page");
-//                else if (appData.getUser().getRole().getRoleName().equals("исполнитель"))
+                if (appData.getUser().getRole().getRoleName().equals("заказчик"))
+                    AppData.toNextStage("customer/CustomerPage.fxml", loginButton, "Customer Page");
+                else if (appData.getUser().getRole().getRoleName().equals("исполнитель"))
                     AppData.toNextStage("executor/AppealsPage.fxml", loginButton, "Executor Page");
-//                    else if(appData.getUser().getRole().getRoleName().equals("администратор"))
-//                    AppData.toNextStage("admin/AdminPage.fxml", loginButton, "Admin Page");
+                    else if(appData.getUser().getRole().getRoleName().equals("администратор"))
+                    AppData.toNextStage("admin/AdminPage.fxml", loginButton, "Admin Page");
                 } else {
                     resultLabel.setText("Неверные логин или пароль");
                     userNameField.setStyle("-fx-border-color: rgb(222,27,63)");

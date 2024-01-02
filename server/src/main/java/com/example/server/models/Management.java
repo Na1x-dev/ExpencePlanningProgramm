@@ -18,6 +18,10 @@ public class Management {
     @Column(name = "management_name")
     private String managementName;
 
+    @ManyToOne
+    @JoinColumn(name = "budget_id",referencedColumnName = "budget_id")
+    private Budget budget;
+
     public Management() {
         managementName = "";
     }
@@ -27,6 +31,7 @@ public class Management {
         return "Management{" +
                 "managementId=" + managementId +
                 ", managementName='" + managementName + '\'' +
+                ", budget=" + budget +
                 '}';
     }
 }

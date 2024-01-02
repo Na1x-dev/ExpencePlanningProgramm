@@ -3,6 +3,7 @@ package com.example.server.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import lombok.Data;
+import lombok.Setter;
 
 
 @Data
@@ -10,14 +11,12 @@ import lombok.Data;
 @Entity
 @Table(name = "budget")
 public class Budget {
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "budget_id")
     private Long budgetId;
 
-    @ManyToOne
-    @JoinColumn(name = "management_id",referencedColumnName = "management_id")
-    private Management management;
 
     @Column(name = "budget_category1")
     private Double budgetCategory1;
@@ -42,7 +41,6 @@ public class Budget {
     public String toString() {
         return "Budget{" +
                 "budgetId=" + budgetId +
-                ", management=" + management +
                 ", budgetCategory1=" + budgetCategory1 +
                 ", budgetCategory2=" + budgetCategory2 +
                 ", budgetCategory3=" + budgetCategory3 +
@@ -50,7 +48,4 @@ public class Budget {
                 '}';
     }
 
-    public void setBudgetId(Long id) {
-    budgetId = id;
-    }
 }
