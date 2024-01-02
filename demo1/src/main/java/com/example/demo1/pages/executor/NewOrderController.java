@@ -48,7 +48,7 @@ public class NewOrderController {
 
             } else {
 
-updateBudget(application);
+                updateBudget(application);
                 createOrder();
                 AppData.toNextStage("executor/OrdersPage.fxml", createButton, "Executor Page");
 

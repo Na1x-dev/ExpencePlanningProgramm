@@ -8,6 +8,7 @@ import java.net.http.HttpResponse;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.example.demo1.AppData;
 import com.example.demo1.RequestsBuilder;
@@ -20,10 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 public class AdminFieldsController {
@@ -57,12 +55,15 @@ public class AdminFieldsController {
 
     @FXML
     void create(ActionEvent event) {
+        if (!appData.checkFields(appData.getFields(vbox), new Label()) && !appData.checkComboBoxes(appData.getBoxes(vbox))) {
 
-        if (appData.getPutModelId() == -1L)
-            createModelObject();
-        else
-            updateModelObject();
-        AppData.toNextStage("admin/AdminPage.fxml", CreateButton, "Admin Page");
+        } else {
+            if (appData.getPutModelId() == -1L)
+                createModelObject();
+            else
+                updateModelObject();
+            AppData.toNextStage("admin/AdminPage.fxml", CreateButton, "Admin Page");
+        }
     }
 
     @FXML
@@ -79,6 +80,7 @@ public class AdminFieldsController {
         createFields();
         createComboBoxes();
         vbox.getChildren().add(ButtonBox);
+        inAllFields();
     }
 
     void initUpdateUnit() {
@@ -126,6 +128,8 @@ public class AdminFieldsController {
 
         for (Field field : fields) {
             TextField textField = new TextField();
+
+            setFieldsRestrictions(field, textField);
             HBox.setHgrow(textField, Priority.ALWAYS);
             textField.setPromptText(getRussianField(field.getName()));
             textField.setId(field.getName());
@@ -273,6 +277,82 @@ public class AdminFieldsController {
         HttpResponse<String> response = RequestsBuilder.putRequest(String.valueOf(updateUnit), "/admin/update/" + modelClass.getSimpleName().toLowerCase() + "/" + appData.getPutModelId());
     }
 
+    void setFieldsRestrictions(Field field, TextField textField) {
+        if (getMoneyFields().contains(field.getName())) {
+            textFieldSetFormat(textField, "\\d*\\.?\\d{0,2}");
+        } else if (field.getName().equals("amount") || field.getName().equals("vat")) {
+            textFieldSetFormat(textField, "\\d*");
+        } else if (field.getName().equals("unp")) {
+            textFieldSetFormat(textField, "\\d{0,9}");
+        }
+    }
+
+    void initFinalPriceFields(TextField textField) {
+        if (textField.getId().equals("finalPrice")) {
+            textField.setEditable(false);
+            textField.setMouseTransparent(true);
+            TextField amount = (TextField)  vbox.lookup("#amount");
+            TextField priceForOne = (TextField)  vbox.lookup("#priceForOne");
+            amount.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!priceForOne.getText().isEmpty() && !amount.getText().isEmpty())
+                    textField.setText(String.valueOf(Double.parseDouble(priceForOne.getText()) * Integer.parseInt(amount.getText())));
+                else textField.setText("");
+            });
+            priceForOne.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!priceForOne.getText().isEmpty() && !amount.getText().isEmpty())
+                    textField.setText(String.valueOf(Double.parseDouble(priceForOne.getText()) * Integer.parseInt(amount.getText())));
+                else textField.setText("");
+            });
+        }
+        if (textField.getId().equals("finalBudget")) {
+            textField.setEditable(false);
+            textField.setMouseTransparent(true);
+            textField.setFocusTraversable(false);
+            TextField budgetCategory1 = (TextField)  vbox.lookup("#budgetCategory1");
+            TextField budgetCategory2 = (TextField)  vbox.lookup("#budgetCategory2");
+            TextField budgetCategory3 = (TextField)  vbox.lookup("#budgetCategory3");
+            budgetCategory1.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!budgetCategory3.getText().isEmpty() && !budgetCategory2.getText().isEmpty() && !budgetCategory1.getText().isEmpty())
+                    textField.setText(String.valueOf(Double.parseDouble(budgetCategory1.getText()) + Double.parseDouble(budgetCategory2.getText()) + Double.parseDouble(budgetCategory3.getText())));
+                else textField.setText("");
+            });
+            budgetCategory2.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!budgetCategory3.getText().isEmpty() && !budgetCategory2.getText().isEmpty() && !budgetCategory1.getText().isEmpty())
+                    textField.setText(String.valueOf(Double.parseDouble(budgetCategory1.getText()) + Double.parseDouble(budgetCategory2.getText()) + Double.parseDouble(budgetCategory3.getText())));
+                else textField.setText("");
+            });
+            budgetCategory3.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!budgetCategory3.getText().isEmpty() && !budgetCategory2.getText().isEmpty() && !budgetCategory1.getText().isEmpty())
+                    textField.setText(String.valueOf(Double.parseDouble(budgetCategory1.getText()) + Double.parseDouble(budgetCategory2.getText()) + Double.parseDouble(budgetCategory3.getText())));
+                else textField.setText("");
+            });
+        }
+    }
+
+void inAllFields(){
+    List<TextField> textFields = vbox.lookupAll(".text-field")
+            .stream()
+            .map(node -> (TextField) node)
+            .toList();
+
+    for (TextField textField : textFields) {
+       initFinalPriceFields(textField);
+    }
+
+}
+
+    ArrayList<String> getMoneyFields() {
+        ArrayList<String> fields = new ArrayList<>();
+        fields.add("budgetCategory1");
+        fields.add("budgetCategory2");
+        fields.add("budgetCategory3");
+        fields.add("priceForOne");
+        fields.add("finalPrice");
+        fields.add("finalBudget");
+        fields.add("priceWithVat");
+        return fields;
+    }
+
     String getRussianField(String fieldName) {
         Map<String, String> fields = new HashMap<>();
         fields.put("registrationDate", "Дата регистрации");
@@ -319,6 +399,7 @@ public class AdminFieldsController {
         fields.put("unp", "УНП");
         return fields.get(fieldName);
     }
+
 
     String getRussianMainLabel(String labelText) {
         Map<String, String> labelsText = new HashMap<>();
@@ -374,5 +455,18 @@ public class AdminFieldsController {
 
         return properties;
     }
+
+
+    void textFieldSetFormat(TextField textField, String format) {
+        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches(format)) {
+                return change;
+            }
+            return null;
+        });
+        textField.setTextFormatter(textFormatter);
+    }
+
 
 }
