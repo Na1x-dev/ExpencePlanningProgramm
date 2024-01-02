@@ -322,7 +322,7 @@ public class AdminController {
     }
     @PostMapping(value = "/admin/create/procurementarchive")
     public ResponseEntity<?> createProcurementArchive(@RequestBody ProcurementArchive procurementArchive) {
-        procurementArchive.create(procurementArchive);
+        procurementArchiveService.create(procurementArchive);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping(value = "/admin/get/procurementarchive/{procurementArchiveId}")
@@ -367,6 +367,7 @@ public class AdminController {
     }
 
 
+
     @GetMapping(value = "/admin/getAll/status")
     public ResponseEntity<List<Status>> readStatuses() {
         final List<Status> statuses = statusService.readAll();
@@ -376,6 +377,27 @@ public class AdminController {
     public ResponseEntity<?> createStatus(@RequestBody Status status) {
         statusService.create(status);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    @GetMapping(value = "/admin/get/status/{statusId}")
+    public ResponseEntity<Status> readStatus(@PathVariable(name = "statusId") Long statusId) {
+        final Status status = statusService.read(statusId);
+        return status != null
+                ? new ResponseEntity<>(status, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    @PutMapping(value = "/admin/update/status/{statusId}")
+    public ResponseEntity<?> updateStatus(@PathVariable(name = "statusId") Long statusId, @RequestBody Status status) {
+        final boolean updated = statusService.update(statusId, status);
+        return updated
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    }
+    @DeleteMapping(value = "/admin/delete/status/{statusId}")
+    public ResponseEntity<?> deleteStatus(@PathVariable(name = "statusId") Long statusId) {
+        final boolean deleted = statusService.delete(statusId);
+        return deleted
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
 

@@ -103,8 +103,9 @@ public class AdminFieldsController {
     void createFields() {
         List<Field> fields = new ArrayList<>();
         for (Field field : modelClass.getDeclaredFields()) {
-            if ((field.getType().equals(String.class) || field.getType().equals(Double.class)|| field.getType().equals(Integer.class)) && !blackListFields().contains(field.getName())) {
+            if ((field.getType().equals(String.class) || field.getType().equals(Double.class) || field.getType().equals(Integer.class)) && !blackListFields().contains(field.getName())) {
                 fields.add(field);
+                System.out.println(field);
             }
         }
 
@@ -237,11 +238,13 @@ public class AdminFieldsController {
         }
         Set<Node> comboBoxNodes = vbox.lookupAll(".combo-box");
         for (Node combo : comboBoxNodes) {
-            matcher = pattern.matcher(((ComboBox<?>)combo).getValue().toString());
-            System.out.println((combo).getId() + "/" + ((ComboBox<?>) combo).getValue().toString());
+            matcher = pattern.matcher(((ComboBox<?>) combo).getValue().toString());
             String objectId = matcher.find() ? matcher.group(1) : "";
-            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + (combo).getId() + "/" + objectId);
-            System.out.println(response.body());
+            String requestProperty;
+            if (propertyForRequest().containsKey(combo.getId()))
+                requestProperty = propertyForRequest().get(combo.getId());
+            else requestProperty = combo.getId();
+            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + requestProperty + "/" + objectId);
             JsonObject innerObject = appData.getGson().fromJson(response.body(), JsonObject.class);
             jsonObject.add((combo).getId(), innerObject);
         }
@@ -259,7 +262,11 @@ public class AdminFieldsController {
         for (Node combo : comboBoxNodes) {
             matcher = pattern.matcher((combo).getId() + "/" + ((ComboBox<?>) combo).getValue().toString());
             String objectId = matcher.find() ? matcher.group(1) : "";
-            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + (combo).getId() + "/" + objectId);
+            String requestProperty;
+            if (propertyForRequest().containsKey(combo.getId()))
+                requestProperty = propertyForRequest().get(combo.getId());
+            else requestProperty = combo.getId();
+            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + requestProperty + "/" + objectId);
             JsonObject innerObject = appData.getGson().fromJson(response.body(), JsonObject.class);
             updateUnit.add((combo).getId(), innerObject);
         }
@@ -308,6 +315,8 @@ public class AdminFieldsController {
         fields.put("finalBudget", "Итоговый бюджет");
         fields.put("priceWithVat", "Итоговая цена с учетом НДС");
         fields.put("amount", "Количество");
+        fields.put("vat", "НДС");
+        fields.put("unp", "УНП");
         return fields.get(fieldName);
     }
 
@@ -345,14 +354,25 @@ public class AdminFieldsController {
         return labelsText.get(labelText);
     }
 
-    ArrayList<String> blackListFields(){
+    ArrayList<String> blackListFields() {
         ArrayList<String> fields = new ArrayList<>();
         fields.add("registrationDate");
         fields.add("closingDate");
         fields.add("applicationDate");
         fields.add("applicationComment");
         fields.add("closingDate");
+        fields.add("orderDate");
+
         return fields;
+    }
+
+    Map<String, String> propertyForRequest() {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("closingUser", "user");
+        properties.put("createUser", "user");
+        properties.put("customerUser", "user");
+
+        return properties;
     }
 
 }

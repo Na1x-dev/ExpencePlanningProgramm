@@ -16,6 +16,7 @@ module com.example.demo1 {
 
 
     requires com.google.gson;
+    requires poi.ooxml;
 
 
     opens com.example.demo1 to javafx.fxml, com.google.gson;

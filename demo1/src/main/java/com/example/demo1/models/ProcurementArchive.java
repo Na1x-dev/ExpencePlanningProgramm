@@ -1,4 +1,5 @@
 package com.example.demo1.models;
+import com.example.demo1.AppData;
 import lombok.*;
 import java.util.Date;
 @Getter
@@ -6,7 +7,7 @@ import java.util.Date;
 public class ProcurementArchive implements Model {
     private Long procurementId;
 
-    private Date procurementDate;
+    private String procurementDate;
 
     private Status status;
 
@@ -17,7 +18,7 @@ public class ProcurementArchive implements Model {
     private String comment;
 
     public ProcurementArchive(){
-        procurementDate = new Date();
+        procurementDate = AppData.getInstance().getFormatForServer().format(new Date());
         status = new Status();
         user = new User();
         order = new Order();

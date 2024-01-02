@@ -2,6 +2,7 @@ package com.example.demo1.models;
 
 import java.util.Date;
 
+import com.example.demo1.AppData;
 import lombok.Data;
 
 
@@ -9,7 +10,7 @@ import lombok.Data;
 public class Order implements Model {
     private Long orderId;
 
-    private Date orderDate;
+    private String orderDate;
 
     private Status status;
 
@@ -30,7 +31,7 @@ public class Order implements Model {
     private Double priceWithVat;
 
     public Order(){
-        orderDate = new Date();
+        orderDate = AppData.getInstance().getFormatForServer().format(new Date());
         status = new Status();
         createUser = new User();
         application = new Application();

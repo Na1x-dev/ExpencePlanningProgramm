@@ -61,8 +61,7 @@ public class ProcurementArchive {
         procurementId = id;
     }
 
-    public void create(ProcurementArchive procurementArchive) {
-    }
+
 
     // Геттеры и сеттеры
 

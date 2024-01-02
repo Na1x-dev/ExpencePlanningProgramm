@@ -57,7 +57,7 @@
             </children>    </HBox>
         <AnchorPane fx:id="procurementArchivePane" prefHeight="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <children>
-                <TableView fx:id="appealTable" layoutY="110.0" maxWidth="Infinity" minWidth="0" prefHeight="300.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+                <TableView fx:id="archiveTable" layoutY="110.0" maxWidth="Infinity" minWidth="0" prefHeight="300.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
                     <columns>
                         <TableColumn fx:id="orderId" minWidth="200.0" text="Номер закупки" />
                         <TableColumn fx:id="orderDate" minWidth="200.0" text="Дата закупки" />

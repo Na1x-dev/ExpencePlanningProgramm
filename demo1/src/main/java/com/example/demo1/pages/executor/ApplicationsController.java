@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.example.demo1.AppData;
+import com.example.demo1.DialogBox;
 import com.example.demo1.RequestsBuilder;
 import com.example.demo1.models.Appeal;
 import com.example.demo1.models.Application;
@@ -146,11 +147,21 @@ public class ApplicationsController {
                 } else {
                     setText(item);
                     ContextMenu contextMenu = new ContextMenu();
-                    MenuItem menuItem1 = new MenuItem("Создано");
-                    MenuItem menuItem2 = new MenuItem("Зарегистрировано");
-                    MenuItem menuItem3 = new MenuItem("Отклонено");
-                    MenuItem menuItem4 = new MenuItem("Закрыто");
-                    contextMenu.getItems().addAll(menuItem1, menuItem2, menuItem3, menuItem4);
+                    MenuItem menuItem1 = new MenuItem("Закупить");
+                    menuItem1.setOnAction(actionEvent -> {
+                        appData.setPutModelId(getTableView().getItems().get(getIndex()).getApplicationId());
+                        AppData.toNextStage("executor/NewOrderPage.fxml", logOutButton, "Executor Page");
+                    });
+                    MenuItem menuItem2 = new MenuItem("Закрыть");
+                    menuItem2.setOnAction(actionEvent -> {
+                        appData.setPutModelId(getTableView().getItems().get(getIndex()).getApplicationId());
+                        DialogBox dialogBox = new DialogBox("Вы действительно хотите закрыть заявку с Id=" + appData.getPutModelId());
+                        dialogBox.showAndWait();
+                        if (dialogBox.getResult() == DialogBox.Result.OK) {
+                            AppData.toNextStage("executor/ApplicationCommentPage.fxml", logOutButton, "Executor Page");
+                        }
+                    });
+                    contextMenu.getItems().addAll(menuItem1, menuItem2);
                     setContextMenu(contextMenu);
                 }
             }
