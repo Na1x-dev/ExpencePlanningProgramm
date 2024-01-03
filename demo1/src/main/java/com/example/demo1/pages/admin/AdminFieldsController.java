@@ -55,7 +55,11 @@ public class AdminFieldsController {
 
     @FXML
     void create(ActionEvent event) {
-        if (!appData.checkFields(appData.getFields(vbox), new Label()) && !appData.checkComboBoxes(appData.getBoxes(vbox))) {
+        ArrayList<String> exceptions = new ArrayList<>();
+        exceptions.add("closingUser");
+        exceptions.add("comment");
+
+        if (!appData.checkFields(appData.getFields(vbox), new Label()) && !appData.checkComboBoxes(appData.getBoxes(vbox), exceptions)) {
 
         } else {
             if (appData.getPutModelId() == -1L)
@@ -128,15 +132,11 @@ public class AdminFieldsController {
 
         for (Field field : fields) {
             TextField textField = new TextField();
-
             setFieldsRestrictions(field, textField);
             HBox.setHgrow(textField, Priority.ALWAYS);
             textField.setPromptText(getRussianField(field.getName()));
             textField.setId(field.getName());
             textField.setPrefHeight(40);
-
-//            createLabel(field);
-
             String fieldValue = updateValues.get(field.getName());
             if (fieldValue != null) {
                 textField.setText(fieldValue);
@@ -151,10 +151,6 @@ public class AdminFieldsController {
                 hbox.setSpacing(10);
             }
         }
-
-//        if (numFields % 2 != 0) {
-//            hbox.getChildren().add(new TextField());
-//        }
         if (!hbox.getChildren().isEmpty()) {
             vbox.getChildren().add(hbox);
         }
@@ -174,8 +170,6 @@ public class AdminFieldsController {
 
         Map<String, List<JsonObject>> objectsByClass = new HashMap<>();
         for (Field field : fields) {
-//            createLabel(field);
-
             String className = field.getType().getSimpleName();
             if (!objectsByClass.containsKey(className)) {
                 HttpResponse<String> response = RequestsBuilder.getRequest("/admin/getAll/" + className.toLowerCase());
@@ -242,15 +236,18 @@ public class AdminFieldsController {
         }
         Set<Node> comboBoxNodes = vbox.lookupAll(".combo-box");
         for (Node combo : comboBoxNodes) {
-            matcher = pattern.matcher(((ComboBox<?>) combo).getValue().toString());
-            String objectId = matcher.find() ? matcher.group(1) : "";
-            String requestProperty;
-            if (propertyForRequest().containsKey(combo.getId()))
-                requestProperty = propertyForRequest().get(combo.getId());
-            else requestProperty = combo.getId();
-            HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + requestProperty + "/" + objectId);
-            JsonObject innerObject = appData.getGson().fromJson(response.body(), JsonObject.class);
-            jsonObject.add((combo).getId(), innerObject);
+            if(((ComboBox<?>) combo).getValue() != null) {
+                matcher = pattern.matcher(((ComboBox<?>) combo).getValue().toString());
+                String objectId = matcher.find() ? matcher.group(1) : "";
+                String requestProperty;
+                if (propertyForRequest().containsKey(combo.getId()))
+                    requestProperty = propertyForRequest().get(combo.getId());
+                else requestProperty = combo.getId();
+                HttpResponse<String> response = RequestsBuilder.getRequest("/admin/get/" + requestProperty + "/" + objectId);
+                JsonObject innerObject = appData.getGson().fromJson(response.body(), JsonObject.class);
+                jsonObject.add((combo).getId(), innerObject);
+            }
+
         }
         HttpResponse<String> response = RequestsBuilder.postRequest(String.valueOf(jsonObject), "/admin/create/" + modelClass.getSimpleName().toLowerCase());
     }
@@ -291,8 +288,8 @@ public class AdminFieldsController {
         if (textField.getId().equals("finalPrice")) {
             textField.setEditable(false);
             textField.setMouseTransparent(true);
-            TextField amount = (TextField)  vbox.lookup("#amount");
-            TextField priceForOne = (TextField)  vbox.lookup("#priceForOne");
+            TextField amount = (TextField) vbox.lookup("#amount");
+            TextField priceForOne = (TextField) vbox.lookup("#priceForOne");
             amount.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (!priceForOne.getText().isEmpty() && !amount.getText().isEmpty())
                     textField.setText(String.valueOf(Double.parseDouble(priceForOne.getText()) * Integer.parseInt(amount.getText())));
@@ -308,9 +305,9 @@ public class AdminFieldsController {
             textField.setEditable(false);
             textField.setMouseTransparent(true);
             textField.setFocusTraversable(false);
-            TextField budgetCategory1 = (TextField)  vbox.lookup("#budgetCategory1");
-            TextField budgetCategory2 = (TextField)  vbox.lookup("#budgetCategory2");
-            TextField budgetCategory3 = (TextField)  vbox.lookup("#budgetCategory3");
+            TextField budgetCategory1 = (TextField) vbox.lookup("#budgetCategory1");
+            TextField budgetCategory2 = (TextField) vbox.lookup("#budgetCategory2");
+            TextField budgetCategory3 = (TextField) vbox.lookup("#budgetCategory3");
             budgetCategory1.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (!budgetCategory3.getText().isEmpty() && !budgetCategory2.getText().isEmpty() && !budgetCategory1.getText().isEmpty())
                     textField.setText(String.valueOf(Double.parseDouble(budgetCategory1.getText()) + Double.parseDouble(budgetCategory2.getText()) + Double.parseDouble(budgetCategory3.getText())));
@@ -329,17 +326,17 @@ public class AdminFieldsController {
         }
     }
 
-void inAllFields(){
-    List<TextField> textFields = vbox.lookupAll(".text-field")
-            .stream()
-            .map(node -> (TextField) node)
-            .toList();
+    void inAllFields() {
+        List<TextField> textFields = vbox.lookupAll(".text-field")
+                .stream()
+                .map(node -> (TextField) node)
+                .toList();
 
-    for (TextField textField : textFields) {
-       initFinalPriceFields(textField);
+        for (TextField textField : textFields) {
+            initFinalPriceFields(textField);
+        }
+
     }
-
-}
 
     ArrayList<String> getMoneyFields() {
         ArrayList<String> fields = new ArrayList<>();

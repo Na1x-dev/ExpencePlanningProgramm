@@ -172,6 +172,19 @@ public class AppData {
         return checkFlag;
     }
 
+    public boolean checkComboBoxes(List<ComboBox> boxes, ArrayList<String> exceptions){
+        boolean checkFlag = true;
+        for (ComboBox comboBox : boxes) {
+            if (comboBox.getValue() == null && !exceptions.contains(comboBox.getId())) {
+                checkFlag = false;
+                comboBox.setStyle("-fx-border-color: rgb(222,27,63)");
+            } else {
+                comboBox.setStyle("-fx-border-color: #5082ff");
+            }
+        }
+        return checkFlag;
+    }
+
     public List<TextField> getFields(Node pane) {
         List<TextField> fields = new ArrayList<>();
         Set<Node> nodes = pane.lookupAll(".text-field");
@@ -224,4 +237,6 @@ public class AppData {
         }
         return checkFlag;
     }
+
+
 }
