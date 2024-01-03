@@ -49,6 +49,8 @@ public class NewOrderController {
             } else {
 
                 updateBudget(application);
+                application.setStatus(appData.findStatus("зарегистрировано"));
+                HttpResponse<String> putResponse = RequestsBuilder.putRequest(appData.getGson().toJson(application), "/admin/update/application/" + application.getApplicationId());
                 createOrder();
                 AppData.toNextStage("executor/OrdersPage.fxml", createButton, "Executor Page");
 

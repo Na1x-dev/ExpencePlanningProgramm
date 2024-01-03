@@ -89,6 +89,8 @@ public class NewApplicationController {
         application.setComment(applicationComment.getText());
         Appeal appeal = appData.getGson().fromJson(RequestsBuilder.getRequest("/admin/get/appeal/" + appData.getPutModelId()).body(), Appeal.class);
         application.setClosingUser(null);
+        appeal.setStatus(appData.findStatus("зарегистрировано"));
+        HttpResponse<String> putResponse = RequestsBuilder.putRequest(appData.getGson().toJson(appeal), "/admin/update/appeal/" + appeal.getAppealId());
         application.setAppeal(appeal);
         HttpResponse<String> response = RequestsBuilder.postRequest(appData.getGson().toJson(application), "/admin/create/application");
     }

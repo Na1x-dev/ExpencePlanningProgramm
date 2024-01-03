@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.awt.Desktop;
 
 import com.example.demo1.models.ProcurementArchive;
 import org.apache.poi.xwpf.usermodel.*;
@@ -80,5 +81,14 @@ public class CreateSpec {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        new Thread(() -> {
+            try {
+                File file = new File(outputPath);
+                Desktop.getDesktop().open(file);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }).start();
     }
 }

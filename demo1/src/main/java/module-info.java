@@ -17,6 +17,8 @@ module com.example.demo1 {
 
     requires com.google.gson;
     requires poi.ooxml;
+    requires org.fxmisc.richtext;
+    requires java.desktop;
 
 
     opens com.example.demo1 to javafx.fxml, com.google.gson;
