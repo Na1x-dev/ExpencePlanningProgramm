@@ -367,6 +367,7 @@ public class AdminFieldsController {
         fields.put("appeal", "Обращение");
         fields.put("category", "Категория");
         fields.put("management", "Управление");
+        fields.put("budget", "Бюджет");
         fields.put("categoryName", "Название категории");
         fields.put("departmentName", "Название отдел");
         fields.put("managementName", "Название управления");
@@ -440,6 +441,7 @@ public class AdminFieldsController {
         fields.add("applicationComment");
         fields.add("closingDate");
         fields.add("orderDate");
+        fields.add("procurementDate");
 
         return fields;
     }

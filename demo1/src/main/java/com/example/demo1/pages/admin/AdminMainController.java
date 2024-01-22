@@ -167,19 +167,47 @@ public class AdminMainController {
         }
     }
 
+//    public void createTableColumns(Map<String, Object> object) {
+//        for (String propertyName : object.keySet()) {
+//            TableColumn<Map<String, Object>, Object> fieldColumn = new TableColumn<>();
+//            fieldColumn.setCellValueFactory(data -> {
+//                Object modelProperty = data.getValue().get(propertyName);
+//                if (modelProperty != null) {
+//                    if (modelProperty.getClass().equals(Double.class)) {
+//                        return new SimpleObjectProperty<>(((Double) modelProperty).intValue());
+//                    }
+//                    if (modelProperty.getClass().equals(com.google.gson.internal.LinkedTreeMap.class)) {
+//                        return new SimpleObjectProperty<>(((Double) returnIdFromModels(modelProperty)).intValue());
+//                    }
+//                    if (modelProperty.getClass().equals(String.class) && appData.isValidDate((String) modelProperty)) {
+//                        return new SimpleObjectProperty<>(appData.getDateForAdmin((String) modelProperty));
+//                    }
+//                    return new SimpleObjectProperty<>(modelProperty);
+//                }
+//                return null;
+//            });
+//            Tooltip tooltip = new Tooltip(propertyName);
+//            tooltip.setShowDelay(Duration.millis(100));
+//            fieldColumn.setGraphic(new Label(propertyName));
+//            Tooltip.install(fieldColumn.getGraphic(), tooltip);
+//            mainTable.getColumns().add(fieldColumn);
+//        }
+//        mainTable.getColumns().addAll(createUpdateButtons(), createDeleteButtons());
+//    }
+
     public void createTableColumns(Map<String, Object> object) {
         for (String propertyName : object.keySet()) {
             TableColumn<Map<String, Object>, Object> fieldColumn = new TableColumn<>();
             fieldColumn.setCellValueFactory(data -> {
                 Object modelProperty = data.getValue().get(propertyName);
                 if (modelProperty != null) {
-                    if (modelProperty.getClass().equals(Double.class)) {
+                    if (modelProperty instanceof Double) {
                         return new SimpleObjectProperty<>(((Double) modelProperty).intValue());
                     }
-                    if (modelProperty.getClass().equals(LinkedTreeMap.class)) {
-                        return new SimpleObjectProperty<>(((Double) returnIdFromModels(modelProperty)).intValue());
+                    if (modelProperty instanceof Map) {
+                        return new SimpleObjectProperty<>(((Double) returnIdFromModels((Map<String, Object>) modelProperty)).intValue());
                     }
-                    if (modelProperty.getClass().equals(String.class) && appData.isValidDate((String) modelProperty)) {
+                    if (modelProperty instanceof String && appData.isValidDate((String) modelProperty)) {
                         return new SimpleObjectProperty<>(appData.getDateForAdmin((String) modelProperty));
                     }
                     return new SimpleObjectProperty<>(modelProperty);
@@ -193,8 +221,9 @@ public class AdminMainController {
             mainTable.getColumns().add(fieldColumn);
         }
         mainTable.getColumns().addAll(createUpdateButtons(), createDeleteButtons());
-
     }
+
+
 
     TableColumn<Map<String, Object>, Void> createUpdateButtons() {
         TableColumn<Map<String, Object>, Void> editColumn = new TableColumn<>("Изменить");
@@ -221,6 +250,7 @@ public class AdminMainController {
         });
         return editColumn;
     }
+
 
     TableColumn<Map<String, Object>, Void> createDeleteButtons() {
         TableColumn<Map<String, Object>, Void> deleteColumn = new TableColumn<>("Удалить");
@@ -256,32 +286,46 @@ public class AdminMainController {
     }
 
 
+//    Object returnIdFromModels(Object modelProperty) {
+//        if (((LinkedTreeMap<?, ?>) modelProperty).get(Appeal.class.getDeclaredFields()[0].getName()) != null) {
+//            return ((LinkedTreeMap<?, ?>) modelProperty).get(Appeal.class.getDeclaredFields()[0].getName());
+//        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Application.class.getDeclaredFields()[0].getName()) != null) {
+//            return ((LinkedTreeMap<?, ?>) modelProperty).get(Application.class.getDeclaredFields()[0].getName());
+//        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Budget.class.getDeclaredFields()[0].getName()) != null) {
+//            return ((LinkedTreeMap<?, ?>) modelProperty).get(Budget.class.getDeclaredFields()[0].getName());
+//        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Category.class.getDeclaredFields()[0].getName()) != null) {
+//            return ((LinkedTreeMap<?, ?>) modelProperty).get(Category.class.getDeclaredFields()[0].getName());
+//        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Department.class.getDeclaredFields()[0].getName()) != null) {
+//            return ((LinkedTreeMap<?, ?>) modelProperty).get(Department.class.getDeclaredFields()[0].getName());
+//        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Management.class.getDeclaredFields()[0].getName()) != null) {
+//            return ((LinkedTreeMap<?, ?>) modelProperty).get(Management.class.getDeclaredFields()[0].getName());
+//        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Order.class.getDeclaredFields()[0].getName()) != null) {
+//            return ((LinkedTreeMap<?, ?>) modelProperty).get(Order.class.getDeclaredFields()[0].getName());
+//        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Position.class.getDeclaredFields()[0].getName()) != null) {
+//            return ((LinkedTreeMap<?, ?>) modelProperty).get(Position.class.getDeclaredFields()[0].getName());
+//        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(ProcurementArchive.class.getDeclaredFields()[0].getName()) != null) {
+//            return ((LinkedTreeMap<?, ?>) modelProperty).get(ProcurementArchive.class.getDeclaredFields()[0].getName());
+//        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Status.class.getDeclaredFields()[0].getName()) != null) {
+//            return ((LinkedTreeMap<?, ?>) modelProperty).get(Status.class.getDeclaredFields()[0].getName());
+//        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Role.class.getDeclaredFields()[0].getName()) != null) {
+//            return ((LinkedTreeMap<?, ?>) modelProperty).get(Role.class.getDeclaredFields()[0].getName());
+//        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(User.class.getDeclaredFields()[0].getName()) != null) {
+//            return ((LinkedTreeMap<?, ?>) modelProperty).get(User.class.getDeclaredFields()[0].getName());
+//        }
+//        return null;
+//    }
+
     Object returnIdFromModels(Object modelProperty) {
-        if (((LinkedTreeMap<?, ?>) modelProperty).get(Appeal.class.getDeclaredFields()[0].getName()) != null) {
-            return ((LinkedTreeMap<?, ?>) modelProperty).get(Appeal.class.getDeclaredFields()[0].getName());
-        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Application.class.getDeclaredFields()[0].getName()) != null) {
-            return ((LinkedTreeMap<?, ?>) modelProperty).get(Application.class.getDeclaredFields()[0].getName());
-        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Budget.class.getDeclaredFields()[0].getName()) != null) {
-            return ((LinkedTreeMap<?, ?>) modelProperty).get(Budget.class.getDeclaredFields()[0].getName());
-        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Category.class.getDeclaredFields()[0].getName()) != null) {
-            return ((LinkedTreeMap<?, ?>) modelProperty).get(Category.class.getDeclaredFields()[0].getName());
-        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Department.class.getDeclaredFields()[0].getName()) != null) {
-            return ((LinkedTreeMap<?, ?>) modelProperty).get(Department.class.getDeclaredFields()[0].getName());
-        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Management.class.getDeclaredFields()[0].getName()) != null) {
-            return ((LinkedTreeMap<?, ?>) modelProperty).get(Management.class.getDeclaredFields()[0].getName());
-        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Order.class.getDeclaredFields()[0].getName()) != null) {
-            return ((LinkedTreeMap<?, ?>) modelProperty).get(Order.class.getDeclaredFields()[0].getName());
-        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Position.class.getDeclaredFields()[0].getName()) != null) {
-            return ((LinkedTreeMap<?, ?>) modelProperty).get(Position.class.getDeclaredFields()[0].getName());
-        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(ProcurementArchive.class.getDeclaredFields()[0].getName()) != null) {
-            return ((LinkedTreeMap<?, ?>) modelProperty).get(ProcurementArchive.class.getDeclaredFields()[0].getName());
-        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Status.class.getDeclaredFields()[0].getName()) != null) {
-            return ((LinkedTreeMap<?, ?>) modelProperty).get(Status.class.getDeclaredFields()[0].getName());
-        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(Role.class.getDeclaredFields()[0].getName()) != null) {
-            return ((LinkedTreeMap<?, ?>) modelProperty).get(Role.class.getDeclaredFields()[0].getName());
-        } else if (((LinkedTreeMap<?, ?>) modelProperty).get(User.class.getDeclaredFields()[0].getName()) != null) {
-            return ((LinkedTreeMap<?, ?>) modelProperty).get(User.class.getDeclaredFields()[0].getName());
+        Class<?>[] classes = { Appeal.class, Application.class, Budget.class, Category.class, Department.class, Management.class, Order.class, Position.class, ProcurementArchive.class, Status.class, Role.class, User.class };
+
+        for (Class<?> clazz : classes) {
+            String fieldName = clazz.getDeclaredFields()[0].getName();
+            Object value = ((Map<String, Object>) modelProperty).get(fieldName);
+            if (value != null) {
+                return value;
+            }
         }
+
         return null;
     }
 

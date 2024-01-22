@@ -14,7 +14,6 @@ module com.example.demo1 {
     requires java.net.http;
     requires lombok;
 
-
     requires com.google.gson;
     requires poi.ooxml;
     requires org.fxmisc.richtext;
